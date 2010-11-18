@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <script type='text/javascript'>
+
+	  window.addEventListener("load", function(){
+	      var FVRButton;
+	      var toolbar = opera.contexts.toolbar;
+	      var ToolbarUIItemProperties = {
+		  disabled: false,
+		  title: "FlashVideoReplacer",
+		  icon: "icons/flvideoreplacer18.png",
+		  popup: {
+		      href: "popup.html",
+		      width: 550,
+		      height: 400
+		  },
+	      }
+	      FVRButton = toolbar.createItem( ToolbarUIItemProperties );
+	      toolbar.addItem( FVRButton );
+
+	  }, false);
+      </script>
+  </head>
+  <body>
+  </body>
+</html>

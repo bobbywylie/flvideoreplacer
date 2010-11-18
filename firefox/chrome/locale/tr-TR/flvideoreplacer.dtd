@@ -1,0 +1,9 @@
+<!ENTITY Autoplay "Videoları otomatik başlat">
+<!ENTITY FlashVideoReplacerPreferences "FlashVideoReplacer Tercihler">
+<!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
+<!ENTITY HIGH "YÜKSEK">
+<!ENTITY LOW "DÜŞÜK">
+<!ENTITY MEDIUM "ORTA">
+<!ENTITY PluginInfo "Windows kullanıcıları için Quicktime yan uygulaması (plugin) önerilir. Windows Media Player dahil edilmiş olsa bile, bu yürütücü mp4 kod çözümünde ek çözücüler olmadan çalışmayacaktır. Linux gecko medya yürütücüsü, gxine, kaffeine, mozplugger, totem ve xine yan uygulamalarını kullanarak x-mplayer2 ve quicktime yürütebilirsiniz.">
+<!ENTITY PreferredPluginMimeType "Plugin/MimeType">
+<!ENTITY WebSites "Web Siteleri">

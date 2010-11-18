@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://flvideoreplacer/content/css/toolbar.css" type="text/css" ?>
+
+<!DOCTYPE overlay SYSTEM "chrome://flvideoreplacer/locale/flvideoreplacer.dtd">
+
+<overlay id="flvideoreplacer-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script type="application/x-javascript" src="chrome://flvideoreplacer/content/scripts/functions-firstrun.js"/>
+    <script type="application/x-javascript" src="chrome://flvideoreplacer/content/scripts/functions-listener.js"/>
+    <script type="application/x-javascript" src="chrome://flvideoreplacer/content/scripts/functions-observer.js"/>
+
+    <window id="main-window">
+	    <stringbundleset id="strbundles">
+		<stringbundle id="flvideoreplacerstrings" src="chrome://flvideoreplacer/locale/strings.properties"/>
+	    </stringbundleset>
+    </window>
+    
+    <toolbarpalette id="BrowserToolbarPalette">
+	<toolbarbutton id="flvideoreplacerbutton-1" label="&FlashVideoReplacerTitle;" tooltiptext="&FlashVideoReplacerTitle;" oncommand="window.openDialog('chrome://flvideoreplacer/content/options.xul', 'flvideoreplacer-prefs', 'chrome,centerscreen,alwaysRaised');" class="toolbarbutton-1 chromeclass-toolbar-additional flvideoreplacerbutton"/>
+    </toolbarpalette>
+
+</overlay>

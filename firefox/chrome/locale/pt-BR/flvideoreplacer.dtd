@@ -1,0 +1,9 @@
+<!ENTITY Autoplay "Tocar vídeos automaticamente">
+<!ENTITY FlashVideoReplacerPreferences "Preferências FlashVideoReplacer">
+<!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
+<!ENTITY HIGH "ALTA">
+<!ENTITY LOW "BAIXA">
+<!ENTITY MEDIUM "MÉDIA">
+<!ENTITY PluginInfo "O plugin recommendado para usuários Windows é o Quicktime. Embora o Windows Media Player esteja incluído, este player provavelmente não irá funcionar sem codecs adicionais que permitam a decodificação de vídeos mp4. Linux gecko mediaplayer, gxine, kaffeine, mozplugger, totem e xine plugins podem tocar x-mplayer2 e quicktime.">
+<!ENTITY PreferredPluginMimeType "Plugin/MimeType">
+<!ENTITY WebSites "Sítios da Web">

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" version = "1.0.0" id="extensions:flvideoreplacer">
+	<name>FlashVideoReplacer</name>
+	<description>Replace embedded flash videos with Quicktime and Windows Media Player compatible videos.</description>
+  	<author href="http://flvideoreplacer-extension.blogspot.com/p/opera.html" email="lovinglinux@gmail.com">lovinglinux</author>
+  	<icon src="icons/flvideoreplacer64.png"/>
+  	<access origin="http://www.youtube.com" subdomains="true"/>
+	<access origin="http://vimeo.com" subdomains="true"/>
+	<access origin="http://blip.tv" subdomains="true"/>
+</widget> 
