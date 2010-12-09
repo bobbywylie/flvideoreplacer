@@ -67,14 +67,17 @@ var flvideoreplacerListener = {
 
 				if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
 				    var fmt = "18";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*18\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 				if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
 				    var fmt = "34";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*34\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 				if (newline[i].match(/\,35\|http\:/) || newline[i].match(/\"35\|http\:/)) {
 				    var fmt = "35";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*35\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 			    }
@@ -83,18 +86,22 @@ var flvideoreplacerListener = {
 
 				if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
 				    var fmt = "18";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*18\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 				if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
 				    var fmt = "34";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*34\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 				if (newline[i].match(/\,35\|http\:/) || newline[i].match(/\"35\|http\:/)) {
 				    var fmt = "35";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*35\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 				if (newline[i].match(/\,22\|http\:/) || newline[i].match(/\"22\|http\:/)) {
 				    var fmt = "22";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*22\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 			    }
@@ -103,26 +110,32 @@ var flvideoreplacerListener = {
 
 				if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
 				    var fmt = "18";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*18\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 				if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
 				    var fmt = "34";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*34\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 				if (newline[i].match(/\,35\|http\:/) || newline[i].match(/\"35\|http\:/)) {
 				    var fmt = "35";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*35\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 				if (newline[i].match(/\,22\|http\:/) || newline[i].match(/\"22\|http\:/)) {
 				    var fmt = "22";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*22\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 				if (newline[i].match(/\,37\|http\:/) || newline[i].match(/\"37\|http\:/)) {
 				    var fmt = "37";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*37\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 				if (newline[i].match(/\,38\|http\:/) || newline[i].match(/\"38\|http\:/)) {
 				    var fmt = "38";
+				    var videourl = newline[i].replace(/.*"fmt_url_map":/,"").replace(/.*38\|/g,"").replace(/\|.*/g,"").replace(/",.*/g,"").replace(/,.*/g,"").replace(/\\/g,"");
 				    var replaceyoutube = true;
 				}
 			    }
@@ -133,12 +146,6 @@ var flvideoreplacerListener = {
 				var videowidth = "100%";
 				var videoheight = "100%";
 				var videoelement = "movie_player";
-				//fetch authentication string
-				var authentication = newline[i].replace(/.*\"t\": \"/, "");
-				var authentication = authentication.replace(/\"\,.*/, "");
-				//var videourl = "http://www.youtube.com/get_video?video_id="+videoid+"&t="+authentication+"&fmt="+fmt;
-				var videourl = "http://www.youtube.com/get_video?fmt="+fmt+"&video_id="+videoid+"&t="+authentication+"&asv=3";
-
 				//declare the video should be replaced
 				var replacevideo = true;
 			    }
