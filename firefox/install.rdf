@@ -4,15 +4,14 @@
 
     <Description about="urn:mozilla:install-manifest">
 	<em:id>flvideoreplacer@lovinglinux.megabyet.net</em:id>
-	<em:version>1.0.7</em:version>
+	<em:version>2.0.0</em:version>
 	<em:type>2</em:type>
 	<em:optionsURL>chrome://flvideoreplacer/content/options.xul</em:optionsURL>
 	<em:name>FlashVideoReplacer</em:name>
-	<em:description>Replace embedded flash videos with Quicktime and Windows Media Player compatible videos.</em:description>
+	<em:description>Replace embedded flash videos with different plugins.</em:description>
 	<em:creator>lovinglinux</em:creator>
 	<em:contributor>marenostrum</em:contributor>
-	<em:homepageURL>http://flvideoreplacer-extension.blogspot.com</em:homepageURL>
-	<em:iconURL>chrome://flvideoreplacer/content/images/logo_large.png</em:iconURL>
+	<em:homepageURL>http://www.webgapps.org/addons/flashvideoreplacer</em:homepageURL>
 	<em:targetApplication>
 	    <Description>
 		<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>

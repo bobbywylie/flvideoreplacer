@@ -1,7 +1,8 @@
-content flvideoreplacer chrome/content/
-locale flvideoreplacer en-US chrome/locale/en-US/
-locale flvideoreplacer pt-BR chrome/locale/pt-BR/
-locale flvideoreplacer tr-TR chrome/locale/tr-TR/
+content   flvideoreplacer                    chrome/content/
+skin      flvideoreplacer      classic/1.0   chrome/skin/
 
-overlay chrome://browser/content/browser.xul chrome://flvideoreplacer/content/overlay.xul
-style chrome://global/content/customizeToolbar.xul chrome://flvideoreplacer/content/css/toolbar.css
+locale    flvideoreplacer  en-US         chrome/locale/en-US/
+locale    flvideoreplacer  pt-BR         chrome/locale/pt-BR/
+
+overlay chrome://browser/content/browser.xul          chrome://flvideoreplacer/content/overlay.xul
+style   chrome://global/content/customizeToolbar.xul  chrome://flvideoreplacer/skin/toolbar.css

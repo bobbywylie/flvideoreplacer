@@ -1,9 +1,34 @@
+<!ENTITY Alert "Alerta">
+<!ENTITY Autodetect "Auto-detectar">
 <!ENTITY Autoplay "Tocar vídeos automaticamente">
+<!ENTITY CheckPlugins "Verificar Compatibilidade de Plugin">
+<!ENTITY CheckPluginsTooltip "Clique aqui para verificar se você possui o plugin appropriado para seu sistema operacional.">
+<!ENTITY Clipboard "Copiar para clipboard">
+<!ENTITY Custom "Personalizado">
+<!ENTITY Download "Download">
+<!ENTITY DownloadDir "Destino do Download">
+<!ENTITY Embedded "Inserido">
 <!ENTITY FlashVideoReplacerPreferences "Preferências FlashVideoReplacer">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
+<!ENTITY ForcePluginMimeType "Plugin/MimeType">
 <!ENTITY HIGH "ALTA">
+<!ENTITY HighDef "Alta Definiçãon">
 <!ENTITY LOW "BAIXA">
 <!ENTITY MEDIUM "MÉDIA">
-<!ENTITY PluginInfo "O plugin recommendado para usuários Windows é o Quicktime. Embora o Windows Media Player esteja incluído, este player provavelmente não irá funcionar sem codecs adicionais que permitam a decodificação de vídeos mp4. Linux gecko mediaplayer, gxine, kaffeine, mozplugger, totem e xine plugins podem tocar x-mplayer2 e quicktime.">
-<!ENTITY PreferredPluginMimeType "Plugin/MimeType">
-<!ENTITY WebSites "Sítios da Web">
+<!ENTITY Method "Método de Substituição">
+<!ENTITY NewTab "Nova Aba">
+<!ENTITY NewWin "Janela">
+<!ENTITY Options "Opções">
+<!ENTITY Preferences "Preferências">
+<!ENTITY PreferWebM "Preferir WebM quando disponível (não requer plugin)">
+<!ENTITY PreferMP4 "Preferir mp4 sobre flv">
+<!ENTITY Prompt "Perguntar">
+<!ENTITY Quality "Qualidade">
+<!ENTITY Reset "Limpar">
+<!ENTITY Search "Buscar">
+<!ENTITY SelectFile "Selecionar Arquivo">
+<!ENTITY SelectDir "Selecionar Diretório">
+<!ENTITY Standalone "Externo">
+<!ENTITY StandalonePlayer "Player Externo">
+<!ENTITY Standard "Padrão">
+<!ENTITY WebSites "Habilitar/Desabilitar Sites">
