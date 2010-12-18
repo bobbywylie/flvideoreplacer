@@ -41,6 +41,12 @@ var flvideoreplacerPrompt = {
 	    document.getElementById("mnewtab").hidden=true;
 	    document.getElementById("mnewwin").hidden=true;
 	}
+	if(pluginvmp4 == true && pluginxflv == false){
+	    this.prefs.setBoolPref("prefermp4",true);
+	}
+	if(pluginvmp4 == false && pluginxflv == true){
+	    this.prefs.setBoolPref("prefermp4",false);
+	}
     }
 };
 window.addEventListener("load",function(){ flvideoreplacerPrompt.toggleMime(); },true);
