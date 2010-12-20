@@ -589,12 +589,20 @@ var flvideoreplacerListener = {
 			//get text from strbundle
 			message = strbundle.getFormattedString("flashblock", [ aSite ]);
 			messagetitle = strbundle.getString("flvideoreplaceralert");
-			//alert user
-			alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-			    .getService(Components.interfaces.nsIAlertsService);
-			alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-			messagetitle, message,
-			false, "", null);
+
+			if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+			    //alert user
+			    prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+				    .getService(Components.interfaces.nsIPromptService);
+			    prompts.alert(window, messagetitle, message);
+			}else{
+			    //alert user
+			    alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+				.getService(Components.interfaces.nsIAlertsService);
+			    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+			    messagetitle, message,
+			    false, "", null);
+			}
 		    }
 		}
 /*
@@ -632,12 +640,20 @@ var flvideoreplacerListener = {
 			//get text from strbundle
 			message = strbundle.getFormattedString("mpc", [ aSite ]);
 			messagetitle = strbundle.getString("flvideoreplaceralert");
-			//alert user
-			alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-			    .getService(Components.interfaces.nsIAlertsService);
-			alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-			messagetitle, message,
-			false, "", null);
+
+			if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+			    //alert user
+			    prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+				    .getService(Components.interfaces.nsIPromptService);
+			    prompts.alert(window, messagetitle, message);
+			}else{
+			    //alert user
+			    alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+				.getService(Components.interfaces.nsIAlertsService);
+			    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+			    messagetitle, message,
+			    false, "", null);
+			}
 		    }
 		}
 	    }
@@ -898,24 +914,51 @@ var flvideoreplacerListener = {
 
 		    //get player path
 		    var playerpath = this.prefs.getCharPref("playerpath");
-		    try{
-			if(playerpath !== "" || playerpath.match(/\*\*\*/)){
-			    //initiate player
-			    var player = Components.classes["@mozilla.org/file/local;1"]
-				    .createInstance(Components.interfaces.nsILocalFile);
-			    player.initWithPath(playerpath);
-			    if (player.exists()) {//match if player exists and launch it
-				var process = Components.classes['@mozilla.org/process/util;1']
-				    .createInstance(Components.interfaces.nsIProcess);
-				process.init(player);
-				var arguments = [videourl];
-				process.run(false, arguments, arguments.length);
+
+		    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+
+			try{
+			    if(playerpath !== "" && !playerpath.match(/\*\*\*/)){
+
+				//initiate player
+				var player = Components.classes["@mozilla.org/file/local;1"]
+					.createInstance(Components.interfaces.nsILocalFile);
+				player.initWithPath(playerpath);
+				if (player.exists()) {//match if player exists and launch it
+				    var process = Components.classes['@mozilla.org/process/util;1']
+					.createInstance(Components.interfaces.nsIProcess);
+				    process.init(player);
+				    var arguments = [""+videourl+""];
+				    process.run(false, arguments, arguments.length);
+				}
+			    }else{
+				fmt = "98";
 			    }
-			}else{
+			}catch (e){
 			    fmt = "98";
 			}
-		    }catch (e){
-			fmt = "98";
+
+		    }else{
+			try{
+			    if(playerpath !== "" && !playerpath.match(/\*\*\*/)){
+
+				//initiate player
+				var player = Components.classes["@mozilla.org/file/local;1"]
+					.createInstance(Components.interfaces.nsILocalFile);
+				player.initWithPath(playerpath);
+				if (player.exists()) {//match if player exists and launch it
+				    var process = Components.classes['@mozilla.org/process/util;1']
+					.createInstance(Components.interfaces.nsIProcess);
+				    process.init(player);
+				    var arguments = [""+videourl+""];
+				    process.run(false, arguments, arguments.length);
+				}
+			    }else{
+				fmt = "98";
+			    }
+			}catch (e){
+			    fmt = "98";
+			}
 		    }
 		}
 	    }
@@ -944,7 +987,29 @@ var flvideoreplacerListener = {
 		   message = strbundle.getFormattedString("videores", [ original+" ("+mimetype+")" ]);
 		}
 		if (fmt !== "98" && fmt !== "99") {
-		   messagetitle = strbundle.getString("flvideoreplacermessage");
+
+		    if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+			messagetitle = strbundle.getString("flvideoreplacermessage");
+			//alert user
+			alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+			    .getService(Components.interfaces.nsIAlertsService);
+			alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+			messagetitle, message,
+			false, "", null);
+		    }
+		}
+	    }
+	    //no available player message
+	    if (fmt === "98"){
+		message = strbundle.getFormattedString("nostandalone", [ mimetype ]);
+		messagetitle = strbundle.getString("flvideoreplacermessage");
+
+		if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+		    //alert user
+		    prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+			    .getService(Components.interfaces.nsIPromptService);
+		    prompts.alert(window, messagetitle, message);
+		}else{
 		    //alert user
 		    alertsService = Components.classes["@mozilla.org/alerts-service;1"]
 			.getService(Components.interfaces.nsIAlertsService);
@@ -953,32 +1018,34 @@ var flvideoreplacerListener = {
 		    false, "", null);
 		}
 	    }
-	    //no available player message
-	    if (fmt === "98"){
-		message = strbundle.getFormattedString("nostandalone", [ mimetype ]);
-		messagetitle = strbundle.getString("flvideoreplacermessage");
-		//alert user
-		alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-		    .getService(Components.interfaces.nsIAlertsService);
-		alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-		messagetitle, message,
-		false, "", null);
-	    }
 	    //no available plugin message
 	    if (fmt === "99"){
+
 		message = strbundle.getFormattedString("noreplace", [ mimetype ]);
 		messagetitle = strbundle.getString("flvideoreplacermessage");
-		//alert user
-		alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-		    .getService(Components.interfaces.nsIAlertsService);
-		alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-		messagetitle, message,
-		false, "", null);
+
+		if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+		    //alert user
+		    prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+			    .getService(Components.interfaces.nsIPromptService);
+		    prompts.alert(window, messagetitle, message);
+		}else{
+		    //alert user
+		    alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+			.getService(Components.interfaces.nsIAlertsService);
+		    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+		    messagetitle, message,
+		    false, "", null);
+		}
 	    }
 	}
     },
 
     webmReplacer: function(aEvent) {
+
+	//get osString
+	var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+		.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
 
 	//declare document and element
 	var doc = aEvent.originalTarget; // doc is document that triggered "onload" event
@@ -999,18 +1066,21 @@ var flvideoreplacerListener = {
 
 	    var message = strbundle.getFormattedString("videores", [ "HTML5 WebM" ]);
 	    var messagetitle = strbundle.getString("flvideoreplacermessage");
-	    //alert user
-	    var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-		.getService(Components.interfaces.nsIAlertsService);
-	    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-	    messagetitle, message,
-	    false, "", null);
+
+	    if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+		//alert user
+		var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+		    .getService(Components.interfaces.nsIAlertsService);
+		alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+		messagetitle, message,
+		false, "", null);
+	    }
 	}
     },
 
     vidDownloader: function (aSite,aFile,aID,aFMT) {
 
-	var filepath,file;
+	var filepath,file,sourceurl;
 
 	//get osString
 	var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
@@ -1023,9 +1093,9 @@ var flvideoreplacerListener = {
 
 	//get video path from prefs
 	if(aFMT === "0"){
-	    var sourceurl = this.prefs.getCharPref(aID);
+	    sourceurl = this.prefs.getCharPref(aID);
 	}else{
-	    var sourceurl = this.prefs.getCharPref(aID+"."+aFMT);
+	    sourceurl = this.prefs.getCharPref(aID+"."+aFMT);
 	}
 
 	//access preferences interface
@@ -1039,7 +1109,7 @@ var flvideoreplacerListener = {
 	    filepath = dir+"\\"+aFile;
 	}else if(osString.match(/Linux/)){
 	    filepath = dir+"/"+aFile;
-	}else if(osString.match(/OSX/)){
+	}else if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 	    filepath = dir+"/"+aFile;
 	}else{
 	    //do nothing
@@ -1085,6 +1155,8 @@ var flvideoreplacerListener = {
 
     flvrcopyToClipboard: function (aID,aFMT) {
 
+	var sourceurl;
+
 	//access preferences interface
 	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 		.getService(Components.interfaces.nsIPrefService)
@@ -1092,14 +1164,11 @@ var flvideoreplacerListener = {
 
 	//get video path from prefs
 	if(aFMT === 0){
-	    var sourceurl = this.prefs.getCharPref(aID);
+	    sourceurl = this.prefs.getCharPref(aID);
 	}else{
-	    var sourceurl = this.prefs.getCharPref(aID+"."+aFMT);
+	    sourceurl = this.prefs.getCharPref(aID+"."+aFMT);
 	}
-
-	const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
-	getService(Components.interfaces.nsIClipboardHelper);
-	gClipboardHelper.copyString(sourceurl);
+	flvideoreplacerListener.docopyToClipboard(sourceurl);
     },
 
     showHideMenus: function () {//show and hide context menus
@@ -1108,8 +1177,8 @@ var flvideoreplacerListener = {
 	var videoid, aSite, vidfilename, downloadurl=null, downloadurl5=null, downloadurl18=null, downloadurl34=null, downloadurl35=null, downloadurl22=null, downloadurl37=null, downloadurl38=null;
 	//get localization
 	var strbundle = document.getElementById("flvideoreplacerstrings");
-	var original = strbundle.getString("original")
-	var standard = strbundle.getString("standard")
+	var original = strbundle.getString("original");
+	var standard = strbundle.getString("standard");
 
 	if((sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match("html5=True")) || (sourceurl.match(/vimeo.com\/\d{1,8}/))){//match supported sites
 
@@ -1124,7 +1193,7 @@ var flvideoreplacerListener = {
 		    aSite = "youtube";
 		    videoid = sourceurl.replace(/.*v\=/, "").replace(/\&.*/,"");
 		    try{
-			var downloadurl5 = this.prefs.getCharPref(videoid+".5");
+			downloadurl5 = this.prefs.getCharPref(videoid+".5");
 		    }catch(e){
 			//do nothing
 		    }
@@ -1200,7 +1269,7 @@ var flvideoreplacerListener = {
 		var copymenuitem, dlmenuitem;
 
 		if(downloadurl !== null){
-		    newvidfilename = vidfilename+".mp4"
+		    newvidfilename = vidfilename+".mp4";
 		    //append new copy menuitem
 		    copymenuitem = document.createElement("menuitem");
 		    copymenuitem.setAttribute("label",standard);
@@ -1213,7 +1282,7 @@ var flvideoreplacerListener = {
 		    dlnewvbox.appendChild(dlmenuitem);
 		}
 		if(downloadurl5 !== null){
-		    newvidfilename = vidfilename+"-240p.flv"
+		    newvidfilename = vidfilename+"-240p.flv";
 		    //append new copy menuitem
 		    copymenuitem = document.createElement("menuitem");
 		    copymenuitem.setAttribute("label","240p [flv]");
@@ -1226,7 +1295,7 @@ var flvideoreplacerListener = {
 		    dlnewvbox.appendChild(dlmenuitem);
 		}
 		if(downloadurl18 !== null){
-		    newvidfilename = vidfilename+"-360p.mp4"
+		    newvidfilename = vidfilename+"-360p.mp4";
 		    //append new copy menuitem
 		    copymenuitem = document.createElement("menuitem");
 		    copymenuitem.setAttribute("label","360p [mp4]");
@@ -1239,7 +1308,7 @@ var flvideoreplacerListener = {
 		    dlnewvbox.appendChild(dlmenuitem);
 		}
 		if(downloadurl34 !== null){
-		    newvidfilename = vidfilename+"-360p.flv"
+		    newvidfilename = vidfilename+"-360p.flv";
 		    //append new copy menuitem
 		    copymenuitem = document.createElement("menuitem");
 		    copymenuitem.setAttribute("label","360p [flv]");
@@ -1252,7 +1321,7 @@ var flvideoreplacerListener = {
 		    dlnewvbox.appendChild(dlmenuitem);
 		}
 		if(downloadurl35 !== null){
-		    newvidfilename = vidfilename+"-480p.flv"
+		    newvidfilename = vidfilename+"-480p.flv";
 		    //append new copy menuitem
 		    copymenuitem = document.createElement("menuitem");
 		    copymenuitem.setAttribute("label","480p [flv]");
@@ -1265,7 +1334,7 @@ var flvideoreplacerListener = {
 		    dlnewvbox.appendChild(dlmenuitem);
 		}
 		if(downloadurl22 !== null){
-		    newvidfilename = vidfilename+"-720p.mp4"
+		    newvidfilename = vidfilename+"-720p.mp4";
 		    //append new copy menuitem
 		    copymenuitem = document.createElement("menuitem");
 		    copymenuitem.setAttribute("label","720p [mp4]");
@@ -1278,7 +1347,7 @@ var flvideoreplacerListener = {
 		    dlnewvbox.appendChild(dlmenuitem);
 		}
 		if(downloadurl37 !== null){
-		    newvidfilename = vidfilename+"-1080p.mp4"
+		    newvidfilename = vidfilename+"-1080p.mp4";
 		    //append new copy menuitem
 		    copymenuitem = document.createElement("menuitem");
 		    copymenuitem.setAttribute("label","1080p [mp4]");
@@ -1291,7 +1360,7 @@ var flvideoreplacerListener = {
 		    dlnewvbox.appendChild(dlmenuitem);
 		}
 		if(downloadurl38 !== null){
-		    newvidfilename = vidfilename+"-"+original+".mp4"
+		    newvidfilename = vidfilename+"-"+original+".mp4";
 		    //append new copy menuitem
 		    copymenuitem = document.createElement("menuitem");
 		    copymenuitem.setAttribute("label",original);
@@ -1321,6 +1390,13 @@ var flvideoreplacerListener = {
 		.getBranch("extensions.flvideoreplacer.");
 
 	this.prefs.deleteBranch("downloadersource");
+    },
+
+    docopyToClipboard: function (aText) {
+
+	const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+	getService(Components.interfaces.nsIClipboardHelper);
+	gClipboardHelper.copyString(aText);
     }
 };
 window.addEventListener("load", function() { flvideoreplacerListener.init(); }, false);

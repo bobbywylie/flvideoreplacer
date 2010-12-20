@@ -2,6 +2,10 @@ var flvideoreplacerOptions = {
 
     toggleMime: function() {
 
+	//get osString
+	var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+		.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
+
 	//access preferences interface
 	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 		.getService(Components.interfaces.nsIPrefService)
@@ -14,38 +18,52 @@ var flvideoreplacerOptions = {
 	var pluginaqt = this.prefs.getBoolPref("pluginaqt");
 	var pluginawmp = this.prefs.getBoolPref("pluginawmp");
 
-	if(pluginvmp4 === true){
-	    document.getElementById("pluginvmp4").hidden=false;
-	}else{
-	    document.getElementById("pluginvmp4").hidden=true;
-	}
-	if(pluginxflv === true){
-	    document.getElementById("pluginxflv").hidden=false;
-	}else{
-	    document.getElementById("pluginxflv").hidden=true;
-	}
-	if(pluginaqt === true){
-	    document.getElementById("pluginaqt").hidden=false;
-	}else{
-	    document.getElementById("pluginaqt").hidden=true;
-	}
-	if(pluginawmp === true){
-	    document.getElementById("pluginawmp").hidden=false;
-	}else{
-	    document.getElementById("pluginawmp").hidden=true;
-	}
-	if(pluginvmp4 === false && pluginxflv === false){
-	    this.prefs.setCharPref("method","standalone");
-	    document.getElementById("mprompt").hidden=true;
-	    document.getElementById("membed").hidden=true;
-	    document.getElementById("mnewtab").hidden=true;
-	    document.getElementById("mnewwin").hidden=true;
-	}
-	if(pluginvmp4 === true && pluginxflv === false){
+	if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+	    if(replacemethod === "standalone"){
+		this.prefs.setCharPref("method","prompt");
+	    }
+	    document.getElementById("mprompt").hidden=false;
+	    document.getElementById("membed").hidden=false;
+	    document.getElementById("mnewtab").hidden=false;
+	    document.getElementById("mnewwin").hidden=false;
+	    document.getElementById("mstand").hidden=true;
 	    this.prefs.setBoolPref("prefermp4",true);
-	}
-	if(pluginvmp4 === false && pluginxflv === true){
-	    this.prefs.setBoolPref("prefermp4",false);
+	}else{
+
+	    if(pluginvmp4 === true){
+		document.getElementById("pluginvmp4").hidden=false;
+	    }else{
+		document.getElementById("pluginvmp4").hidden=true;
+	    }
+	    if(pluginxflv === true){
+		document.getElementById("pluginxflv").hidden=false;
+	    }else{
+		document.getElementById("pluginxflv").hidden=true;
+	    }
+	    if(pluginaqt === true){
+		document.getElementById("pluginaqt").hidden=false;
+	    }else{
+		document.getElementById("pluginaqt").hidden=true;
+	    }
+	    if(pluginawmp === true){
+		document.getElementById("pluginawmp").hidden=false;
+	    }else{
+		document.getElementById("pluginawmp").hidden=true;
+	    }
+	    if(pluginvmp4 === false && pluginxflv === false){
+		this.prefs.setCharPref("method","standalone");
+		document.getElementById("mprompt").hidden=true;
+		document.getElementById("membed").hidden=true;
+		document.getElementById("mnewtab").hidden=true;
+		document.getElementById("mnewwin").hidden=true;
+		document.getElementById("mstand").hidden=false;
+	    }
+	    if(pluginvmp4 === true && pluginxflv === false){
+		this.prefs.setBoolPref("prefermp4",true);
+	    }
+	    if(pluginvmp4 === false && pluginxflv === true){
+		this.prefs.setBoolPref("prefermp4",false);
+	    }
 	}
     },
 
@@ -165,10 +183,6 @@ var flvideoreplacerOptions = {
 		}else{
 		    bestplayer = "BS.Player";
 		    message = strbundle.getFormattedString("nobestplayer", [ bestplayer ]);
-		    //alert user
-		    //var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			    //.getService(Components.interfaces.nsIPromptService);
-		    //prompts.alert(window,alerttitle, message);
 		    this.prefs.setCharPref("playerpath",message);
 		    document.getElementById('standalone').value = "playercustom";
 		}
@@ -206,31 +220,23 @@ var flvideoreplacerOptions = {
 		}else{
 		    bestplayer = "SMPlayer";
 		    message = strbundle.getFormattedString("nobestplayer", [ bestplayer ]);
-		    //alert user
-		    //var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			    //.getService(Components.interfaces.nsIPromptService);
-		    //prompts.alert(window,alerttitle, message);
 		    this.prefs.setCharPref("playerpath",message);
 		    document.getElementById('standalone').value = "playercustom";
 		}
 	    }
 
-	}else if(osString.match(/OSX/)){
+	}else if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 
 	    if(standalone === "playerqt"){
-		this.prefs.setCharPref("playerpath","/Applications/QuickTime Player.app");
+		this.prefs.setCharPref("playerpath","/Applications/QuickTime\ Player.app/Contents/MacOS/QuickTime\ Player");
 	    }
 	    if(standalone === "playerbest"){
 
 		if(playerqt === true){
-		    this.prefs.setCharPref("playerpath","/Applications/QuickTime Player.app");
+		    this.prefs.setCharPref("playerpath","/Applications/QuickTime\ Player.app/Contents/MacOS/QuickTime\ Player");
 		}else{
 		    bestplayer = "QuickTime Player with Perian";
 		    message = strbundle.getFormattedString("nobestplayer", [ bestplayer ]);
-		    //alert user
-		    //var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			    //.getService(Components.interfaces.nsIPromptService);
-		    //prompts.alert(window,alerttitle, message);
 		    this.prefs.setCharPref("playerpath",message);
 		    document.getElementById('standalone').value = "playercustom";
 		}
@@ -239,65 +245,130 @@ var flvideoreplacerOptions = {
 	    //do nothing
 	}
 
-	if(replacemethod === "prompt"){
+	if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 
-	    document.getElementById("selectplugin").hidden=false;
-	    document.getElementById("standaloneplayer").hidden=false;
-	    document.getElementById("downloader").hidden=false;
-	    document.getElementById("checkplugin").hidden=false;
-	}
-	if(replacemethod === "newtab"){
+	    if(replacemethod === "prompt"){
 
-	    document.getElementById("selectplugin").hidden=true;
-	    document.getElementById("standaloneplayer").hidden=true;
-	    document.getElementById("downloader").hidden=false;
-	    document.getElementById("checkplugin").hidden=false;
-	    document.getElementById('mimetype').value = "autodetect";
-	}
-	if(replacemethod === "newwindow"){
-
-	    document.getElementById("selectplugin").hidden=true;
-	    document.getElementById("standaloneplayer").hidden=true;
-	    document.getElementById("downloader").hidden=false;
-	    document.getElementById("checkplugin").hidden=false;
-	    document.getElementById('mimetype').value = "autodetect";
-	}
-	if(replacemethod === "standalone"){
-
-	    document.getElementById("selectplugin").hidden=true;
-	    document.getElementById("standaloneplayer").hidden=false;
-	    document.getElementById("downloader").hidden=false;
-	    document.getElementById("checkplugin").hidden=false;
-	}
-	if(replacemethod === "embedded"){
-	    document.getElementById("selectplugin").hidden=false;
-	    document.getElementById("standaloneplayer").hidden=true;
-	    document.getElementById("downloader").hidden=false;
-	    document.getElementById("checkplugin").hidden=false;
-
-	    //access preferences interface
-	    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-		    .getService(Components.interfaces.nsIPrefService)
-		    .getBranch("media.");
-
-	    try{
-		//check webm status
-		var webm = this.prefs.getBoolPref("webm.enabled");
-	    }catch(e){
-		var webm = false;
+		document.getElementById("selectplugin").hidden=false;
+		document.getElementById("standaloneplayer").hidden=true;
+		document.getElementById("downloader").hidden=false;
+		document.getElementById("checkplugin").hidden=false;
 	    }
+	    if(replacemethod === "newtab"){
 
-	    if(webm === true){
-		document.getElementById("webmbox").hidden=false;
-	    }else{
-		document.getElementById("webmbox").hidden=true;
+		document.getElementById("selectplugin").hidden=true;
+		document.getElementById("standaloneplayer").hidden=true;
+		document.getElementById("downloader").hidden=false;
+		document.getElementById("checkplugin").hidden=false;
+		document.getElementById('mimetype').value = "autodetect";
+	    }
+	    if(replacemethod === "newwindow"){
+
+		document.getElementById("selectplugin").hidden=true;
+		document.getElementById("standaloneplayer").hidden=true;
+		document.getElementById("downloader").hidden=false;
+		document.getElementById("checkplugin").hidden=false;
+		document.getElementById('mimetype').value = "autodetect";
+	    }
+	    if(replacemethod === "standalone"){
+		this.prefs.setCharPref("method","prompt");
+	    }
+	    if(replacemethod === "embedded"){
+
+		document.getElementById("selectplugin").hidden=false;
+		document.getElementById("standaloneplayer").hidden=true;
+		document.getElementById("downloader").hidden=false;
+		document.getElementById("checkplugin").hidden=false;
 
 		//access preferences interface
 		this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("extensions.flvideoreplacer.");
+			.getBranch("media.");
 
-		this.prefs.setBoolPref("preferwebm",false);
+		try{
+		    //check webm status
+		    var webm = this.prefs.getBoolPref("webm.enabled");
+		}catch(e){
+		    var webm = false;
+		}
+
+		if(webm === true){
+		    document.getElementById("webmbox").hidden=false;
+		}else{
+		    document.getElementById("webmbox").hidden=true;
+
+		    //access preferences interface
+		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			    .getService(Components.interfaces.nsIPrefService)
+			    .getBranch("extensions.flvideoreplacer.");
+
+		    this.prefs.setBoolPref("preferwebm",false);
+		}
+	    }
+	}else{
+
+	    if(replacemethod === "prompt"){
+
+		document.getElementById("selectplugin").hidden=false;
+		document.getElementById("standaloneplayer").hidden=false;
+		document.getElementById("downloader").hidden=false;
+		document.getElementById("checkplugin").hidden=false;
+	    }
+	    if(replacemethod === "newtab"){
+
+		document.getElementById("selectplugin").hidden=true;
+		document.getElementById("standaloneplayer").hidden=true;
+		document.getElementById("downloader").hidden=false;
+		document.getElementById("checkplugin").hidden=false;
+		document.getElementById('mimetype').value = "autodetect";
+	    }
+	    if(replacemethod === "newwindow"){
+
+		document.getElementById("selectplugin").hidden=true;
+		document.getElementById("standaloneplayer").hidden=true;
+		document.getElementById("downloader").hidden=false;
+		document.getElementById("checkplugin").hidden=false;
+		document.getElementById('mimetype').value = "autodetect";
+	    }
+	    if(replacemethod === "standalone"){
+
+		document.getElementById("selectplugin").hidden=true;
+		document.getElementById("standaloneplayer").hidden=false;
+		document.getElementById("downloader").hidden=false;
+		document.getElementById("checkplugin").hidden=false;
+
+	    }
+	    if(replacemethod === "embedded"){
+
+		document.getElementById("selectplugin").hidden=false;
+		document.getElementById("standaloneplayer").hidden=true;
+		document.getElementById("downloader").hidden=false;
+		document.getElementById("checkplugin").hidden=false;
+
+		//access preferences interface
+		this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch("media.");
+
+		try{
+		    //check webm status
+		    var webm = this.prefs.getBoolPref("webm.enabled");
+		}catch(e){
+		    var webm = false;
+		}
+
+		if(webm === true){
+		    document.getElementById("webmbox").hidden=false;
+		}else{
+		    document.getElementById("webmbox").hidden=true;
+
+		    //access preferences interface
+		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			    .getService(Components.interfaces.nsIPrefService)
+			    .getBranch("extensions.flvideoreplacer.");
+
+		    this.prefs.setBoolPref("preferwebm",false);
+		}
 	    }
 	}
 	//toggle mime options
@@ -326,7 +397,7 @@ var flvideoreplacerOptions = {
 		this.prefs.setCharPref("playerpath","");
 		document.getElementById('standalone').value = "playercustom";
 	    }
-	    if(osString.match(/OSX/)){
+	    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 		//reset path
 		this.prefs.setCharPref("playerpath","");
 		document.getElementById('standalone').value = "playercustom";
@@ -455,7 +526,7 @@ var flvideoreplacerOptions = {
 		}
 		this.prefs.setCharPref("mimetype","autodetect");
 	    }
-	    if(osString.match(/OSX/)){
+	    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 		message = strbundle.getString("nopluginplayeralt");
 		this.prefs.setCharPref("mimetype","autodetect");
 	    }
@@ -511,7 +582,7 @@ var flvideoreplacerOptions = {
 		    this.prefs.setCharPref("mimetype","autodetect");
 		}
 	    }
-	    if(osString.match(/OSX/)){
+	    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 		message = strbundle.getFormattedString("partpluginplayeralt", [ pluginstatus ]);
 		this.prefs.setCharPref("mimetype","video/quicktime");
 	    }
@@ -551,7 +622,7 @@ var flvideoreplacerOptions = {
 		}
 		this.prefs.setCharPref("mimetype","autodetect");
 	    }
-	    if(osString.match(/OSX/)){
+	    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 		message = strbundle.getString("fullplugin");
 		this.prefs.setCharPref("mimetype","autodetect");
 	    }

@@ -278,11 +278,11 @@ var flvideoreplacerFirstrun = {
 		  }
 	      }
 
-	}else if(osString.match(/OSX/)){
+	}else if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 	      //initiate file
 	      var playerqt = Components.classes["@mozilla.org/file/local;1"]
 		      .createInstance(Components.interfaces.nsILocalFile);
-	      playerqt.initWithPath("/Applications/QuickTime Player.app");
+	      playerqt.initWithPath("/Applications/QuickTime\ Player.app/Contents/MacOS/QuickTime\ Player");
 
 	      if(playerqt.exists()){
 		  this.prefs.setBoolPref("playerqt",true);

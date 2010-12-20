@@ -9,8 +9,6 @@
   onload="onLoad();"
   persist="screenX screenY width height">
   
-    <script type="application/x-javascript" src="chrome://flvideoreplacer/content/scripts/functions-prompt.js"/>
-
     <stringbundleset id="strbundles">
 	<stringbundle id="flvideoreplacerstrings" src="chrome://flvideoreplacer/locale/strings.properties"/>
     </stringbundleset>
@@ -21,6 +19,64 @@
 		document.getElementById("psite").value = window.arguments[0].inn.psite;
 		document.getElementById("pmethod").value = window.arguments[0].inn.pmethod;
 		document.getElementById("pfmt").value = window.arguments[0].inn.pfmt;
+		
+		//get osString
+		var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
+			
+		if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+		    document.getElementById("membed").hidden=false;
+		    document.getElementById("mnewtab").hidden=false;
+		    document.getElementById("mnewwin").hidden=false;
+		    document.getElementById("mstand").hidden=true;
+		}else{
+
+		    //access preferences interface
+		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			    .getService(Components.interfaces.nsIPrefService)
+			    .getBranch("extensions.flvideoreplacer.");
+		
+		    //get plugin compatibility
+		    var filemime = this.prefs.getCharPref("filemime");
+		    var replacemethod = this.prefs.getCharPref("method");
+		    var pluginvmp4 = this.prefs.getBoolPref("pluginvmp4");
+		    var pluginxflv = this.prefs.getBoolPref("pluginxflv");
+		    var pluginaqt = this.prefs.getBoolPref("pluginaqt");
+		    var pluginawmp = this.prefs.getBoolPref("pluginawmp");
+		
+		    if(pluginvmp4 == true){
+			document.getElementById("pluginvmp4").hidden=false;
+		    }else{
+			document.getElementById("pluginvmp4").hidden=true;
+		    }
+		    if(pluginxflv == true){
+			document.getElementById("pluginxflv").hidden=false;
+		    }else{
+			document.getElementById("pluginxflv").hidden=true;
+		    }
+		    if(pluginaqt == true){
+			document.getElementById("pluginaqt").hidden=false;
+		    }else{
+			document.getElementById("pluginaqt").hidden=true;
+		    }
+		    if(pluginawmp == true){
+			document.getElementById("pluginawmp").hidden=false;
+		    }else{
+			document.getElementById("pluginawmp").hidden=true;
+		    }
+		    if(pluginvmp4 == false && pluginxflv == false){
+			this.prefs.setCharPref("method","standalone");
+			document.getElementById("membed").hidden=true;
+			document.getElementById("mnewtab").hidden=true;
+			document.getElementById("mnewwin").hidden=true;
+		    }
+		    if(pluginvmp4 == true && pluginxflv == false){
+			this.prefs.setBoolPref("prefermp4",true);
+		    }
+		    if(pluginvmp4 == false && pluginxflv == true){
+			this.prefs.setBoolPref("prefermp4",false);
+		    }
+		}
 	    }
 
 	    function onOK() {
@@ -45,7 +101,7 @@
 		    <menuitem id="membed" label="&Embedded;" value="embedded" selected="true" />
 		    <menuitem id="mnewtab" label="&NewTab;" value="newtab" />
 		    <menuitem id="mnewwin" label="&NewWin;" value="newwindow" />
-		    <menuitem id="mstand" label="&Standalone;" value="standalone" />
+		    <menuitem id="mstand" label="&Standalone;" value="standalone"/>
 		</menupopup>
 	    </menulist>
 	    <spacer height="1" flex="0"/>
