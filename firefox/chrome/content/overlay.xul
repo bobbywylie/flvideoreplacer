@@ -7,6 +7,7 @@
 
     <script type="application/x-javascript" src="chrome://flvideoreplacer/content/scripts/functions-firstrun.js"/>
     <script type="application/x-javascript" src="chrome://flvideoreplacer/content/scripts/functions-listener.js"/>
+    <script type="application/x-javascript" src="chrome://flvideoreplacer/content/scripts/functions-urlbarlistener.js"/>
 
     <window id="main-window">
 	    <stringbundleset id="strbundles">
@@ -21,14 +22,16 @@
     <popup id="contentAreaContextMenu">
 	<menu id="flvideoreplacer-contextmenu" label="&FlashVideoReplacerTitle;" class="menu-iconic" image="chrome://flvideoreplacer/skin/toolbar-small.png" onpopupshowing="flvideoreplacerListener.showHideMenus();">
 	    <menupopup>
-		<menu id="flvideoreplacer-copy" label="&Clipboard;" class="menu-iconic" image="chrome://flvideoreplacer/skin/download16.png">
-		    <menupopup id="flvideoreplacer-copy-selec">
-			<menuitem id="flvideoreplacer-copy-file" label="&Clipboard;" oncommand="flvideoreplacerListener.flvrcopyToClipboard();"/>
+		<menu id="flvideoreplacer-copy" label="&Clipboard;" class="menu-iconic" image="chrome://flvideoreplacer/skin/download16.png" position="end_after">
+		    <menupopup id="flvideoreplacer-copy-select">
+			<vbox id="flvideoreplacer-copy-select-vbox">
+			</vbox>
 		    </menupopup>
 		</menu>
-		<menu id="flvideoreplacer-download" label="&Download;" class="menu-iconic" image="chrome://flvideoreplacer/skin/download16.png">
+		<menu id="flvideoreplacer-download" label="&Download;" class="menu-iconic" image="chrome://flvideoreplacer/skin/download16.png" position="end_after">
 		    <menupopup id="flvideoreplacer-download-select">
-			<menuitem id="flvideoreplacer-download-file" label="&Download;" oncommand="flvideoreplacerListener.vidDownloader();"/>
+			<vbox id="flvideoreplacer-download-select-vbox">
+			</vbox>
 		    </menupopup>
 		</menu>
 		<menuseparator id="flvideoreplacer-prefs-separator"/>

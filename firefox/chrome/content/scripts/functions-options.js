@@ -217,6 +217,24 @@ var flvideoreplacerOptions = {
 
 	}else if(osString.match(/OSX/)){
 
+	    if(standalone === "playerqt"){
+		this.prefs.setCharPref("playerpath","/Applications/QuickTime Player.app");
+	    }
+	    if(standalone === "playerbest"){
+
+		if(playerqt === true){
+		    this.prefs.setCharPref("playerpath","/Applications/QuickTime Player.app");
+		}else{
+		    bestplayer = "QuickTime Player with Perian";
+		    message = strbundle.getFormattedString("nobestplayer", [ bestplayer ]);
+		    //alert user
+		    //var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+			    //.getService(Components.interfaces.nsIPromptService);
+		    //prompts.alert(window,alerttitle, message);
+		    this.prefs.setCharPref("playerpath",message);
+		    document.getElementById('standalone').value = "playercustom";
+		}
+	    }
 	}else{
 	    //do nothing
 	}

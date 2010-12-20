@@ -3,7 +3,7 @@
 
 <!DOCTYPE window SYSTEM "chrome://flvideoreplacer/locale/flvideoreplacer.dtd">
 
-<prefwindow width="370" height="520" id="flvideoreplacer-prefs" title="&FlashVideoReplacerPreferences;" xmlns:html="http://www.w3.org/1999/xhtml" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<prefwindow width="370" height="620" id="flvideoreplacer-prefs" title="&FlashVideoReplacerPreferences;" xmlns:html="http://www.w3.org/1999/xhtml" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <script type="application/x-javascript" src="chrome://flvideoreplacer/content/scripts/functions-options.js"/>
     
@@ -25,7 +25,7 @@
 	    <preference id="pref_downdir" name="extensions.flvideoreplacer.downdir" type="string"/> 
 	</preferences>
 	<vbox>
-	    <arrowscrollbox orient="vertical" height="450" flex="1">
+	    <arrowscrollbox orient="vertical" height="620" flex="1">
 		<vbox>
 		    <spacer height="10" flex="0"/>
 		    <hbox>

@@ -4,7 +4,7 @@
 <!ENTITY BestPlayer "Melhor Disponível">
 <!ENTITY CheckPlugins "Verificar Compatibilidade de Plugin">
 <!ENTITY CheckPluginsTooltip "Clique aqui para verificar se você possui o plugin appropriado para seu sistema operacional.">
-<!ENTITY Clipboard "Copiar para clipboard">
+<!ENTITY Clipboard "Copiar url para clipboard">
 <!ENTITY Custom "Personalizado">
 <!ENTITY Download "Download">
 <!ENTITY DownloadDir "Destino do Download">

@@ -8,8 +8,6 @@ pref("extensions.flvideoreplacer.preferwebm", false);
 pref("extensions.flvideoreplacer.prefermp4", true);
 
 pref("extensions.flvideoreplacer.downdir", "");
-pref("extensions.flvideoreplacer.downsource", "");
-pref("extensions.flvideoreplacer.downfile", "");
 pref("extensions.flvideoreplacer.videourl", "");
 
 pref("extensions.flvideoreplacer.pluginvmp4", false);
@@ -30,4 +28,3 @@ pref("extensions.flvideoreplacer.playerkmp", false);
 pref("extensions.flvideoreplacer.playerqt", false);
 pref("extensions.flvideoreplacer.playerbsp", false);
 pref("extensions.flvideoreplacer.playerwmp", false);
-

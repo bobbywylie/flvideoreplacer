@@ -279,9 +279,19 @@ var flvideoreplacerFirstrun = {
 	      }
 
 	}else if(osString.match(/OSX/)){
-	    this.prefs.setCharPref("playercustom",true);
+	      //initiate file
+	      var playerqt = Components.classes["@mozilla.org/file/local;1"]
+		      .createInstance(Components.interfaces.nsILocalFile);
+	      playerqt.initWithPath("/Applications/QuickTime Player.app");
+
+	      if(playerqt.exists()){
+		  this.prefs.setBoolPref("playerqt",true);
+		  if(playerpath == ""){
+		      this.prefs.setCharPref("playerpath",playerqt.path);
+		  }
+	      }
 	}else{
-	    this.prefs.setCharPref("playercustom",true);
+	    this.prefs.setBoolPref("playercustom",true);
 	}
     }
 };

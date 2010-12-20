@@ -4,7 +4,7 @@
 <!ENTITY BestPlayer "Best Available">
 <!ENTITY CheckPlugins "Check Plugin Compatibility">
 <!ENTITY CheckPluginsTooltip "Click here to check if you have the appropriate plugin for your operating system.">
-<!ENTITY Clipboard "Copy to clipboard">
+<!ENTITY Clipboard "Copy url to clipboard">
 <!ENTITY Custom "Custom">
 <!ENTITY Download "Download">
 <!ENTITY DownloadDir "Download Destination">
