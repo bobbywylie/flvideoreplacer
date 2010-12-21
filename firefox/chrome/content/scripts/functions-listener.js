@@ -21,7 +21,7 @@ var flvideoreplacerListener = {
 		.getBranch("extensions.flvideoreplacer.");
 
 	//get embedded option
-	var replaceembedded = this.prefs.getBoolPref("replaceother");
+	var replaceembedded = this.prefs.getBoolPref("other");
 	var replaceyt = this.prefs.getBoolPref("youtube");
 	var replacevimeo = this.prefs.getBoolPref("vimeo");
 
@@ -29,6 +29,7 @@ var flvideoreplacerListener = {
 	      && sourceurl.match(/http/) 
 	      && (!sourceurl.match(/youtube/) 
 		&& !sourceurl.match(/vimeo/) 
+		&& !sourceurl.match(/metacafe/)
 		&& !sourceurl.match(/youporn/) 
 		&& !sourceurl.match(/pornhub/)
 		&& !sourceurl.match(/redtube/)
@@ -65,6 +66,7 @@ var flvideoreplacerListener = {
 
 	if((sourceurl.match(/youtube.*watch.*v\=/)  && !sourceurl.match("html5=True")) 
 	      || sourceurl.match(/vimeo\.com\/\d{1,8}/)
+	      || sourceurl.match(/metacafe.com\/watch\//)
 	      || sourceurl.match(/youporn\.com\/watch\//)
 	      || sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
 	      || sourceurl.match(/redtube\.com\/\d{1,8}/)
@@ -143,6 +145,13 @@ var flvideoreplacerListener = {
 		    flvideoreplacerListener.pluginReplacer(aEvent);
 		}
 	    }
+	    if(sourceurl.match(/metacafe.com\/watch\//)){
+		//get Metacafe Prefs
+		replacevideo = this.prefs.getBoolPref("metacafe");
+		if(replacevideo === true){
+		    flvideoreplacerListener.pluginReplacer(aEvent);
+		}
+	    }
 	    if(sourceurl.match(/youporn\.com\/watch\//)){
 		//get Adult Prefs
 		replacevideo = this.prefs.getBoolPref("adult");
@@ -183,6 +192,7 @@ var flvideoreplacerListener = {
 	var mimetype = this.prefs.getCharPref("mimetype");
 	var autoplay = this.prefs.getBoolPref("autoplay");
 	var prefermp4 = this.prefs.getBoolPref("prefermp4");
+	var videoquality = this.prefs.getCharPref("videoquality");
 	var newmimetype = mimetype;
 	//get localization
 	var strbundle = document.getElementById("flvideoreplacerstrings");
@@ -195,7 +205,7 @@ var flvideoreplacerListener = {
 	var sourceurl = doc.location.href;
 	//declare the video should not be replaced
 	var replacevideo = false;
-	var req, xmlsource, videourl, videoid, videoelement, videowidth, videoheight, testelement, pagecontent, newline, aSite, aString, downloader,filemime;
+	var req, xmlsource, videourl, videoid, key, videoelement, videowidth, videoheight, testelement, matchpattern, pagecontent, newline, aSite, aString, downloader,filemime;
 	
 
 	if(sourceurl.match(/youtube.*watch.*v\=/)){
@@ -206,8 +216,6 @@ var flvideoreplacerListener = {
 
 	    if (testelement !== null) {
 
-		var youtubequality = this.prefs.getCharPref("youtubequality");
-
 		//fetch page html content
 		pagecontent = doc.getElementsByTagName("body").item(0).innerHTML;
 		newline = pagecontent.split("\n");
@@ -215,14 +223,14 @@ var flvideoreplacerListener = {
 		for(var i=0; i< newline.length; i++){
 
 		    //match patterns
-		    var matchswfConfig = /var swfConfig/.test(newline[i]);
+		    matchpattern = /var swfConfig/.test(newline[i]);
 
-		    if (matchswfConfig === true) {
+		    if (matchpattern === true) {
 
 			//declare video uality based on user settings and video availability
 			var fmt = "18";
 
-			if (youtubequality === "LOW"){
+			if (videoquality === "LOW"){
 
 			    if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
 				fmt = "5";
@@ -298,7 +306,7 @@ var flvideoreplacerListener = {
 			    }
 			}
 
-			if (youtubequality === "MEDIUM"){
+			if (videoquality === "MEDIUM"){
 
 			    if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
 				fmt = "5";
@@ -388,7 +396,7 @@ var flvideoreplacerListener = {
 			    }
 			}
 
-			if (youtubequality === "HIGH"){
+			if (videoquality === "HIGH"){
 
 			    if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
 				fmt = "5";
@@ -617,6 +625,63 @@ var flvideoreplacerListener = {
 		}
 	    }
 	}
+	if(sourceurl.match(/metacafe.com\/watch\//)){
+
+	    //fetch video ID from url
+	    videoid = sourceurl.replace(/.*watch\//, "").replace(/\/.*/,"");
+	    //declare element to be replaced
+	    videoelement = "FlashWrap";
+	    testelement = doc.getElementById(videoelement);
+
+	    if (testelement !== null) {
+
+		//fetch page html content
+		pagecontent = doc.getElementsByTagName("body").item(0).innerHTML;
+		newline = pagecontent.split("\n");
+
+		for(var i=0; i< newline.length; i++){
+
+		    //match patterns
+		    var matchpattern = /flashVars.*mediaURL/.test(newline[i]);
+
+		    if (matchpattern === true) {
+			videourl = decodeURIComponent(newline[i]).replace(/.*mediaURL":"http/,"http").replace(/",.*/,"").replace(/\\/g,"");
+			key = decodeURIComponent(newline[i]).replace(/.*key":"/,"").replace(/"\}.*/,"");
+			videourl = videourl+"?__gda__="+key;
+			replacevideo = true;
+		    }
+		}
+
+		if(replacevideo === true){
+
+		    //declare player params
+		    videowidth = "615";
+		    videoheight = "400";
+		    videoelement = "FlashWrap";
+		    //declare strings to be used by extension incompatibility check
+		    aSite = "Metacafe";
+		    aString = "metacafe";
+		    //declare auto selected mime type
+		    if(mimetype === "autodetect"){
+			newmimetype = "video/mp4";
+		    }
+		    //declare file mime
+		    if(mimetype === "autodetect"){
+			this.prefs.setCharPref("filemime",newmimetype);
+			filemime = newmimetype;
+		    }else{
+			this.prefs.setCharPref("filemime",mimetype);
+			filemime = mimetype;
+		    }
+		    //access preferences interface
+		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			    .getService(Components.interfaces.nsIPrefService)
+			    .getBranch("extensions.flvideoreplacer.downloadersource.");
+		    //store download path
+		    this.prefs.setCharPref(videoid,videourl);
+		}
+	    }
+	}
 	if(sourceurl.match(/youporn\.com\/watch\//)){
 
 	    //fetch video ID from url
@@ -635,9 +700,9 @@ var flvideoreplacerListener = {
 		for(var i=0; i< newline.length; i++){
 
 		    //match patterns
-		    var addVariable = /addVariable\('file'/.test(newline[i]);
+		    matchpattern = /addVariable\('file'/.test(newline[i]);
 
-		    if (addVariable === true) {
+		    if (matchpattern === true) {
 			xmlsource = newline[i].replace(/.*encodeURIComponent\('/,"").replace(/'.*/,"");
 			replacevideo = true;
 		    }
@@ -724,9 +789,9 @@ var flvideoreplacerListener = {
 		for(var i=0; i< newline.length; i++){
 
 		    //match patterns
-		    var addVariable = /addVariable\("video_url"/.test(newline[i]);
+		    matchpattern = /addVariable\("video_url"/.test(newline[i]);
 
-		    if (addVariable === true) {
+		    if (matchpattern === true) {
 			videourl = newline[i].replace(/.*addVariable\("video_url","/,"").replace(/".*/,"");
 			replacevideo = true;
 		    }
@@ -779,9 +844,9 @@ var flvideoreplacerListener = {
 		for(var i=0; i< newline.length; i++){
 
 		    //match patterns
-		    var FlashVars = /FlashVars.*hashlink=/.test(newline[i]);
+		    var matchpattern = /FlashVars.*hashlink=/.test(newline[i]);
 
-		    if (FlashVars === true) {
+		    if (matchpattern === true) {
 
 			videourl = newline[i].replace(/.*hashlink=/,"").replace(/\&embed.*/g,"");
 			videourl = decodeURIComponent(videourl);
@@ -1449,7 +1514,7 @@ var flvideoreplacerListener = {
 		.getBranch("extensions.flvideoreplacer.");
 
 	//get embedded option
-	var replaceembedded = this.prefs.getBoolPref("replaceother");
+	var replaceembedded = this.prefs.getBoolPref("other");
 	var replaceyt = this.prefs.getBoolPref("youtube");
 	var replacevimeo = this.prefs.getBoolPref("vimeo");
 
@@ -1466,6 +1531,7 @@ var flvideoreplacerListener = {
 	      && sourceurl.match(/http/) 
 	      && (!sourceurl.match(/youtube/) 
 		  && !sourceurl.match(/vimeo/) 
+		  && !sourceurl.match(/metacafe/) 
 		  && !sourceurl.match(/youporn/) 
 		  && !sourceurl.match(/pornhub/)
 		  && !sourceurl.match(/redtube/)
@@ -1575,6 +1641,7 @@ var flvideoreplacerListener = {
 
 	if((sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match("html5=True")) 
 	    || sourceurl.match(/vimeo\.com\/\d{1,8}/) 
+	    || sourceurl.match(/metacafe.com\/watch\//)
 	    || sourceurl.match(/youporn\.com\/watch\//)
 	    || sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
 	    || sourceurl.match(/redtube\.com\/\d{1,8}/)
@@ -1630,6 +1697,12 @@ var flvideoreplacerListener = {
 		    aSite = "vimeo";
 		    //fetch video ID from url
 		    videoid = sourceurl.replace(/.*\//g, "");
+		    downloadurl = this.prefs.getCharPref(videoid);
+		}
+		if(sourceurl.match(/metacafe.com\/watch\//)){
+		    aSite = "metacafe";
+		    //fetch video ID from url
+		    videoid = sourceurl.replace(/.*watch\//, "").replace(/\/.*/,"");
 		    downloadurl = this.prefs.getCharPref(videoid);
 		}
 		if(sourceurl.match(/youporn\.com\/watch\//)){

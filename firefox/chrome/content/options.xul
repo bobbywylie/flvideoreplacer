@@ -13,18 +13,19 @@
 
     <prefpane id="flvideoreplacer-pref-pane" flex="1">
 	<preferences>
-	    <preference id="pref_autoplay" name="extensions.flvideoreplacer.autoplay" type="bool"/>
-	    <preference id="pref_mimetype" name="extensions.flvideoreplacer.mimetype" type="string"/>
 	    <preference id="pref_youtube" name="extensions.flvideoreplacer.youtube" type="bool"/>
-	    <preference id="pref_youtubequality" name="extensions.flvideoreplacer.youtubequality" type="string"/>
 	    <preference id="pref_vimeo" name="extensions.flvideoreplacer.vimeo" type="bool"/>
+	    <preference id="pref_metacafe" name="extensions.flvideoreplacer.metacafe" type="bool"/>
+	    <preference id="pref_adult" name="extensions.flvideoreplacer.adult" type="bool"/>
+	    <preference id="pref_other" name="extensions.flvideoreplacer.other" type="bool"/>
 	    <preference id="pref_method" name="extensions.flvideoreplacer.method" type="string"/>
+	    <preference id="pref_mimetype" name="extensions.flvideoreplacer.mimetype" type="string"/>
+	    <preference id="pref_videoquality" name="extensions.flvideoreplacer.videoquality" type="string"/>
 	    <preference id="pref_preferwebm" name="extensions.flvideoreplacer.preferwebm" type="bool"/>
 	    <preference id="pref_prefermp4" name="extensions.flvideoreplacer.prefermp4" type="bool"/>
+	    <preference id="pref_autoplay" name="extensions.flvideoreplacer.autoplay" type="bool"/>
 	    <preference id="pref_playerpath" name="extensions.flvideoreplacer.playerpath" type="string"/> 
-	    <preference id="pref_downdir" name="extensions.flvideoreplacer.downdir" type="string"/> 
-	    <preference id="pref_replaceother" name="extensions.flvideoreplacer.replaceother" type="bool"/>
-	    <preference id="pref_adult" name="extensions.flvideoreplacer.adult" type="bool"/>
+	    <preference id="pref_downdir" name="extensions.flvideoreplacer.downdir" type="string"/>
 	</preferences>
 	<vbox style="width:370px;height:350px;overflow:auto;">
 	    <vbox>
@@ -142,6 +143,8 @@
 		<checkbox label="YouTube" preference="pref_youtube" id="youtube" size="30"/>
 		<spacer width="10" flex="0"/>
 		<checkbox label="Vimeo" preference="pref_vimeo" id="vimeo" size="30"/>
+		<spacer width="10" flex="0"/>
+		<checkbox label="Metacafe" preference="pref_metacafe" id="metacafe" size="30"/>
 		<spacer width="10" flex="1"/>
 	    </hbox>
 	    <spacer height="10" flex="0"/>
@@ -150,13 +153,12 @@
 		<spacer width="10" flex="1"/>
 	    </hbox>
 	    <spacer height="10" flex="0"/>
-	    <checkbox label="&EmbeddedVideos;" preference="pref_replaceother" id="replaceother" size="30"/>
+	    <checkbox label="&EmbeddedVideos;" preference="pref_other" id="other" size="30"/>
 	    <spacer height="10" flex="0"/>
 	    <caption label="&Quality;" /> 
 	    <spacer height="10" flex="0"/>
 	    <hbox>
-		<label value="YouTube" /> 
-		<menulist preference="pref_youtubequality" id="youtubequality" width="110">
+		<menulist preference="pref_videoquality" id="videoquality" width="110">
 		    <menupopup>
 			<menuitem label="&LOW;" value="LOW"/>
 			<menuitem label="&MEDIUM;" value="MEDIUM" />
