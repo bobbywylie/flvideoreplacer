@@ -9,6 +9,7 @@
 <!ENTITY Download "Download">
 <!ENTITY DownloadDir "Destino do Download">
 <!ENTITY Embedded "Inserido">
+<!ENTITY EmbeddedVideos "Criar menu para vídeos inseridos em outros sites">
 <!ENTITY FlashVideoReplacerPreferences "Preferências FlashVideoReplacer">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
 <!ENTITY ForcePluginMimeType "Plugin/MimeType">
@@ -20,6 +21,7 @@
 <!ENTITY NewTab "Nova Aba">
 <!ENTITY NewWin "Janela">
 <!ENTITY Options "Opções">
+<!ENTITY OpenEmbedded "Abrir video inserido nesta página">
 <!ENTITY Preferences "Preferências">
 <!ENTITY PreferWebM "Preferir WebM quando disponível (não requer plugin)">
 <!ENTITY PreferMP4 "Preferir mp4 sobre flv">

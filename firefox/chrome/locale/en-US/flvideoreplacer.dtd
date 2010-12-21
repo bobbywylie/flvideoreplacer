@@ -9,6 +9,7 @@
 <!ENTITY Download "Download">
 <!ENTITY DownloadDir "Download Destination">
 <!ENTITY Embedded "Embedded">
+<!ENTITY EmbeddedVideos "Create menu for videos embedded on other sites">
 <!ENTITY FlashVideoReplacerPreferences "FlashVideoReplacer Preferences">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
 <!ENTITY ForcePluginMimeType "Plugin/MimeType">
@@ -20,6 +21,7 @@
 <!ENTITY NewTab "New Tab">
 <!ENTITY NewWin "Window">
 <!ENTITY Options "Options">
+<!ENTITY OpenEmbedded "Open video embedded on this page">
 <!ENTITY Preferences "Preferences">
 <!ENTITY PreferWebM "Prefer WebM when available (no plugin required)">
 <!ENTITY PreferMP4 "Prefer mp4 over flv">

@@ -128,6 +128,10 @@ var flvideoreplacerOptions = {
 
     toggleOptions: function() {
 
+	//get osString
+	var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+		.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
+
 	//access preferences interface
 	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 		.getService(Components.interfaces.nsIPrefService)
@@ -143,21 +147,19 @@ var flvideoreplacerOptions = {
 	var playerbsp = this.prefs.getBoolPref("playerbsp");
 	var playerwmp = this.prefs.getBoolPref("playerwmp");
 
-	//get osString
-	var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
-		.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
-
 	//get localization
 	var strbundle = document.getElementById("flvideoreplacerstrings");
 	var messagetitle = strbundle.getString("flvideoreplacermessage");
 	var alerttitle = strbundle.getString("flvideoreplaceralert");
-	var message, bestplayer;
+	var message, bestplayer, webm;
 
+	//get elements values
 	var standalone = document.getElementById('standalone').value;
 	var replacemethod = document.getElementById('method').value;
 
 	if(osString.match(/Windows/)){
 
+	    //set playerpath
 	    if(standalone === "playerqt"){
 		this.prefs.setCharPref("playerpath","C:\\Program Files\\QuickTime\\QuickTimePlayer.exe");
 	    }
@@ -190,6 +192,7 @@ var flvideoreplacerOptions = {
 
 	}else if(osString.match(/Linux/)){
 
+	    //set playerpath
 	    if(standalone === "playertotem"){
 		this.prefs.setCharPref("playerpath","/usr/bin/totem");
 	    }
@@ -227,13 +230,14 @@ var flvideoreplacerOptions = {
 
 	}else if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 
+	    //set playerpath
 	    if(standalone === "playerqt"){
-		this.prefs.setCharPref("playerpath","/Applications/QuickTime\ Player.app/Contents/MacOS/QuickTime\ Player");
+		this.prefs.setCharPref("playerpath","/Applications/QuickTime Player.app/Contents/MacOS/QuickTime Player");
 	    }
 	    if(standalone === "playerbest"){
 
 		if(playerqt === true){
-		    this.prefs.setCharPref("playerpath","/Applications/QuickTime\ Player.app/Contents/MacOS/QuickTime\ Player");
+		    this.prefs.setCharPref("playerpath","/Applications/QuickTime Player.app/Contents/MacOS/QuickTime Player");
 		}else{
 		    bestplayer = "QuickTime Player with Perian";
 		    message = strbundle.getFormattedString("nobestplayer", [ bestplayer ]);
@@ -247,6 +251,7 @@ var flvideoreplacerOptions = {
 
 	if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 
+	    //toggle elements visibility
 	    if(replacemethod === "prompt"){
 
 		document.getElementById("selectplugin").hidden=false;
@@ -287,9 +292,9 @@ var flvideoreplacerOptions = {
 
 		try{
 		    //check webm status
-		    var webm = this.prefs.getBoolPref("webm.enabled");
+		    webm = this.prefs.getBoolPref("webm.enabled");
 		}catch(e){
-		    var webm = false;
+		    webm = false;
 		}
 
 		if(webm === true){
@@ -305,8 +310,10 @@ var flvideoreplacerOptions = {
 		    this.prefs.setBoolPref("preferwebm",false);
 		}
 	    }
+
 	}else{
 
+	    //toggle elements visibility
 	    if(replacemethod === "prompt"){
 
 		document.getElementById("selectplugin").hidden=false;
@@ -352,9 +359,9 @@ var flvideoreplacerOptions = {
 
 		try{
 		    //check webm status
-		    var webm = this.prefs.getBoolPref("webm.enabled");
+		    webm = this.prefs.getBoolPref("webm.enabled");
 		}catch(e){
-		    var webm = false;
+		    webm = false;
 		}
 
 		if(webm === true){
@@ -377,14 +384,14 @@ var flvideoreplacerOptions = {
 
     resetFile : function(aField) {//reset prefs file paths
 
+	//get osString
+	var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+		.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
+
 	//access preferences interface
 	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 		.getService(Components.interfaces.nsIPrefService)
 		.getBranch("extensions.flvideoreplacer.");
-
-	//get osString
-	var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
-		.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
 
 	if(aField === "standalone"){
 	    if(osString.match(/Windows/)){
@@ -405,7 +412,7 @@ var flvideoreplacerOptions = {
 	}
 	if(aField === "downdir"){
 
-	    //declare temporary selections file
+	    //set default download dir
 	    var dir = Components.classes["@mozilla.org/file/directory_service;1"]
 		    .getService(Components.interfaces.nsIProperties)
 		    .get("Desk", Components.interfaces.nsIFile);
@@ -423,8 +430,7 @@ var flvideoreplacerOptions = {
 
 	//open file picker
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;
-	var fp = Components.classes["@mozilla.org/filepicker;1"]
-		.createInstance(nsIFilePicker);
+	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 	fp.init(window, aText, nsIFilePicker.modeOpen);
 	var rv = fp.show();
 	if (rv === nsIFilePicker.returnOK) {
@@ -444,8 +450,7 @@ var flvideoreplacerOptions = {
 
 	  //open folder picker
 	  var nsIFilePicker = Components.interfaces.nsIFilePicker;
-	  var fp = Components.classes["@mozilla.org/filepicker;1"]
-		  .createInstance(nsIFilePicker);
+	  var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 	  fp.init(window, aText, nsIFilePicker.modeGetFolder);
 	  var rv = fp.show();
 	  if (rv === nsIFilePicker.returnOK) {
@@ -473,13 +478,6 @@ var flvideoreplacerOptions = {
 	var alerttitle = strbundle.getString("flvideoreplaceralert");
 	var message, prompts;
 
-	//get plugin info
-	var pluginvmp4 = this.prefs.getBoolPref("pluginvmp4");
-	var pluginxflv = this.prefs.getBoolPref("pluginxflv");
-	var pluginaqt = this.prefs.getBoolPref("pluginaqt");
-	var pluginawmp = this.prefs.getBoolPref("pluginawmp");
-	var pluginstatus, bestplugin = false, forcedplugin = false, pluginavaliable;
-
 	//get players info
 	var playertotem = this.prefs.getBoolPref("playertotem");
 	var playergmplayer = this.prefs.getBoolPref("playergmplayer");
@@ -489,6 +487,15 @@ var flvideoreplacerOptions = {
 	var playerqt = this.prefs.getBoolPref("playerqt");
 	var playerbsp = this.prefs.getBoolPref("playerbsp");
 	var playerwmp = this.prefs.getBoolPref("playerwmp");
+
+	//get plugin info
+	var pluginvmp4 = this.prefs.getBoolPref("pluginvmp4");
+	var pluginxflv = this.prefs.getBoolPref("pluginxflv");
+	var pluginaqt = this.prefs.getBoolPref("pluginaqt");
+	var pluginawmp = this.prefs.getBoolPref("pluginawmp");
+
+	//declare variables
+	var pluginstatus, bestplugin = false, forcedplugin = false, pluginavaliable, istream;
 
 	if(pluginvmp4 === true && pluginxflv === true){
 	    pluginstatus = "full";
@@ -550,9 +557,8 @@ var flvideoreplacerOptions = {
 	    if(osString.match(/Linux/)){
 
 		//read file
-		var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].
-			createInstance(Components.interfaces.nsIFileInputStream);
-		istream.init(pluginreg, 0x01, 0444, 0);
+		istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+		istream.init(pluginreg, 0x01, 444, 0);
 		istream.QueryInterface(Components.interfaces.nsILineInputStream);
 
 		var line = {}, lines = [], hasmore;
@@ -560,7 +566,7 @@ var flvideoreplacerOptions = {
 		    hasmore = istream.readLine(line);
 		    lines.push(line.value);
 
-		    //check plugin by mime-type
+		    //check plugin by name
 		    pluginavaliable = /totem/.test(line.value);
 		    if (pluginavaliable === true) {
 			forcedplugin = true;
@@ -568,7 +574,7 @@ var flvideoreplacerOptions = {
 		} while(hasmore);
 		istream.close();
 
-		if(pluginstatus === "application/x-flv" && forcedplugin == true){
+		if(pluginstatus === "application/x-flv" && forcedplugin === true){
 		    message = strbundle.getFormattedString("forcedplugin", [ "application/x-mplayer2" ]);
 		    this.prefs.setCharPref("mimetype","application/x-mplayer2");
 		}else{
@@ -597,9 +603,8 @@ var flvideoreplacerOptions = {
 	    if(osString.match(/Linux/)){
 
 		//read file
-		var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].
-			createInstance(Components.interfaces.nsIFileInputStream);
-		istream.init(pluginreg, 0x01, 0444, 0);
+		istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+		istream.init(pluginreg, 0x01, 444, 0);
 		istream.QueryInterface(Components.interfaces.nsILineInputStream);
 
 		var line = {}, lines = [], hasmore;
@@ -607,7 +612,7 @@ var flvideoreplacerOptions = {
 		    hasmore = istream.readLine(line);
 		    lines.push(line.value);
 
-		    //check plugin by mime-type
+		    //check plugin by name
 		    pluginavaliable = /gecko/.test(line.value);
 		    if (pluginavaliable === true) {
 			bestplugin = true;
@@ -642,41 +647,35 @@ var flvideoreplacerOptions = {
 
 	if(pluginstatus !== "full"){
 
-	    var loc = "about:plugins";
+	    var loc, wm, wmed, win, content;
+
+	    loc = "about:plugins";
 
 	    //open in new tab
-	    var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
-		    getService();
-	    var wmed = wm.QueryInterface(Components.interfaces.nsIWindowMediator);
-	    var win = wmed.getMostRecentWindow("navigator:browser");
+	    wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
+	    wmed = wm.QueryInterface(Components.interfaces.nsIWindowMediator);
+	    win = wmed.getMostRecentWindow("navigator:browser");
 
 	    if ( !win ) {
-		win = window.openDialog("chrome://browser/content/browser.xul",
-					"_blank",
-					"chrome,all,dialog=no",
-					loc, null, null);
+		win = window.openDialog("chrome://browser/content/browser.xul","_blank","chrome,all,dialog=no",loc, null, null);
 	    }
 	    else {
-		var content = win.document.getElementById("content");
+		content = win.document.getElementById("content");
 		content.selectedTab = content.addTab(loc);
 	    }
 
-	    var loc = "http://www.webgapps.org/addons/flashvideoreplacer";
+	    loc = "http://www.webgapps.org/addons/flashvideoreplacer";
 
 	    //open in new tab
-	    var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
-		    getService();
-	    var wmed = wm.QueryInterface(Components.interfaces.nsIWindowMediator);
-	    var win = wmed.getMostRecentWindow("navigator:browser");
+	    wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
+	    wmed = wm.QueryInterface(Components.interfaces.nsIWindowMediator);
+	    win = wmed.getMostRecentWindow("navigator:browser");
 
 	    if ( !win ) {
-		win = window.openDialog("chrome://browser/content/browser.xul",
-					"_blank",
-					"chrome,all,dialog=no",
-					loc, null, null);
+		win = window.openDialog("chrome://browser/content/browser.xul","_blank","chrome,all,dialog=no",loc, null, null);
 	    }
 	    else {
-		var content = win.document.getElementById("content");
+		content = win.document.getElementById("content");
 		content.selectedTab = content.addTab(loc);
 	    }
 	}

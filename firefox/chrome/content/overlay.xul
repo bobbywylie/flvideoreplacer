@@ -22,20 +22,26 @@
     <popup id="contentAreaContextMenu">
 	<menu id="flvideoreplacer-contextmenu" label="&FlashVideoReplacerTitle;" class="menu-iconic" image="chrome://flvideoreplacer/skin/toolbar-small.png" onpopupshowing="flvideoreplacerListener.showHideMenus();">
 	    <menupopup>
-		<menu id="flvideoreplacer-copy" label="&Clipboard;" class="menu-iconic" image="chrome://flvideoreplacer/skin/download16.png" position="end_after">
+		<menu id="flvideoreplacer-embedded" label="&OpenEmbedded;" position="end_after">
+		    <menupopup id="flvideoreplacer-embedded-select">
+			<vbox id="flvideoreplacer-embedded-select-vbox">
+			</vbox>
+		    </menupopup>
+		</menu>
+		<menu id="flvideoreplacer-copy" label="&Clipboard;" position="end_after">
 		    <menupopup id="flvideoreplacer-copy-select">
 			<vbox id="flvideoreplacer-copy-select-vbox">
 			</vbox>
 		    </menupopup>
 		</menu>
-		<menu id="flvideoreplacer-download" label="&Download;" class="menu-iconic" image="chrome://flvideoreplacer/skin/download16.png" position="end_after">
+		<menu id="flvideoreplacer-download" label="&Download;" position="end_after">
 		    <menupopup id="flvideoreplacer-download-select">
 			<vbox id="flvideoreplacer-download-select-vbox">
 			</vbox>
 		    </menupopup>
 		</menu>
 		<menuseparator id="flvideoreplacer-prefs-separator"/>
-		<menuitem id="flvideoreplacer-preferences" label="&Preferences;" class="menuitem-iconic" image="chrome://flvideoreplacer/skin/settings16.png" oncommand="window.openDialog('chrome://flvideoreplacer/content/options.xul', 'flvideoreplacer-prefs', 'chrome,centerscreen,alwaysRaised');"/>
+		<menuitem id="flvideoreplacer-preferences" label="&Preferences;" oncommand="window.openDialog('chrome://flvideoreplacer/content/options.xul', 'flvideoreplacer-prefs', 'chrome,centerscreen,alwaysRaised');"/>
 	    </menupopup>
 	</menu>
     </popup>

@@ -15,6 +15,46 @@ var flvideoreplacerListener = {
 	//declare page url
 	var sourceurl = doc.location.href;
 
+	//access preferences interface
+	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+		.getService(Components.interfaces.nsIPrefService)
+		.getBranch("extensions.flvideoreplacer.");
+
+	//get embedded option
+	var replaceembedded = this.prefs.getBoolPref("replaceother");
+	var replaceyt = this.prefs.getBoolPref("youtube");
+	var replacevimeo = this.prefs.getBoolPref("vimeo");
+
+	if(replaceembedded === true && (replaceyt === true || replacevimeo === true) && sourceurl.match(/http/) && (!sourceurl.match(/youtube/) && !sourceurl.match(/vimeo/))){
+
+	    try{
+		//fetch page html content
+		var pagecontent = doc.getElementsByTagName("body").item(0).innerHTML;
+		var newline = pagecontent.split("\n");
+
+		for(var i=0; i< newline.length; i++){
+
+		    //match patterns
+		    var matchyoutoubeembedold = /object.*param.*name="movie".*value="http:\/\/www.youtube.com\/v\//.test(newline[i]);
+		    var matchyoutoubeembed = /.*iframe.*class="youtube-player".*src="http:\/\/www.youtube.com\/embed\//.test(newline[i]);
+		    var matchvimeoembed = /iframe src="http:\/\/player.vimeo.com\/video\//.test(newline[i]);
+		    var matchvimeoembedold = /object.*param.*name="movie".*value="http:\/\/vimeo.com\/moogaloop.swf\?clip_id=/.test(newline[i]);
+
+		    if (matchyoutoubeembedold === true || matchyoutoubeembed === true || matchvimeoembed === true || matchvimeoembedold === true) {
+
+			//access preferences interface
+			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+				.getService(Components.interfaces.nsIPrefService)
+				.getBranch("extensions.flvideoreplacer.embedded.");
+
+			this.prefs.setCharPref(sourceurl,pagecontent);
+		    }
+		}
+	    }catch(e){
+		//do nothing
+	    }
+	}
+
 	if((sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match("html5=True")) || sourceurl.match(/vimeo.com\/\d{1,8}/)){
 
 	    //access preferences interface
@@ -553,8 +593,8 @@ var flvideoreplacerListener = {
 
 	//access preferences interface
 	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-	    .getService(Components.interfaces.nsIPrefService)
-	    .getBranch("extensions.");
+		.getService(Components.interfaces.nsIPrefService)
+		.getBranch("extensions.");
 
 	var enableditems;
 
@@ -661,6 +701,8 @@ var flvideoreplacerListener = {
 
 	if(replacevideo === true){
 
+	    //declare variables
+	    var params, videoplayer,flvideoreplacer,childdivs,videodiv;
 
 	    //access preferences interface
 	    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -670,7 +712,7 @@ var flvideoreplacerListener = {
 	    if(replacemethod === "prompt"){
 
 		if(sourceurl.match(/youtube.*watch.*v\=/)){
-		    var params = {inn:{psite:"youtube",pmethod:"embedded",pfmt:fmt}, out:null};
+		    params = {inn:{psite:"youtube",pmethod:"embedded",pfmt:fmt}, out:null};
 		    window.openDialog("chrome://flvideoreplacer/content/prompt.xul", "",
 		    "chrome, dialog, modal, resizable=yes", params).focus();
 		    if (params.out) {
@@ -681,7 +723,7 @@ var flvideoreplacerListener = {
 
 		if(sourceurl.match(/vimeo.com\/\d{1,8}/)){
 
-		    var params = {inn:{psite:"vimeo",pmethod:"embedded",pfmt:"0"}, out:null};
+		    params = {inn:{psite:"vimeo",pmethod:"embedded",pfmt:"0"}, out:null};
 		    window.openDialog("chrome://flvideoreplacer/content/prompt.xul", "",
 		    "chrome, dialog, modal, resizable=yes", params).focus();
 		    if (params.out) {
@@ -690,8 +732,6 @@ var flvideoreplacerListener = {
 		    }
 		}
 	    }
-
-	    var videoplayer,flvideoreplacer,childdivs,videodiv;
 
 	    if(replacemethod === "embedded"){
 
@@ -890,6 +930,8 @@ var flvideoreplacerListener = {
 
 		//set videourl pref
 		this.prefs.setCharPref("videourl",videourl);
+		//declare variables
+		var player, process;
 
 		//declare element to be replaced
 		videoplayer = doc.getElementById(videoelement);
@@ -921,12 +963,10 @@ var flvideoreplacerListener = {
 			    if(playerpath !== "" && !playerpath.match(/\*\*\*/)){
 
 				//initiate player
-				var player = Components.classes["@mozilla.org/file/local;1"]
-					.createInstance(Components.interfaces.nsILocalFile);
+				player = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 				player.initWithPath(playerpath);
 				if (player.exists()) {//match if player exists and launch it
-				    var process = Components.classes['@mozilla.org/process/util;1']
-					.createInstance(Components.interfaces.nsIProcess);
+				    process = Components.classes['@mozilla.org/process/util;1'].createInstance(Components.interfaces.nsIProcess);
 				    process.init(player);
 				    var arguments = [""+videourl+""];
 				    process.run(false, arguments, arguments.length);
@@ -943,12 +983,10 @@ var flvideoreplacerListener = {
 			    if(playerpath !== "" && !playerpath.match(/\*\*\*/)){
 
 				//initiate player
-				var player = Components.classes["@mozilla.org/file/local;1"]
-					.createInstance(Components.interfaces.nsILocalFile);
+				player = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 				player.initWithPath(playerpath);
 				if (player.exists()) {//match if player exists and launch it
-				    var process = Components.classes['@mozilla.org/process/util;1']
-					.createInstance(Components.interfaces.nsIProcess);
+				    process = Components.classes['@mozilla.org/process/util;1'].createInstance(Components.interfaces.nsIProcess);
 				    process.init(player);
 				    var arguments = [""+videourl+""];
 				    process.run(false, arguments, arguments.length);
@@ -992,7 +1030,7 @@ var flvideoreplacerListener = {
 			messagetitle = strbundle.getString("flvideoreplacermessage");
 			//alert user
 			alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-			    .getService(Components.interfaces.nsIAlertsService);
+				.getService(Components.interfaces.nsIAlertsService);
 			alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
 			messagetitle, message,
 			false, "", null);
@@ -1070,7 +1108,7 @@ var flvideoreplacerListener = {
 	    if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
 		//alert user
 		var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-		    .getService(Components.interfaces.nsIAlertsService);
+			.getService(Components.interfaces.nsIAlertsService);
 		alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
 		messagetitle, message,
 		false, "", null);
@@ -1122,19 +1160,16 @@ var flvideoreplacerListener = {
 	    file.initWithPath(filepath);
 
 	    //download manager
-	    var dm = Components.classes["@mozilla.org/download-manager;1"].
-		    createInstance(Components.interfaces.nsIDownloadManager);
+	    var dm = Components.classes["@mozilla.org/download-manager;1"].createInstance(Components.interfaces.nsIDownloadManager);
 
 	    // Create URI from which we want to download file
-	    var ios = Components.classes["@mozilla.org/network/io-service;1"].
-		getService(Components.interfaces.nsIIOService);
+	    var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 	    var uri1 = ios.newURI(sourceurl, null, null);
 	    var uri2 = ios.newFileURI(file);
 
 	    //Download observer
 	    var nsIWBP = Components.interfaces.nsIWebBrowserPersist;
-	    var pers = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].
-		createInstance(nsIWBP);
+	    var pers = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].createInstance(nsIWBP);
 	    pers.persistFlags = nsIWBP.PERSIST_FLAGS_REPLACE_EXISTING_FILES |
 		nsIWBP.PERSIST_FLAGS_BYPASS_CACHE |
 		nsIWBP.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
@@ -1147,8 +1182,7 @@ var flvideoreplacerListener = {
 	    pers.saveURI(dl.source, null, null, null, null, dl.targetFile);
 
 	    //Show download manager
-	    var dm_ui = Components.classes["@mozilla.org/download-manager-ui;1"].
-		createInstance(Components.interfaces.nsIDownloadManagerUI);
+	    var dm_ui = Components.classes["@mozilla.org/download-manager-ui;1"].createInstance(Components.interfaces.nsIDownloadManagerUI);
 	    dm_ui.show(window, dl.id, Components.interfaces.nsIDownloadManagerUI.REASON_NEW_DOWNLOAD);
 	}
     },
@@ -1171,14 +1205,135 @@ var flvideoreplacerListener = {
 	flvideoreplacerListener.docopyToClipboard(sourceurl);
     },
 
+    openLink: function (aLink) {//show and hide context menus
+	gBrowser.addTab(aLink);
+    },
+
     showHideMenus: function () {//show and hide context menus
 
+	//get source url
 	var sourceurl = gURLBar.value;
-	var videoid, aSite, vidfilename, downloadurl=null, downloadurl5=null, downloadurl18=null, downloadurl34=null, downloadurl35=null, downloadurl22=null, downloadurl37=null, downloadurl38=null;
+
+	//access preferences interface
+	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+		.getService(Components.interfaces.nsIPrefService)
+		.getBranch("extensions.flvideoreplacer.");
+
+	//get embedded option
+	var replaceembedded = this.prefs.getBoolPref("replaceother");
+	var replaceyt = this.prefs.getBoolPref("youtube");
+	var replacevimeo = this.prefs.getBoolPref("vimeo");
+
 	//get localization
 	var strbundle = document.getElementById("flvideoreplacerstrings");
 	var original = strbundle.getString("original");
 	var standard = strbundle.getString("standard");
+
+	//declare variables
+	var pagecontent,videoid, aSite, vidfilename, downloadurl=null, downloadurl5=null, downloadurl18=null, downloadurl34=null, downloadurl35=null, downloadurl22=null, downloadurl37=null, downloadurl38=null;
+
+	if(replaceembedded === true && (replaceyt === true || replacevimeo === true) && sourceurl.match(/http/) && (!sourceurl.match(/youtube/) && !sourceurl.match(/vimeo/))){
+
+	    try{
+
+		//access preferences interface
+		this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch("extensions.flvideoreplacer.embedded.");
+
+		pagecontent = this.prefs.getCharPref(sourceurl);
+
+	    }catch(e){
+		pagecontent = null;
+		document.getElementById("flvideoreplacer-embedded").hidden = true;
+	    }
+
+	    if(pagecontent !== null){
+
+		//unhide menu
+		document.getElementById("flvideoreplacer-embedded").hidden = false;
+
+		//remove old menupopup elements
+		var embeddedmenupopup = document.getElementById("flvideoreplacer-embedded-select");
+		var embeddedmenupopupvbox = document.getElementById("flvideoreplacer-embedded-select-vbox");
+		try{
+		    embeddedmenupopup.removeChild(embeddedmenupopup.firstChild);
+		}catch(e){
+		    //do nothing
+		}
+		//append new vbox
+		var embeddednewvbox = document.createElement("vbox");
+		embeddednewvbox.setAttribute("id","flvideoreplacer-embedded-select-vbox");
+		embeddedmenupopup.appendChild(embeddednewvbox);
+		var embeddedmenuitem;
+
+		try{
+		    var newline = pagecontent.split("\n");
+		    var newembedid;
+
+		    for(var i=0; i< newline.length; i++){
+
+			//match patterns
+			var matchyoutoubeembed = /.*iframe.*class="youtube-player".*src="http:\/\/www.youtube.com\/embed\//.test(newline[i]);
+			var matchyoutoubeembedold = /object.*param.*name="movie".*value="http:\/\/www.youtube.com\/v\//.test(newline[i]);
+			var matchvimeoembed = /iframe src="http:\/\/player.vimeo.com\/video\//.test(newline[i]);
+			var matchvimeoembedold = /object.*param.*name="movie".*value="http:\/\/vimeo.com\/moogaloop.swf\?clip_id=/.test(newline[i]);
+
+			if (matchyoutoubeembedold === true) {
+
+			    newembedid = newline[i].replace(/.*http:\/\/www.youtube.com\/v\//,"").replace(/\?.*/,"").replace(/\&.*/,"");
+			    newlink = "http://www.youtube.com/watch?v="+newembedid;
+
+			    //append new menuitem
+			    embeddedmenuitem = document.createElement("menuitem");
+			    embeddedmenuitem.setAttribute("label",newlink);
+			    embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
+			    embeddednewvbox.appendChild(embeddedmenuitem);
+			}
+
+			if (matchyoutoubeembed === true) {
+
+			    newembedid = newline[i].replace(/.*http:\/\/www.youtube.com\/embed\//,"").replace(/".*/,"");
+			    newlink = "http://www.youtube.com/watch?v="+newembedid;
+
+			    //append new menuitem
+			    embeddedmenuitem = document.createElement("menuitem");
+			    embeddedmenuitem.setAttribute("label",newlink);
+			    embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
+			    embeddednewvbox.appendChild(embeddedmenuitem);
+			}
+
+			if (matchvimeoembed === true) {
+
+			    newembedid = newline[i].replace(/.*http:\/\/player.vimeo.com\/video\//,"").replace(/\?.*/,"").replace(/\&.*/,"");
+			    newlink = "http://vimeo.com/"+newembedid;
+
+			    //append new menuitem
+			    embeddedmenuitem = document.createElement("menuitem");
+			    embeddedmenuitem.setAttribute("label",newlink);
+			    embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
+			    embeddednewvbox.appendChild(embeddedmenuitem);
+			}
+
+			if (matchvimeoembedold === true) {
+
+			    newembedid = newline[i].replace(/.*http:\/\/vimeo.com\/moogaloop.swf\?clip_id=/,"").replace(/\?.*/,"").replace(/\&.*/,"");
+			    newlink = "http://vimeo.com/"+newembedid;
+
+			    //append new menuitem
+			    embeddedmenuitem = document.createElement("menuitem");
+			    embeddedmenuitem.setAttribute("label",newlink);
+			    embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
+			    embeddednewvbox.appendChild(embeddedmenuitem);
+			}
+		    }
+		}catch(e){
+		    document.getElementById("flvideoreplacer-embedded").hidden = true;
+		}
+	    }
+	}else{
+	    document.getElementById("flvideoreplacer-embedded").hidden = true;
+	}
 
 	if((sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match("html5=True")) || (sourceurl.match(/vimeo.com\/\d{1,8}/))){//match supported sites
 
@@ -1390,12 +1545,12 @@ var flvideoreplacerListener = {
 		.getBranch("extensions.flvideoreplacer.");
 
 	this.prefs.deleteBranch("downloadersource");
+	this.prefs.deleteBranch("embedded");
     },
 
     docopyToClipboard: function (aText) {
 
-	const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
-	getService(Components.interfaces.nsIClipboardHelper);
+	const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);
 	gClipboardHelper.copyString(aText);
     }
 };
