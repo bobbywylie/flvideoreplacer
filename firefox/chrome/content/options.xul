@@ -24,8 +24,9 @@
 	    <preference id="pref_playerpath" name="extensions.flvideoreplacer.playerpath" type="string"/> 
 	    <preference id="pref_downdir" name="extensions.flvideoreplacer.downdir" type="string"/> 
 	    <preference id="pref_replaceother" name="extensions.flvideoreplacer.replaceother" type="bool"/>
+	    <preference id="pref_adult" name="extensions.flvideoreplacer.adult" type="bool"/>
 	</preferences>
-	<vbox style="width:370;height:350px;overflow:auto;">
+	<vbox style="width:370px;height:350px;overflow:auto;">
 	    <vbox>
 		<spacer height="10" flex="0"/>
 		<hbox>
@@ -141,6 +142,11 @@
 		<checkbox label="YouTube" preference="pref_youtube" id="youtube" size="30"/>
 		<spacer width="10" flex="0"/>
 		<checkbox label="Vimeo" preference="pref_vimeo" id="vimeo" size="30"/>
+		<spacer width="10" flex="1"/>
+	    </hbox>
+	    <spacer height="10" flex="0"/>
+	    <hbox>
+		<checkbox label="&Adult;" preference="pref_adult" id="adult" size="30"/>
 		<spacer width="10" flex="1"/>
 	    </hbox>
 	    <spacer height="10" flex="0"/>

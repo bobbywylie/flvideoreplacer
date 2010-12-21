@@ -11,6 +11,7 @@ var flvideoreplacerPlayer = {
 	var loc = this.prefs.getCharPref("videourl");
 	//store video file path in player
 	document.getElementById('flvideoreplacervideo').setAttribute('src', loc);
+	this.prefs.setCharPref("videourl","");
     }
 };
 window.addEventListener("load",function(){ flvideoreplacerPlayer.startPlayer(); },true);

@@ -44,7 +44,7 @@ var flvideoreplacerFirstrun = {
 	//firstrun, update and current declarations
 	var ver = -1, firstrun = true;
 	var current = aVersion;
-	var navbar, newset, dir;
+	var dir;
 
 	try{//check for existing preferences
 	    ver = this.prefs.getCharPref("version");
@@ -56,8 +56,8 @@ var flvideoreplacerFirstrun = {
 	    if (firstrun){//actions specific for first installation
 
 		//add toolbar button
-		navbar = document.getElementById("nav-bar");
-		newset = navbar.currentSet + ",flvideoreplacer-toolbar-button";
+		var navbar = document.getElementById("nav-bar");
+		var newset = navbar.currentSet + ",flvideoreplacer-toolbar-button";
 		navbar.currentSet = newset;
 		navbar.setAttribute("currentset", newset );
 		document.persist("nav-bar", "currentset");
@@ -75,8 +75,8 @@ var flvideoreplacerFirstrun = {
 		if(ver !== "2.0.0"){
 
 		    //add toolbar button
-		    navbar = document.getElementById("nav-bar");
-		    newset = navbar.currentSet + ",flvideoreplacer-toolbar-button";
+		    var navbar = document.getElementById("nav-bar");
+		    var newset = navbar.currentSet + ",flvideoreplacer-toolbar-button";
 		    navbar.currentSet = newset;
 		    navbar.setAttribute("currentset", newset );
 		    document.persist("nav-bar", "currentset");
@@ -86,7 +86,7 @@ var flvideoreplacerFirstrun = {
 		    this.prefs.setCharPref("version",current);
 
 		    //set default dir pref
-		    dir = this.prefs.getCharPref("downdir");
+		    var dir = this.prefs.getCharPref("downdir");
 		    if(dir === ""){
 			this.prefs.setCharPref("downdir",defaultdir.path);
 		    }

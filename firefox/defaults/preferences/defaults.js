@@ -1,6 +1,7 @@
 pref("extensions.flvideoreplacer.youtube", true);
 pref("extensions.flvideoreplacer.youtubequality", "HIGH");
 pref("extensions.flvideoreplacer.vimeo", true);
+pref("extensions.flvideoreplacer.adult", true);
 pref("extensions.flvideoreplacer.replaceother", false);
 
 pref("extensions.flvideoreplacer.autoplay", true);
