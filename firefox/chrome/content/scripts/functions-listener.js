@@ -37,30 +37,63 @@ var flvideoreplacerListener = {
 	      ){
 
 	    try{
-		//fetch page html content
-		var pagecontent = doc.getElementsByTagName("body").item(0).innerHTML;
-		var newline = pagecontent.split("\n");
 
-		for(var i=0; i< newline.length; i++){
+		var pbs = Components.classes["@mozilla.org/privatebrowsing;1"]  
+			    .getService(Components.interfaces.nsIPrivateBrowsingService);
+		var inPrivateBrowsingMode = pbs.privateBrowsingEnabled;  
 
-		    //match patterns
-		    var matchyoutoubeembedold = /object.*param.*name="movie".*value="http:\/\/www.youtube.com\/v\//.test(newline[i]);
-		    var matchyoutoubeembed = /.*iframe.*class="youtube-player".*src="http:\/\/www.youtube.com\/embed\//.test(newline[i]);
-		    var matchvimeoembed = /iframe src="http:\/\/player.vimeo.com\/video\//.test(newline[i]);
-		    var matchvimeoembedold = /object.*param.*name="movie".*value="http:\/\/vimeo.com\/moogaloop.swf\?clip_id=/.test(newline[i]);
-
-		    if (matchyoutoubeembedold === true || matchyoutoubeembed === true || matchvimeoembed === true || matchvimeoembedold === true) {
-
-			//access preferences interface
-			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-				.getService(Components.interfaces.nsIPrefService)
-				.getBranch("extensions.flvideoreplacer.embedded.");
-
-			this.prefs.setCharPref(sourceurl,pagecontent);
-		    }
+		if (!inPrivateBrowsingMode){
+		    //access preferences interface
+		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			    .getService(Components.interfaces.nsIPrefService)
+			    .getBranch("extensions.flvideoreplacer.detect.");
+		}else{
+		    //access preferences interface
+		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			    .getService(Components.interfaces.nsIPrefService)
+			    .getBranch("extensions.flvideoreplacer.detectprivate.");
 		}
+
+		var hostdomain = doc.location.host;
+		var detection = this.prefs.getBoolPref(hostdomain);
+
 	    }catch(e){
-		//do nothing
+		replaceembedded = false;
+	    }finally{
+		if(detection === true){
+		    replaceembedded = true;
+		}else{
+		    replaceembedded = false;
+		}
+	    }
+
+	    if(replaceembedded === true){
+		try{
+		    //fetch page html content
+		    var pagecontent = doc.getElementsByTagName("body").item(0).innerHTML;
+		    var newline = pagecontent.split("\n");
+
+		    for(var i=0; i< newline.length; i++){
+
+			//match patterns
+			var matchyoutoubeembedold = /object.*param.*name="movie".*value="http:\/\/www.youtube.com\/v\//.test(newline[i]);
+			var matchyoutoubeembed = /.*iframe.*class="youtube-player".*src="http:\/\/www.youtube.com\/embed\//.test(newline[i]);
+			var matchvimeoembed = /iframe src="http:\/\/player.vimeo.com\/video\//.test(newline[i]);
+			var matchvimeoembedold = /object.*param.*name="movie".*value="http:\/\/vimeo.com\/moogaloop.swf\?clip_id=/.test(newline[i]);
+
+			if (matchyoutoubeembedold === true || matchyoutoubeembed === true || matchvimeoembed === true || matchvimeoembedold === true) {
+
+			    //access preferences interface
+			    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+				    .getService(Components.interfaces.nsIPrefService)
+				    .getBranch("extensions.flvideoreplacer.embedded.");
+
+			    this.prefs.setCharPref(sourceurl,pagecontent);
+			}
+		    }
+		}catch(e){
+		    //do nothing
+		}
 	    }
 	}
 
@@ -1505,8 +1538,9 @@ var flvideoreplacerListener = {
 
     showHideMenus: function () {//show and hide context menus
 
-	//get source url
+	//get source url and domain
 	var sourceurl = gURLBar.value;
+	var hostdomain = content.window.location.host;
 
 	//access preferences interface
 	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -1522,9 +1556,11 @@ var flvideoreplacerListener = {
 	var strbundle = document.getElementById("flvideoreplacerstrings");
 	var original = strbundle.getString("original");
 	var standard = strbundle.getString("standard");
+	var detectionadd = strbundle.getString("detectionadd");
+	var detectionremove = strbundle.getString("detectionremove");
 
 	//declare variables
-	var pagecontent,videoid, aSite, vidfilename, downloadurl=null, downloadurl5=null, downloadurl18=null, downloadurl34=null, downloadurl35=null, downloadurl22=null, downloadurl37=null, downloadurl38=null;
+	var detection = false, pagecontent,videoid, aSite, vidfilename, downloadurl=null, downloadurl5=null, downloadurl18=null, downloadurl34=null, downloadurl35=null, downloadurl22=null, downloadurl37=null, downloadurl38=null;
 
 	if(replaceembedded === true 
 	      && (replaceyt === true || replacevimeo === true) 
@@ -1538,105 +1574,170 @@ var flvideoreplacerListener = {
 	      ))
 	{
 
-	    try{
+	    //unhide menu
+	    document.getElementById("flvideoreplacer-embedded-detection").hidden = false;
+	    document.getElementById("flvideoreplacer-embedded-separator").hidden = false;
 
+	    //remove old menupopup elements
+	    var detectionmenupopup = document.getElementById("flvideoreplacer-embedded-detection-select");
+	    var detectionmenupopupvbox = document.getElementById("flvideoreplacer-embedded-detection-select-vbox");
+	    try{
+		detectionmenupopup.removeChild(detectionmenupopup.firstChild);
+	    }catch(e){
+		//do nothing
+	    }
+	    //append new vbox
+	    var detectionnewvbox = document.createElement("vbox");
+	    detectionnewvbox.setAttribute("id","flvideoreplacer-embedded-detection-select-vbox");
+	    detectionmenupopup.appendChild(detectionnewvbox);
+	    var detectionmenuitem;
+
+	    //check private mode
+	    var pbs = Components.classes["@mozilla.org/privatebrowsing;1"]  
+			.getService(Components.interfaces.nsIPrivateBrowsingService);
+	    var inPrivateBrowsingMode = pbs.privateBrowsingEnabled;  
+
+	    if (!inPrivateBrowsingMode){
 		//access preferences interface
 		this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("extensions.flvideoreplacer.embedded.");
+			.getBranch("extensions.flvideoreplacer.detect.");
+	    }else{
+		//access preferences interface
+		this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch("extensions.flvideoreplacer.detectprivate.");
+	    }
 
-		pagecontent = this.prefs.getCharPref(sourceurl);
-
+	    try{
+		detection = this.prefs.getBoolPref(hostdomain);
 	    }catch(e){
-		pagecontent = null;
+		replaceembedded = false;
+		detection = false;
+	    }
+	    if(detection === true){
+		replaceembedded = true;
+		//append new menuitem
+		detectionmenuitem = document.createElement("menuitem");
+		detectionmenuitem.setAttribute("label",detectionremove);
+		detectionmenuitem.setAttribute('oncommand',"flvideoreplacerListener.detectionManager('remove','"+hostdomain+"');");
+		detectionnewvbox.appendChild(detectionmenuitem);
+	    }else{
+		replaceembedded = false;
+		//append new menuitem
+		detectionmenuitem = document.createElement("menuitem");
+		detectionmenuitem.setAttribute("label",detectionadd);
+		detectionmenuitem.setAttribute('oncommand',"flvideoreplacerListener.detectionManager('add','"+hostdomain+"');");
+		detectionnewvbox.appendChild(detectionmenuitem);
+	    }
+
+	    if(replaceembedded === true){
+
+		try{
+
+		    //access preferences interface
+		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			    .getService(Components.interfaces.nsIPrefService)
+			    .getBranch("extensions.flvideoreplacer.embedded.");
+
+		    pagecontent = this.prefs.getCharPref(sourceurl);
+
+		}catch(e){
+		    pagecontent = null;
+		    document.getElementById("flvideoreplacer-embedded").hidden = true;
+		}
+
+		if(pagecontent !== null){
+
+		    //unhide menu
+		    document.getElementById("flvideoreplacer-embedded").hidden = false;
+
+		    //remove old menupopup elements
+		    var embeddedmenupopup = document.getElementById("flvideoreplacer-embedded-select");
+		    var embeddedmenupopupvbox = document.getElementById("flvideoreplacer-embedded-select-vbox");
+		    try{
+			embeddedmenupopup.removeChild(embeddedmenupopup.firstChild);
+		    }catch(e){
+			//do nothing
+		    }
+		    //append new vbox
+		    var embeddednewvbox = document.createElement("vbox");
+		    embeddednewvbox.setAttribute("id","flvideoreplacer-embedded-select-vbox");
+		    embeddedmenupopup.appendChild(embeddednewvbox);
+		    var embeddedmenuitem;
+
+		    try{
+			var newline = pagecontent.split("\n");
+			var newembedid;
+
+			for(var i=0; i< newline.length; i++){
+
+			    //match patterns
+			    var matchyoutoubeembed = /.*iframe.*class="youtube-player".*src="http:\/\/www.youtube.com\/embed\//.test(newline[i]);
+			    var matchyoutoubeembedold = /object.*param.*name="movie".*value="http:\/\/www.youtube.com\/v\//.test(newline[i]);
+			    var matchvimeoembed = /iframe src="http:\/\/player.vimeo.com\/video\//.test(newline[i]);
+			    var matchvimeoembedold = /object.*param.*name="movie".*value="http:\/\/vimeo.com\/moogaloop.swf\?clip_id=/.test(newline[i]);
+
+			    if (matchyoutoubeembedold === true) {
+
+				newembedid = newline[i].replace(/.*http:\/\/www.youtube.com\/v\//,"").replace(/\?.*/,"").replace(/\&.*/,"");
+				newlink = "http://www.youtube.com/watch?v="+newembedid;
+
+				//append new menuitem
+				embeddedmenuitem = document.createElement("menuitem");
+				embeddedmenuitem.setAttribute("label",newlink);
+				embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
+				embeddednewvbox.appendChild(embeddedmenuitem);
+			    }
+
+			    if (matchyoutoubeembed === true) {
+
+				newembedid = newline[i].replace(/.*http:\/\/www.youtube.com\/embed\//,"").replace(/".*/,"");
+				newlink = "http://www.youtube.com/watch?v="+newembedid;
+
+				//append new menuitem
+				embeddedmenuitem = document.createElement("menuitem");
+				embeddedmenuitem.setAttribute("label",newlink);
+				embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
+				embeddednewvbox.appendChild(embeddedmenuitem);
+			    }
+
+			    if (matchvimeoembed === true) {
+
+				newembedid = newline[i].replace(/.*http:\/\/player.vimeo.com\/video\//,"").replace(/\?.*/,"").replace(/\&.*/,"");
+				newlink = "http://vimeo.com/"+newembedid;
+
+				//append new menuitem
+				embeddedmenuitem = document.createElement("menuitem");
+				embeddedmenuitem.setAttribute("label",newlink);
+				embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
+				embeddednewvbox.appendChild(embeddedmenuitem);
+			    }
+
+			    if (matchvimeoembedold === true) {
+
+				newembedid = newline[i].replace(/.*http:\/\/vimeo.com\/moogaloop.swf\?clip_id=/,"").replace(/\?.*/,"").replace(/\&.*/,"");
+				newlink = "http://vimeo.com/"+newembedid;
+
+				//append new menuitem
+				embeddedmenuitem = document.createElement("menuitem");
+				embeddedmenuitem.setAttribute("label",newlink);
+				embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
+				embeddednewvbox.appendChild(embeddedmenuitem);
+			    }
+			}
+		    }catch(e){
+			document.getElementById("flvideoreplacer-embedded").hidden = true;
+		    }
+		}
+	    }else{
 		document.getElementById("flvideoreplacer-embedded").hidden = true;
 	    }
 
-	    if(pagecontent !== null){
-
-		//unhide menu
-		document.getElementById("flvideoreplacer-embedded").hidden = false;
-
-		//remove old menupopup elements
-		var embeddedmenupopup = document.getElementById("flvideoreplacer-embedded-select");
-		var embeddedmenupopupvbox = document.getElementById("flvideoreplacer-embedded-select-vbox");
-		try{
-		    embeddedmenupopup.removeChild(embeddedmenupopup.firstChild);
-		}catch(e){
-		    //do nothing
-		}
-		//append new vbox
-		var embeddednewvbox = document.createElement("vbox");
-		embeddednewvbox.setAttribute("id","flvideoreplacer-embedded-select-vbox");
-		embeddedmenupopup.appendChild(embeddednewvbox);
-		var embeddedmenuitem;
-
-		try{
-		    var newline = pagecontent.split("\n");
-		    var newembedid;
-
-		    for(var i=0; i< newline.length; i++){
-
-			//match patterns
-			var matchyoutoubeembed = /.*iframe.*class="youtube-player".*src="http:\/\/www.youtube.com\/embed\//.test(newline[i]);
-			var matchyoutoubeembedold = /object.*param.*name="movie".*value="http:\/\/www.youtube.com\/v\//.test(newline[i]);
-			var matchvimeoembed = /iframe src="http:\/\/player.vimeo.com\/video\//.test(newline[i]);
-			var matchvimeoembedold = /object.*param.*name="movie".*value="http:\/\/vimeo.com\/moogaloop.swf\?clip_id=/.test(newline[i]);
-
-			if (matchyoutoubeembedold === true) {
-
-			    newembedid = newline[i].replace(/.*http:\/\/www.youtube.com\/v\//,"").replace(/\?.*/,"").replace(/\&.*/,"");
-			    newlink = "http://www.youtube.com/watch?v="+newembedid;
-
-			    //append new menuitem
-			    embeddedmenuitem = document.createElement("menuitem");
-			    embeddedmenuitem.setAttribute("label",newlink);
-			    embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
-			    embeddednewvbox.appendChild(embeddedmenuitem);
-			}
-
-			if (matchyoutoubeembed === true) {
-
-			    newembedid = newline[i].replace(/.*http:\/\/www.youtube.com\/embed\//,"").replace(/".*/,"");
-			    newlink = "http://www.youtube.com/watch?v="+newembedid;
-
-			    //append new menuitem
-			    embeddedmenuitem = document.createElement("menuitem");
-			    embeddedmenuitem.setAttribute("label",newlink);
-			    embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
-			    embeddednewvbox.appendChild(embeddedmenuitem);
-			}
-
-			if (matchvimeoembed === true) {
-
-			    newembedid = newline[i].replace(/.*http:\/\/player.vimeo.com\/video\//,"").replace(/\?.*/,"").replace(/\&.*/,"");
-			    newlink = "http://vimeo.com/"+newembedid;
-
-			    //append new menuitem
-			    embeddedmenuitem = document.createElement("menuitem");
-			    embeddedmenuitem.setAttribute("label",newlink);
-			    embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
-			    embeddednewvbox.appendChild(embeddedmenuitem);
-			}
-
-			if (matchvimeoembedold === true) {
-
-			    newembedid = newline[i].replace(/.*http:\/\/vimeo.com\/moogaloop.swf\?clip_id=/,"").replace(/\?.*/,"").replace(/\&.*/,"");
-			    newlink = "http://vimeo.com/"+newembedid;
-
-			    //append new menuitem
-			    embeddedmenuitem = document.createElement("menuitem");
-			    embeddedmenuitem.setAttribute("label",newlink);
-			    embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
-			    embeddednewvbox.appendChild(embeddedmenuitem);
-			}
-		    }
-		}catch(e){
-		    document.getElementById("flvideoreplacer-embedded").hidden = true;
-		}
-	    }
 	}else{
 	    document.getElementById("flvideoreplacer-embedded").hidden = true;
+	    document.getElementById("flvideoreplacer-embedded-detection").hidden = true;
+	    document.getElementById("flvideoreplacer-embedded-separator").hidden = true;
 	}
 
 	if((sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match("html5=True")) 
@@ -1876,6 +1977,34 @@ var flvideoreplacerListener = {
 	}
     },
 
+    detectionManager: function (aAction,aDomain) {
+
+	//check private mode
+	var pbs = Components.classes["@mozilla.org/privatebrowsing;1"]  
+		    .getService(Components.interfaces.nsIPrivateBrowsingService);
+	var inPrivateBrowsingMode = pbs.privateBrowsingEnabled;  
+
+	if (!inPrivateBrowsingMode){
+	    //access preferences interface
+	    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+		    .getService(Components.interfaces.nsIPrefService)
+		    .getBranch("extensions.flvideoreplacer.detect.");
+	}else{
+	    //access preferences interface
+	    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+		    .getService(Components.interfaces.nsIPrefService)
+		    .getBranch("extensions.flvideoreplacer.detectprivate.");
+	}
+
+	if(aAction === "add"){
+	    this.prefs.setBoolPref(aDomain,true);
+	    content.window.location.reload();
+	}
+	if(aAction === "remove"){
+	    this.prefs.setBoolPref(aDomain,false);
+	}
+    },
+
     cleanupPrefs: function () {
 
 	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -1884,6 +2013,7 @@ var flvideoreplacerListener = {
 
 	this.prefs.deleteBranch("downloadersource");
 	this.prefs.deleteBranch("embedded");
+	this.prefs.deleteBranch("detectprivate");
     },
 
     docopyToClipboard: function (aText) {

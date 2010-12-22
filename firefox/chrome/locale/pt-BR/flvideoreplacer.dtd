@@ -10,7 +10,8 @@
 <!ENTITY Download "Download">
 <!ENTITY DownloadDir "Destino do Download">
 <!ENTITY Embedded "Inserido">
-<!ENTITY EmbeddedVideos "Criar menu para vídeos inseridos em outros sites">
+<!ENTITY EmbeddedVideoDetection "Detecção de vídoes inseridos">
+<!ENTITY EmbeddedVideosDetectionOption "Detectar vídeos inseridos em outros sites">
 <!ENTITY FlashVideoReplacerPreferences "Preferências FlashVideoReplacer">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
 <!ENTITY ForcePluginMimeType "Plugin/MimeType">

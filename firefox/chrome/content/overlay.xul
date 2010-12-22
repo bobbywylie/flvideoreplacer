@@ -28,6 +28,13 @@
 			</vbox>
 		    </menupopup>
 		</menu>
+		<menu id="flvideoreplacer-embedded-detection" label="&EmbeddedVideoDetection;" position="end_after">
+		    <menupopup id="flvideoreplacer-embedded-detection-select">
+			<vbox id="flvideoreplacer-embedded-detection-select-vbox">
+			</vbox>
+		    </menupopup>
+		</menu>
+		<menuseparator id="flvideoreplacer-embedded-separator"/>
 		<menu id="flvideoreplacer-copy" label="&Clipboard;" position="end_after">
 		    <menupopup id="flvideoreplacer-copy-select">
 			<vbox id="flvideoreplacer-copy-select-vbox">
