@@ -14,8 +14,7 @@ var flvideoreplacerListener = {
 
 	//declare page url
 	var sourceurl = doc.location.href;
-	var urlbar = content.window.location.href;
-	var hostdomain = content.window.location.host;
+	var replacevideo = false, videoelement;
 
 	if((sourceurl.match(/youtube.*watch.*v\=/)  && !sourceurl.match("html5=True")) 
 	      || sourceurl.match(/vimeo\.com\/\d{1,8}/)
@@ -33,124 +32,118 @@ var flvideoreplacerListener = {
 	    //fetch prefs
 	    var replacemethod = this.prefs.getCharPref("method");
 	    var preferwebm = this.prefs.getBoolPref("preferwebm");
-	    var replacevideo = false;
 
 	    //declare if video should be replaced
 	    if(sourceurl.match(/youtube.*watch.*v\=/)){
 		replacevideo = this.prefs.getBoolPref("youtube");
+		videoelement = "movie_player";
 	    }
 	    if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 		replacevideo = this.prefs.getBoolPref("vimeo");
+		videoelement = "meat";
 	    }
 	    if(sourceurl.match(/metacafe\.com\/watch\//)){
 		replacevideo = this.prefs.getBoolPref("metacafe");
+		videoelement = "FlashWrap";
 	    }
 	    if(sourceurl.match(/youporn\.com\/watch\//)){
 		replacevideo = this.prefs.getBoolPref("other");
+		videoelement = "player";
 	    }
 	    if(sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)){
 		replacevideo = this.prefs.getBoolPref("other");
+		videoelement = "VideoPlayer";
 	    }
 	    if(sourceurl.match(/redtube\.com\/\d{1,8}/)){
 		replacevideo = this.prefs.getBoolPref("other");
+		videoelement = "redtubeplayer";
 	    }
 
-	    if(replacevideo === true){
+	    //declare element to be replaced
+	    testelement = doc.getElementById(videoelement);
 
-		if(replacemethod === "prompt"){
+	    if (testelement !== null) {
+
+		if(replacevideo === true){
+
+		    if(replacemethod === "prompt"){
+
+			if(sourceurl.match(/youtube.*watch.*v\=/)){
+			    params = {inn:{pmethod:"embedded"}, out:null};
+			    window.openDialog("chrome://flvideoreplacer/content/prompt.xul", "",
+			    "chrome, dialog, modal, resizable=yes", params).focus();
+			    if (params.out) {
+				this.prefs.setCharPref("promptmethod",params.out.pmethod);
+			    }else{
+				replacevideo = false;
+			    }
+			}else{
+			    params = {inn:{pmethod:"embedded"}, out:null};
+			    window.openDialog("chrome://flvideoreplacer/content/prompt.xul", "",
+			    "chrome, dialog, modal, resizable=yes", params).focus();
+			    if (params.out) {
+				this.prefs.setCharPref("promptmethod",params.out.pmethod);
+			    }else{
+				replacevideo = false;
+			    }
+			}
+		    }else{
+			this.prefs.setCharPref("promptmethod",replacemethod);
+		    }
+
+		    //update replace method
+		    replacemethod = this.prefs.getCharPref("promptmethod");
+		}
+
+		if(replacevideo === true){
 
 		    if(sourceurl.match(/youtube.*watch.*v\=/)){
-			params = {inn:{pmethod:"embedded"}, out:null};
-			window.openDialog("chrome://flvideoreplacer/content/prompt.xul", "",
-			"chrome, dialog, modal, resizable=yes", params).focus();
-			if (params.out) {
-			    this.prefs.setCharPref("promptmethod",params.out.pmethod);
-			}else{
-			    replacevideo = false;
-			}
-		    }else{
-			params = {inn:{pmethod:"embedded"}, out:null};
-			window.openDialog("chrome://flvideoreplacer/content/prompt.xul", "",
-			"chrome, dialog, modal, resizable=yes", params).focus();
-			if (params.out) {
-			    this.prefs.setCharPref("promptmethod",params.out.pmethod);
-			}else{
-			    replacevideo = false;
-			}
-		    }
-		}else{
-		    this.prefs.setCharPref("promptmethod",replacemethod);
-		}
 
-		//update replace method
-		replacemethod = this.prefs.getCharPref("promptmethod");
-	    }
+			//fetch video ID from url
+			var videoid = sourceurl.replace(/.*v\=/, "").replace(/\&.*/,"");
 
-	    if(sourceurl.match(/youtube.*watch.*v\=/)){
+			if(preferwebm === true && replacemethod === "embedded"){
 
-		if(replacevideo === true){
-
-		    //fetch video ID from url
-		    var videoid = sourceurl.replace(/.*v\=/, "").replace(/\&.*/,"");
-
-		    if(preferwebm === true && replacemethod === "embedded"){
-
-			//redirect to webm page
-			var webmurl = "http://www.youtube.com/watch?v="+videoid+"&html5=True";
-			try{
-			    var webmRequest = new XMLHttpRequest();
-			    webmRequest.open('GET', webmurl, false);
-			    webmRequest.onreadystatechange=function(){
-				if (webmRequest.readyState === 4 && webmRequest.status === 200) {
-				    var webmsource = webmRequest.responseText;
-				    var newlinewebm = webmsource.split("\n");
-				    var replacewebm = false;
-				    for(var i=0; i< newlinewebm.length; i++){
-					//match patterns
-					var html5player = /html5-player/.test(newlinewebm[i]);
-					if (html5player === true) {
-					    replacewebm = true;
+			    //redirect to webm page
+			    var webmurl = "http://www.youtube.com/watch?v="+videoid+"&html5=True";
+			    try{
+				var webmRequest = new XMLHttpRequest();
+				webmRequest.open('GET', webmurl, false);
+				webmRequest.onreadystatechange=function(){
+				    if (webmRequest.readyState === 4 && webmRequest.status === 200) {
+					var webmsource = webmRequest.responseText;
+					var newlinewebm = webmsource.split("\n");
+					var replacewebm = false;
+					for(var i=0; i< newlinewebm.length; i++){
+					    //match patterns
+					    var html5player = /html5-player/.test(newlinewebm[i]);
+					    if (html5player === true) {
+						replacewebm = true;
+					    }
+					}
+					if(replacewebm === true){
+					    flvideoreplacerListener.webmReplacer(aEvent);
+					}else{
+					    flvideoreplacerListener.pluginReplacer(aEvent);
 					}
 				    }
-				    if(replacewebm === true){
-					flvideoreplacerListener.webmReplacer(aEvent);
-				    }else{
-					flvideoreplacerListener.pluginReplacer(aEvent);
-				    }
-				}
-			    };
-			    webmRequest.send(null);
-			}catch(e){
+				};
+				webmRequest.send(null);
+			    }catch(e){
+				flvideoreplacerListener.pluginReplacer(aEvent);
+			    }
+			}else{
 			    flvideoreplacerListener.pluginReplacer(aEvent);
 			}
-		    }else{
+		    }
+		    if(sourceurl.match(/vimeo\.com\/\d{1,8}/) 
+			|| sourceurl.match(/metacafe\.com\/watch\//) 
+			|| sourceurl.match(/youporn\.com\/watch\//)
+			|| sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
+			|| sourceurl.match(/redtube\.com\/\d{1,8}/)
+		    ){
 			flvideoreplacerListener.pluginReplacer(aEvent);
 		    }
-		}
-	    }
-	    if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
-		if(replacevideo === true){
-		    flvideoreplacerListener.pluginReplacer(aEvent);
-		}
-	    }
-	    if(sourceurl.match(/metacafe\.com\/watch\//)){
-		if(replacevideo === true){
-		    flvideoreplacerListener.pluginReplacer(aEvent);
-		}
-	    }
-	    if(sourceurl.match(/youporn\.com\/watch\//)){
-		if(replacevideo === true){
-		    flvideoreplacerListener.pluginReplacer(aEvent);
-		}
-	    }
-	    if(sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)){
-		if(replacevideo === true){
-		    flvideoreplacerListener.pluginReplacer(aEvent);
-		}
-	    }
-	    if(sourceurl.match(/redtube\.com\/\d{1,8}/)){
-		if(replacevideo === true){
-		    flvideoreplacerListener.pluginReplacer(aEvent);
 		}
 	    }
 	}
@@ -186,7 +179,6 @@ var flvideoreplacerListener = {
 	//declare the video should not be replaced
 	var replacevideo = false;
 	var req, xmlsource, videourl, videoid, key, videoelement, videowidth, videoheight, testelement, matchpattern, pagecontent, newline, aSite, aString, downloader,filemime;
-	
 
 	if(sourceurl.match(/youtube.*watch.*v\=/)){
 
