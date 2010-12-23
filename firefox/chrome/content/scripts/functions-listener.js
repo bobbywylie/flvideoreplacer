@@ -1504,12 +1504,22 @@ var flvideoreplacerListener = {
 		.getBranch("extensions.flvideoreplacer.downloadersource.");
 
 	//get video path from prefs
-	if(aFMT === 0){
-	    sourceurl = this.prefs.getCharPref(aID);
-	}else{
+
+	try{
 	    sourceurl = this.prefs.getCharPref(aID+"."+aFMT);
+	}catch(e){
+	    //do nothing
+	}finally{
+	    flvideoreplacerListener.docopyToClipboard(sourceurl);
 	}
-	flvideoreplacerListener.docopyToClipboard(sourceurl);
+
+	try{
+	    sourceurl = this.prefs.getCharPref(aID);
+	}catch(e){
+	    //do nothing
+	}finally{
+	    flvideoreplacerListener.docopyToClipboard(sourceurl);
+	}
     },
 
     openLink: function (aLink) {//show and hide context menus
