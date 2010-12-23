@@ -1223,7 +1223,11 @@ var flvideoreplacerListener = {
 		//set videourl pref
 		this.prefs.setCharPref("videourl",videourl);
 		//launch player
-		window.openDialog('chrome://flvideoreplacer/content/player.xul', 'flvideoreplacer-player', 'chrome,centerscreen,alwaysRaised');
+		if(osString.match(/Windows/)){
+		    window.open(videourl, 'flvideoreplacer-player', 'content,centerscreen,alwaysRaised,resizable=yes,width=600em,height=400em').focus();
+		}else{
+		    window.openDialog('chrome://flvideoreplacer/content/player.xul', 'flvideoreplacer-player', 'chrome,centerscreen,alwaysRaised,resizable=yes,width=600em,height=400em').focus();
+		}
 	    }
 
 	    if(replacemethod === "standalone"){
