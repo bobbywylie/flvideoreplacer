@@ -1,10 +1,11 @@
 pref("extensions.flvideoreplacer.youtube", true);
 pref("extensions.flvideoreplacer.vimeo", true);
 pref("extensions.flvideoreplacer.metacafe", true);
-pref("extensions.flvideoreplacer.adult", true);
-pref("extensions.flvideoreplacer.other", false);
+pref("extensions.flvideoreplacer.other", true);
+pref("extensions.flvideoreplacer.alertother", true);
 
 pref("extensions.flvideoreplacer.method", "prompt");
+pref("extensions.flvideoreplacer.promptmethod", "embedded");
 pref("extensions.flvideoreplacer.mimetype", "autodetect");
 pref("extensions.flvideoreplacer.filemime", "video/mp4");
 pref("extensions.flvideoreplacer.videoquality", "HIGH");

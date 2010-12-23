@@ -3,7 +3,7 @@
 
 <!DOCTYPE window SYSTEM "chrome://flvideoreplacer/locale/flvideoreplacer.dtd">
 
-<prefwindow width="390" height="420" id="flvideoreplacer-prefs" title="&FlashVideoReplacerPreferences;" xmlns:html="http://www.w3.org/1999/xhtml" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<prefwindow width="390" height="620" id="flvideoreplacer-prefs" title="&FlashVideoReplacerPreferences;" xmlns:html="http://www.w3.org/1999/xhtml" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <script type="application/x-javascript" src="chrome://flvideoreplacer/content/scripts/functions-options.js"/>
     
@@ -16,8 +16,8 @@
 	    <preference id="pref_youtube" name="extensions.flvideoreplacer.youtube" type="bool"/>
 	    <preference id="pref_vimeo" name="extensions.flvideoreplacer.vimeo" type="bool"/>
 	    <preference id="pref_metacafe" name="extensions.flvideoreplacer.metacafe" type="bool"/>
-	    <preference id="pref_adult" name="extensions.flvideoreplacer.adult" type="bool"/>
 	    <preference id="pref_other" name="extensions.flvideoreplacer.other" type="bool"/>
+	    <preference id="pref_alertother" name="extensions.flvideoreplacer.alertother" type="bool"/>
 	    <preference id="pref_method" name="extensions.flvideoreplacer.method" type="string"/>
 	    <preference id="pref_mimetype" name="extensions.flvideoreplacer.mimetype" type="string"/>
 	    <preference id="pref_videoquality" name="extensions.flvideoreplacer.videoquality" type="string"/>
@@ -27,7 +27,7 @@
 	    <preference id="pref_playerpath" name="extensions.flvideoreplacer.playerpath" type="string"/> 
 	    <preference id="pref_downdir" name="extensions.flvideoreplacer.downdir" type="string"/>
 	</preferences>
-	<vbox style="width:370px;height:350px;overflow:auto;">
+	<vbox style="width:370px;height:530px;overflow:auto;">
 	    <vbox>
 		<spacer height="10" flex="0"/>
 		<hbox>
@@ -149,11 +149,11 @@
 	    </hbox>
 	    <spacer height="10" flex="0"/>
 	    <hbox>
-		<checkbox label="&Adult;" preference="pref_adult" id="adult" size="30"/>
+		<checkbox label="&Other;" preference="pref_other" id="other" size="30"/>
+		<spacer width="5" flex="0"/>
+		<checkbox label="&AlertOther;" preference="pref_alertother" id="alertother" size="30"/>
 		<spacer width="10" flex="1"/>
 	    </hbox>
-	    <spacer height="10" flex="0"/>
-	    <checkbox label="&EmbeddedVideosDetectionOption;" preference="pref_other" id="other" size="30"/>
 	    <spacer height="10" flex="0"/>
 	    <caption label="&Quality;" /> 
 	    <spacer height="10" flex="0"/>

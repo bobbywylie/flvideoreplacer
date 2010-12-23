@@ -14,92 +14,12 @@ var flvideoreplacerListener = {
 
 	//declare page url
 	var sourceurl = doc.location.href;
-
-	//access preferences interface
-	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService)
-		.getBranch("extensions.flvideoreplacer.");
-
-	//get embedded option
-	var replaceembedded = this.prefs.getBoolPref("other");
-	var replaceyt = this.prefs.getBoolPref("youtube");
-	var replacevimeo = this.prefs.getBoolPref("vimeo");
-
-	if(replaceembedded === true && (replaceyt === true || replacevimeo === true) 
-	      && sourceurl.match(/http/) 
-	      && (!sourceurl.match(/youtube/) 
-		&& !sourceurl.match(/vimeo/) 
-		&& !sourceurl.match(/metacafe/)
-		&& !sourceurl.match(/youporn/) 
-		&& !sourceurl.match(/pornhub/)
-		&& !sourceurl.match(/redtube/)
-		)
-	      ){
-
-	    try{
-
-		var pbs = Components.classes["@mozilla.org/privatebrowsing;1"]  
-			    .getService(Components.interfaces.nsIPrivateBrowsingService);
-		var inPrivateBrowsingMode = pbs.privateBrowsingEnabled;  
-
-		if (!inPrivateBrowsingMode){
-		    //access preferences interface
-		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-			    .getService(Components.interfaces.nsIPrefService)
-			    .getBranch("extensions.flvideoreplacer.detect.");
-		}else{
-		    //access preferences interface
-		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-			    .getService(Components.interfaces.nsIPrefService)
-			    .getBranch("extensions.flvideoreplacer.detectprivate.");
-		}
-
-		var hostdomain = doc.location.host;
-		var detection = this.prefs.getBoolPref(hostdomain);
-
-	    }catch(e){
-		replaceembedded = false;
-	    }finally{
-		if(detection === true){
-		    replaceembedded = true;
-		}else{
-		    replaceembedded = false;
-		}
-	    }
-
-	    if(replaceembedded === true){
-		try{
-		    //fetch page html content
-		    var pagecontent = doc.getElementsByTagName("body").item(0).innerHTML;
-		    var newline = pagecontent.split("\n");
-
-		    for(var i=0; i< newline.length; i++){
-
-			//match patterns
-			var matchyoutoubeembedold = /object.*param.*name="movie".*value="http:\/\/www.youtube.com\/v\//.test(newline[i]);
-			var matchyoutoubeembed = /.*iframe.*class="youtube-player".*src="http:\/\/www.youtube.com\/embed\//.test(newline[i]);
-			var matchvimeoembed = /iframe src="http:\/\/player.vimeo.com\/video\//.test(newline[i]);
-			var matchvimeoembedold = /object.*param.*name="movie".*value="http:\/\/vimeo.com\/moogaloop.swf\?clip_id=/.test(newline[i]);
-
-			if (matchyoutoubeembedold === true || matchyoutoubeembed === true || matchvimeoembed === true || matchvimeoembedold === true) {
-
-			    //access preferences interface
-			    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-				    .getService(Components.interfaces.nsIPrefService)
-				    .getBranch("extensions.flvideoreplacer.embedded.");
-
-			    this.prefs.setCharPref(sourceurl,pagecontent);
-			}
-		    }
-		}catch(e){
-		    //do nothing
-		}
-	    }
-	}
+	var urlbar = content.window.location.href;
+	var hostdomain = content.window.location.host;
 
 	if((sourceurl.match(/youtube.*watch.*v\=/)  && !sourceurl.match("html5=True")) 
 	      || sourceurl.match(/vimeo\.com\/\d{1,8}/)
-	      || sourceurl.match(/metacafe.com\/watch\//)
+	      || (sourceurl.match(/metacafe\.com\/watch\//) && !sourceurl.match(/http.*http:\/\/www.metacafe\.com/))
 	      || sourceurl.match(/youporn\.com\/watch\//)
 	      || sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
 	      || sourceurl.match(/redtube\.com\/\d{1,8}/)
@@ -115,27 +35,65 @@ var flvideoreplacerListener = {
 	    var preferwebm = this.prefs.getBoolPref("preferwebm");
 	    var replacevideo = false;
 
+	    //declare if video should be replaced
 	    if(sourceurl.match(/youtube.*watch.*v\=/)){
-
-		//get Youtube Prefs
 		replacevideo = this.prefs.getBoolPref("youtube");
+	    }
+	    if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+		replacevideo = this.prefs.getBoolPref("vimeo");
+	    }
+	    if(sourceurl.match(/metacafe\.com\/watch\//)){
+		replacevideo = this.prefs.getBoolPref("metacafe");
+	    }
+	    if(sourceurl.match(/youporn\.com\/watch\//)){
+		replacevideo = this.prefs.getBoolPref("other");
+	    }
+	    if(sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)){
+		replacevideo = this.prefs.getBoolPref("other");
+	    }
+	    if(sourceurl.match(/redtube\.com\/\d{1,8}/)){
+		replacevideo = this.prefs.getBoolPref("other");
+	    }
+
+	    if(replacevideo === true){
+
+		if(replacemethod === "prompt"){
+
+		    if(sourceurl.match(/youtube.*watch.*v\=/)){
+			params = {inn:{pmethod:"embedded"}, out:null};
+			window.openDialog("chrome://flvideoreplacer/content/prompt.xul", "",
+			"chrome, dialog, modal, resizable=yes", params).focus();
+			if (params.out) {
+			    this.prefs.setCharPref("promptmethod",params.out.pmethod);
+			}else{
+			    replacevideo = false;
+			}
+		    }else{
+			params = {inn:{pmethod:"embedded"}, out:null};
+			window.openDialog("chrome://flvideoreplacer/content/prompt.xul", "",
+			"chrome, dialog, modal, resizable=yes", params).focus();
+			if (params.out) {
+			    this.prefs.setCharPref("promptmethod",params.out.pmethod);
+			}else{
+			    replacevideo = false;
+			}
+		    }
+		}else{
+		    this.prefs.setCharPref("promptmethod",replacemethod);
+		}
+
+		//update replace method
+		replacemethod = this.prefs.getCharPref("promptmethod");
+	    }
+
+	    if(sourceurl.match(/youtube.*watch.*v\=/)){
 
 		if(replacevideo === true){
 
 		    //fetch video ID from url
 		    var videoid = sourceurl.replace(/.*v\=/, "").replace(/\&.*/,"");
 
-		    if(replacemethod === "standalone" && !sourceurl.match(/nocookie/)){
-
-			//redirect to nocookie domain
-			doc.location.href = "http://www.youtube-nocookie.com/watch?v="+videoid;
-
-		    }else if(replacemethod !== "standalone" && sourceurl.match(/nocookie/)){
-
-			//redirect to regular domain
-			doc.location.href = "http://www.youtube.com/watch?v="+videoid;
-
-		    }else if(preferwebm === true && (replacemethod === "embedded" || replacemethod === "prompt") && !sourceurl.match(/nocookie/)){
+		    if(preferwebm === true && replacemethod === "embedded"){
 
 			//redirect to webm page
 			var webmurl = "http://www.youtube.com/watch?v="+videoid+"&html5=True";
@@ -170,38 +128,27 @@ var flvideoreplacerListener = {
 		    }
 		}
 	    }
-
 	    if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
-		//get Vimeo Prefs
-		replacevideo = this.prefs.getBoolPref("vimeo");
 		if(replacevideo === true){
 		    flvideoreplacerListener.pluginReplacer(aEvent);
 		}
 	    }
-	    if(sourceurl.match(/metacafe.com\/watch\//)){
-		//get Metacafe Prefs
-		replacevideo = this.prefs.getBoolPref("metacafe");
+	    if(sourceurl.match(/metacafe\.com\/watch\//)){
 		if(replacevideo === true){
 		    flvideoreplacerListener.pluginReplacer(aEvent);
 		}
 	    }
 	    if(sourceurl.match(/youporn\.com\/watch\//)){
-		//get Adult Prefs
-		replacevideo = this.prefs.getBoolPref("adult");
 		if(replacevideo === true){
 		    flvideoreplacerListener.pluginReplacer(aEvent);
 		}
 	    }
 	    if(sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)){
-		//get Adult Prefs
-		replacevideo = this.prefs.getBoolPref("adult");
 		if(replacevideo === true){
 		    flvideoreplacerListener.pluginReplacer(aEvent);
 		}
 	    }
 	    if(sourceurl.match(/redtube\.com\/\d{1,8}/)){
-		//get Adult Prefs
-		replacevideo = this.prefs.getBoolPref("adult");
 		if(replacevideo === true){
 		    flvideoreplacerListener.pluginReplacer(aEvent);
 		}
@@ -221,7 +168,7 @@ var flvideoreplacerListener = {
 		.getBranch("extensions.flvideoreplacer.");
 
 	//fetch common preferences
-	var replacemethod = this.prefs.getCharPref("method");
+	var replacemethod = this.prefs.getCharPref("promptmethod");
 	var mimetype = this.prefs.getCharPref("mimetype");
 	var autoplay = this.prefs.getBoolPref("autoplay");
 	var prefermp4 = this.prefs.getBoolPref("prefermp4");
@@ -249,8 +196,22 @@ var flvideoreplacerListener = {
 
 	    if (testelement !== null) {
 
-		//fetch page html content
-		pagecontent = doc.getElementsByTagName("body").item(0).innerHTML;
+		if(replacemethod === "standalone"){
+
+		    //get xml document content
+		    req = new XMLHttpRequest();  
+		    req.open('GET', "http://www.youtube-nocookie.com/watch?v="+videoid, false);   
+		    req.send(null);  
+		    if(req.status === 200) {//match if data has been downloaded
+
+			//fetch page html content
+			pagecontent = req.responseText;
+		    }
+
+		}else{
+		    //fetch page html content
+		    pagecontent = doc.getElementsByTagName("body").item(0).innerHTML;
+		}
 		newline = pagecontent.split("\n");
 
 		for(var i=0; i< newline.length; i++){
@@ -658,7 +619,7 @@ var flvideoreplacerListener = {
 		}
 	    }
 	}
-	if(sourceurl.match(/metacafe.com\/watch\//)){
+	if((sourceurl.match(/metacafe\.com\/watch\//) && !sourceurl.match(/http.*http:\/\/www.metacafe\.com/))){
 
 	    //fetch video ID from url
 	    videoid = sourceurl.replace(/.*watch\//, "").replace(/\/.*/,"");
@@ -1037,28 +998,6 @@ var flvideoreplacerListener = {
 	    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 		    .getService(Components.interfaces.nsIPrefService)
 		    .getBranch("extensions.flvideoreplacer.");
-
-	    if(replacemethod === "prompt"){
-
-		if(sourceurl.match(/youtube.*watch.*v\=/)){
-		    params = {inn:{psite:"youtube",pmethod:"embedded",pfmt:fmt}, out:null};
-		    window.openDialog("chrome://flvideoreplacer/content/prompt.xul", "",
-		    "chrome, dialog, modal, resizable=yes", params).focus();
-		    if (params.out) {
-			//get value from params
-			replacemethod = params.out.pmethod;
-		    }
-		}else{
-
-		    params = {inn:{psite:aString,pmethod:"embedded",pfmt:"0"}, out:null};
-		    window.openDialog("chrome://flvideoreplacer/content/prompt.xul", "",
-		    "chrome, dialog, modal, resizable=yes", params).focus();
-		    if (params.out) {
-			//get value from params
-			replacemethod = params.out.pmethod;
-		    }
-		}
-	    }
 
 	    if(replacemethod === "embedded"){
 
@@ -1539,8 +1478,13 @@ var flvideoreplacerListener = {
     showHideMenus: function () {//show and hide context menus
 
 	//get source url and domain
-	var sourceurl = gURLBar.value;
+	var sourceurl = content.window.location.href;
 	var hostdomain = content.window.location.host;
+
+	//check private mode
+	var pbs = Components.classes["@mozilla.org/privatebrowsing;1"]  
+		    .getService(Components.interfaces.nsIPrivateBrowsingService);
+	var inPrivateBrowsingMode = pbs.privateBrowsingEnabled;  
 
 	//access preferences interface
 	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -1548,7 +1492,7 @@ var flvideoreplacerListener = {
 		.getBranch("extensions.flvideoreplacer.");
 
 	//get embedded option
-	var replaceembedded = this.prefs.getBoolPref("other");
+	var replaceembedded;
 	var replaceyt = this.prefs.getBoolPref("youtube");
 	var replacevimeo = this.prefs.getBoolPref("vimeo");
 
@@ -1559,11 +1503,15 @@ var flvideoreplacerListener = {
 	var detectionadd = strbundle.getString("detectionadd");
 	var detectionremove = strbundle.getString("detectionremove");
 
+	//hide menus
+	document.getElementById("flvideoreplacer-embedded").hidden = true;
+	document.getElementById("flvideoreplacer-embedded-detection").hidden = true;
+	document.getElementById("flvideoreplacer-embedded-separator").hidden = true;
+
 	//declare variables
 	var detection = false, pagecontent,videoid, aSite, vidfilename, downloadurl=null, downloadurl5=null, downloadurl18=null, downloadurl34=null, downloadurl35=null, downloadurl22=null, downloadurl37=null, downloadurl38=null;
 
-	if(replaceembedded === true 
-	      && (replaceyt === true || replacevimeo === true) 
+	if((replaceyt === true || replacevimeo === true) 
 	      && sourceurl.match(/http/) 
 	      && (!sourceurl.match(/youtube/) 
 		  && !sourceurl.match(/vimeo/) 
@@ -1574,7 +1522,7 @@ var flvideoreplacerListener = {
 	      ))
 	{
 
-	    //unhide menu
+	    //unhide menus
 	    document.getElementById("flvideoreplacer-embedded-detection").hidden = false;
 	    document.getElementById("flvideoreplacer-embedded-separator").hidden = false;
 
@@ -1592,38 +1540,40 @@ var flvideoreplacerListener = {
 	    detectionmenupopup.appendChild(detectionnewvbox);
 	    var detectionmenuitem;
 
-	    //check private mode
-	    var pbs = Components.classes["@mozilla.org/privatebrowsing;1"]  
-			.getService(Components.interfaces.nsIPrivateBrowsingService);
-	    var inPrivateBrowsingMode = pbs.privateBrowsingEnabled;  
-
-	    if (!inPrivateBrowsingMode){
-		//access preferences interface
-		this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("extensions.flvideoreplacer.detect.");
-	    }else{
-		//access preferences interface
-		this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("extensions.flvideoreplacer.detectprivate.");
-	    }
-
 	    try{
-		detection = this.prefs.getBoolPref(hostdomain);
+
+		if (!inPrivateBrowsingMode){
+		    //access preferences interface
+		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			    .getService(Components.interfaces.nsIPrefService)
+			    .getBranch("extensions.flvideoreplacer.detect.");
+		}else{
+		    //access preferences interface
+		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			    .getService(Components.interfaces.nsIPrefService)
+			    .getBranch("extensions.flvideoreplacer.detectprivate.");
+		}
+
+		var detection = this.prefs.getBoolPref(hostdomain);
+
 	    }catch(e){
-		replaceembedded = false;
 		detection = false;
+		replaceembedded = false;
+	    }finally{
+		if(detection === true){
+		    replaceembedded = true;
+		}else{
+		    replaceembedded = false;
+		}
 	    }
+
 	    if(detection === true){
-		replaceembedded = true;
 		//append new menuitem
 		detectionmenuitem = document.createElement("menuitem");
 		detectionmenuitem.setAttribute("label",detectionremove);
 		detectionmenuitem.setAttribute('oncommand',"flvideoreplacerListener.detectionManager('remove','"+hostdomain+"');");
 		detectionnewvbox.appendChild(detectionmenuitem);
 	    }else{
-		replaceembedded = false;
 		//append new menuitem
 		detectionmenuitem = document.createElement("menuitem");
 		detectionmenuitem.setAttribute("label",detectionadd);
@@ -1632,25 +1582,6 @@ var flvideoreplacerListener = {
 	    }
 
 	    if(replaceembedded === true){
-
-		try{
-
-		    //access preferences interface
-		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-			    .getService(Components.interfaces.nsIPrefService)
-			    .getBranch("extensions.flvideoreplacer.embedded.");
-
-		    pagecontent = this.prefs.getCharPref(sourceurl);
-
-		}catch(e){
-		    pagecontent = null;
-		    document.getElementById("flvideoreplacer-embedded").hidden = true;
-		}
-
-		if(pagecontent !== null){
-
-		    //unhide menu
-		    document.getElementById("flvideoreplacer-embedded").hidden = false;
 
 		    //remove old menupopup elements
 		    var embeddedmenupopup = document.getElementById("flvideoreplacer-embedded-select");
@@ -1667,6 +1598,7 @@ var flvideoreplacerListener = {
 		    var embeddedmenuitem;
 
 		    try{
+			var pagecontent = content.window.document.getElementsByTagName("body").item(0).innerHTML;
 			var newline = pagecontent.split("\n");
 			var newembedid;
 
@@ -1688,6 +1620,8 @@ var flvideoreplacerListener = {
 				embeddedmenuitem.setAttribute("label",newlink);
 				embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
 				embeddednewvbox.appendChild(embeddedmenuitem);
+				document.getElementById("flvideoreplacer-embedded").hidden = false;
+
 			    }
 
 			    if (matchyoutoubeembed === true) {
@@ -1700,6 +1634,8 @@ var flvideoreplacerListener = {
 				embeddedmenuitem.setAttribute("label",newlink);
 				embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
 				embeddednewvbox.appendChild(embeddedmenuitem);
+				document.getElementById("flvideoreplacer-embedded").hidden = false;
+
 			    }
 
 			    if (matchvimeoembed === true) {
@@ -1712,6 +1648,7 @@ var flvideoreplacerListener = {
 				embeddedmenuitem.setAttribute("label",newlink);
 				embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
 				embeddednewvbox.appendChild(embeddedmenuitem);
+				document.getElementById("flvideoreplacer-embedded").hidden = false;
 			    }
 
 			    if (matchvimeoembedold === true) {
@@ -1724,25 +1661,24 @@ var flvideoreplacerListener = {
 				embeddedmenuitem.setAttribute("label",newlink);
 				embeddedmenuitem.setAttribute('oncommand',"flvideoreplacerListener.openLink('"+newlink+"');");
 				embeddednewvbox.appendChild(embeddedmenuitem);
+				document.getElementById("flvideoreplacer-embedded").hidden = false;
 			    }
 			}
 		    }catch(e){
-			document.getElementById("flvideoreplacer-embedded").hidden = true;
+			//do nothing
 		    }
-		}
+
 	    }else{
-		document.getElementById("flvideoreplacer-embedded").hidden = true;
+		//do nothing
 	    }
 
 	}else{
-	    document.getElementById("flvideoreplacer-embedded").hidden = true;
-	    document.getElementById("flvideoreplacer-embedded-detection").hidden = true;
-	    document.getElementById("flvideoreplacer-embedded-separator").hidden = true;
+	    //do nothing
 	}
 
 	if((sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match("html5=True")) 
 	    || sourceurl.match(/vimeo\.com\/\d{1,8}/) 
-	    || sourceurl.match(/metacafe.com\/watch\//)
+	    || sourceurl.match(/metacafe\.com\/watch\//)
 	    || sourceurl.match(/youporn\.com\/watch\//)
 	    || sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
 	    || sourceurl.match(/redtube\.com\/\d{1,8}/)
@@ -1800,7 +1736,7 @@ var flvideoreplacerListener = {
 		    videoid = sourceurl.replace(/.*\//g, "");
 		    downloadurl = this.prefs.getCharPref(videoid);
 		}
-		if(sourceurl.match(/metacafe.com\/watch\//)){
+		if(sourceurl.match(/metacafe\.com\/watch\//)){
 		    aSite = "metacafe";
 		    //fetch video ID from url
 		    videoid = sourceurl.replace(/.*watch\//, "").replace(/\/.*/,"");
@@ -1998,7 +1934,7 @@ var flvideoreplacerListener = {
 
 	if(aAction === "add"){
 	    this.prefs.setBoolPref(aDomain,true);
-	    content.window.location.reload();
+	    //content.window.location.reload();
 	}
 	if(aAction === "remove"){
 	    this.prefs.setBoolPref(aDomain,false);
@@ -2012,8 +1948,8 @@ var flvideoreplacerListener = {
 		.getBranch("extensions.flvideoreplacer.");
 
 	this.prefs.deleteBranch("downloadersource");
-	this.prefs.deleteBranch("embedded");
 	this.prefs.deleteBranch("detectprivate");
+	this.prefs.setCharlPref("videourl","");
     },
 
     docopyToClipboard: function (aText) {

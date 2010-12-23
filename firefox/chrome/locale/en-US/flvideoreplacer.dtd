@@ -1,5 +1,5 @@
-<!ENTITY Adult "Adult Sites">
 <!ENTITY Alert "Alert">
+<!ENTITY AlertOther "Alert when supported">
 <!ENTITY Autodetect "Autodetect">
 <!ENTITY Autoplay "Play videos automatically">
 <!ENTITY BestPlayer "Best Available">
@@ -11,7 +11,6 @@
 <!ENTITY DownloadDir "Download Destination">
 <!ENTITY Embedded "Embedded">
 <!ENTITY EmbeddedVideoDetection "Embedded video detection">
-<!ENTITY EmbeddedVideosDetectionOption "Detect videos embedded on other sites">
 <!ENTITY FlashVideoReplacerPreferences "FlashVideoReplacer Preferences">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
 <!ENTITY ForcePluginMimeType "Plugin/MimeType">
@@ -24,6 +23,7 @@
 <!ENTITY NewWin "Window">
 <!ENTITY Options "Options">
 <!ENTITY OpenEmbedded "Open video embedded on this page">
+<!ENTITY Other "Other streaming websites">
 <!ENTITY Preferences "Preferences">
 <!ENTITY PreferWebM "Prefer WebM when available (no plugin required)">
 <!ENTITY PreferMP4 "Prefer mp4 over flv">
