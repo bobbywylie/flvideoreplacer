@@ -3,13 +3,13 @@
 <!ENTITY Autoplay "Tocar vídeos automaticamente">
 <!ENTITY BestPlayer "Melhor Disponível">
 <!ENTITY CheckPlugins "Verificar Compatibilidade de Plugin">
-<!ENTITY CheckPluginsTooltip "Clique aqui para verificar se você possui o plugin appropriado para seu sistema operacional.">
+<!ENTITY CheckPluginsTooltip "Clique aqui para verificar se você possui o plugin apropriado para seu sistema operacional.">
 <!ENTITY Clipboard "Copiar url para clipboard">
 <!ENTITY Custom "Personalizado">
 <!ENTITY Download "Download">
 <!ENTITY DownloadDir "Destino do Download">
 <!ENTITY Embedded "Inserido">
-<!ENTITY EmbeddedVideoDetection "Detecção de vídoes inseridos">
+<!ENTITY EmbeddedVideoDetection "Detecção de vídeos inseridos">
 <!ENTITY FlashVideoReplacerPreferences "Preferências FlashVideoReplacer">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
 <!ENTITY ForcePluginMimeType "Plugin/MimeType">
