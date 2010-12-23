@@ -1,4 +1,3 @@
-<!ENTITY Alert "Alert">
 <!ENTITY AlertOther "Alert when supported">
 <!ENTITY Autodetect "Autodetect">
 <!ENTITY Autoplay "Play videos automatically">
@@ -14,14 +13,12 @@
 <!ENTITY FlashVideoReplacerPreferences "FlashVideoReplacer Preferences">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
 <!ENTITY ForcePluginMimeType "Plugin/MimeType">
-<!ENTITY HighDef "High Definition">
 <!ENTITY HIGH "HIGH">
 <!ENTITY LOW "LOW">
 <!ENTITY MEDIUM "MEDIUM">
 <!ENTITY Method "Replace Method">
 <!ENTITY NewTab "New Tab">
 <!ENTITY NewWin "Window">
-<!ENTITY Options "Options">
 <!ENTITY OpenEmbedded "Open video embedded on this page">
 <!ENTITY Other "Other streaming websites">
 <!ENTITY Preferences "Preferences">
@@ -35,5 +32,4 @@
 <!ENTITY SelectDir "Select Directory">
 <!ENTITY Standalone "Standalone">
 <!ENTITY StandalonePlayer "Standalone Player">
-<!ENTITY Standard "Standard">
 <!ENTITY WebSites "Enable/Disable Web Sites">
