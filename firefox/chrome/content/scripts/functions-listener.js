@@ -657,13 +657,22 @@ var flvideoreplacerListener = {
 		for(var i=0; i< newline.length; i++){
 
 		    //match patterns
-		    var matchpattern = /flashVars.*mediaURL/.test(newline[i]);
+		    var matchpattern = /flashVars.*mediaURL\=.*gdaKey\=/.test(newline[i]);
+		    var matchpattern2 = /flashVars.*mediaURL.*/.test(newline[i]);
 
 		    if (matchpattern === true) {
-			videourl = decodeURIComponent(newline[i]).replace(/.*mediaURL":"http/,"http").replace(/",.*/,"").replace(/\\/g,"");
-			key = decodeURIComponent(newline[i]).replace(/.*key":"/,"").replace(/"\}.*/,"");
+			videourl = decodeURIComponent(newline[i]).replace(/\t/g,"").replace(/\n/g,"").replace(/ /g,"").replace(/.*mediaURL\=/g,"").replace(/\&gdaKey\=.*/,"").replace(/\&amp.gdaKey\=.*/,"").replace(/\\/g,"");
+			key = decodeURIComponent(newline[i]).replace(/\t/g,"").replace(/\n/g,"").replace(/ /g,"").replace(/.*gdaKey\=/,"").replace(/\&postRollContentURL.*/,"").replace(/\&amp;postRollContentURL.*/,"");
 			videourl = videourl+"?__gda__="+key;
 			replacevideo = true;
+		    }else{
+
+			if (matchpattern2 === true) {
+			    videourl = decodeURIComponent(newline[i]).replace(/\t/g,"").replace(/\n/g,"").replace(/ /g,"").replace(/.*mediaURL":"http/,"http").replace(/",.*/,"").replace(/\\/g,"");
+			    key = decodeURIComponent(newline[i]).replace(/\t/g,"").replace(/\n/g,"").replace(/ /g,"").replace(/.*key":"/,"").replace(/"\}.*/,"");
+			    videourl = videourl+"?__gda__="+key;
+			    replacevideo = true;
+			}
 		    }
 		}
 
