@@ -144,6 +144,33 @@ var flvideoreplacerListener = {
 		    ){
 			flvideoreplacerListener.pluginReplacer(aEvent);
 		    }
+		}else{
+		    if(sourceurl.match(/youporn\.com\/watch\//)
+			|| sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
+			|| sourceurl.match(/redtube\.com\/\d{1,8}/)
+		    ){
+
+			//get osString
+			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+				.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
+
+			//get alert pref
+			var alertother = this.prefs.getBoolPref("alertother");
+
+			if(alertother === true && !osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+
+			    //get localization
+			    var strbundle = document.getElementById("flvideoreplacerstrings");
+			    var message = strbundle.getString("supported");
+			    var messagetitle = strbundle.getString("flvideoreplacermessage");
+			    //alert user
+			    alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+				    .getService(Components.interfaces.nsIAlertsService);
+			    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+			    messagetitle, message,
+			    false, "", null);
+			}
+		    }
 		}
 	    }
 	}
@@ -170,6 +197,7 @@ var flvideoreplacerListener = {
 	//get localization
 	var strbundle = document.getElementById("flvideoreplacerstrings");
 	var original = strbundle.getString("original");
+	var standard = strbundle.getString("standard");
 	var message, messagetitle, alertsService;
 
 	//declare document and element
@@ -178,7 +206,7 @@ var flvideoreplacerListener = {
 	var sourceurl = doc.location.href;
 	//declare the video should not be replaced
 	var replacevideo = false;
-	var req, xmlsource, videourl, videoid, key, videoelement, videowidth, videoheight, testelement, matchpattern, pagecontent, newline, aSite, aString, downloader,filemime;
+	var fmt, req, xmlsource, videourl, videoid, key, videoelement, videowidth, videoheight, testelement, matchpattern, pagecontent, newline, aSite, aString, downloader,filemime;
 
 	if(sourceurl.match(/youtube.*watch.*v\=/)){
 
@@ -214,7 +242,7 @@ var flvideoreplacerListener = {
 		    if (matchpattern === true) {
 
 			//declare video uality based on user settings and video availability
-			var fmt = "18";
+			fmt = "18";
 
 			if (videoquality === "LOW"){
 
@@ -589,6 +617,7 @@ var flvideoreplacerListener = {
 			//declare strings to be used by extension incompatibility check
 			aSite = "Vimeo";
 			aString = "vimeo";
+			fmt = "97";
 			//declare auto selected mime type
 			if(mimetype === "autodetect"){
 			    newmimetype = "video/mp4";
@@ -647,6 +676,7 @@ var flvideoreplacerListener = {
 		    //declare strings to be used by extension incompatibility check
 		    aSite = "Metacafe";
 		    aString = "metacafe";
+		    fmt = "97";
 		    //declare auto selected mime type
 		    if(mimetype === "autodetect"){
 			newmimetype = "video/mp4";
@@ -735,6 +765,7 @@ var flvideoreplacerListener = {
 			    //declare strings to be used by extension incompatibility check
 			    aSite = "YouPorn";
 			    aString = "youporn";
+			    fmt = "97";
 			    //declare auto selected mime type
 			    if(mimetype === "autodetect"){
 				newmimetype = "application/x-flv";
@@ -792,6 +823,7 @@ var flvideoreplacerListener = {
 		    //declare strings to be used by extension incompatibility check
 		    aSite = "PornHub";
 		    aString = "pornhub";
+		    fmt = "97";
 		    //declare auto selected mime type
 		    if(mimetype === "autodetect"){
 			newmimetype = "application/x-flv";
@@ -849,6 +881,7 @@ var flvideoreplacerListener = {
 		    //declare strings to be used by extension incompatibility check
 		    aSite = "RedTube";
 		    aString = "redtube";
+		    fmt = "97";
 		    //declare auto selected mime type
 		    if(mimetype === "autodetect"){
 			newmimetype = "application/x-flv";
@@ -1259,44 +1292,52 @@ var flvideoreplacerListener = {
 		}
 	    }
 
-	    //yt video info alert
-	    if(videourl.match(/youtube/)){
-		if (fmt === "5") {
-		   message = strbundle.getFormattedString("videores", [ "240p flv ("+mimetype+")" ]);
-		}
-		if (fmt === "18") {
-		   message = strbundle.getFormattedString("videores", [ "360p mp4 ("+mimetype+")" ]);
-		}
-		if (fmt === "34") {
-		   message = strbundle.getFormattedString("videores", [ "360p flv ("+mimetype+")" ]);
-		}
-		if (fmt === "35") {
-		   message = strbundle.getFormattedString("videores", [ "480p flv ("+mimetype+")" ]);
-		}
-		if (fmt === "22") {
-		   message = strbundle.getFormattedString("videores", [ "720p mp4 ("+mimetype+")" ]);
-		}
-		if (fmt === "37") {
-		   message = strbundle.getFormattedString("videores", [ "1080p mp4 ("+mimetype+")" ]);
-		}
-		if (fmt === "38") {
-		   message = strbundle.getFormattedString("videores", [ original+" ("+mimetype+")" ]);
-		}
-		if (fmt !== "98" && fmt !== "99") {
+	    //video info alert
+	    if (fmt === "5") {
+		message = strbundle.getFormattedString("videores", [ "240p flv ("+mimetype+")" ]);
+	    }
+	    if (fmt === "18") {
+		message = strbundle.getFormattedString("videores", [ "360p mp4 ("+mimetype+")" ]);
+	    }
+	    if (fmt === "34") {
+		message = strbundle.getFormattedString("videores", [ "360p flv ("+mimetype+")" ]);
+	    }
+	    if (fmt === "35") {
+		message = strbundle.getFormattedString("videores", [ "480p flv ("+mimetype+")" ]);
+	    }
+	    if (fmt === "22") {
+		message = strbundle.getFormattedString("videores", [ "720p mp4 ("+mimetype+")" ]);
+	    }
+	    if (fmt === "37") {
+		message = strbundle.getFormattedString("videores", [ "1080p mp4 ("+mimetype+")" ]);
+	    }
+	    if (fmt === "38") {
+		message = strbundle.getFormattedString("videores", [ original+" ("+mimetype+")" ]);
+	    }
+	    if (fmt === "97") {
 
-		    if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
-			messagetitle = strbundle.getString("flvideoreplacermessage");
-			//alert user
-			alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-				.getService(Components.interfaces.nsIAlertsService);
-			alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-			messagetitle, message,
-			false, "", null);
-		    }
+		if(videourl.match(/\.mp4/)){
+		    message = strbundle.getFormattedString("videores", [ standard+" mp4 ("+mimetype+")" ]);
+		}else if(videourl.match(/\.flv/)){
+		    message = strbundle.getFormattedString("videores", [ standard+" flv ("+mimetype+")" ]);
+		}else{
+		    message = strbundle.getFormattedString("videores", [ standard+" ("+mimetype+")" ]);
 		}
 	    }
-	    //no available player message
-	    if (fmt === "98"){
+	    //trigger alerts
+	    if (fmt !== "98" && fmt !== "99") {//standard resolution message
+
+		if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+		    messagetitle = strbundle.getString("flvideoreplacermessage");
+		    //alert user
+		    alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+			    .getService(Components.interfaces.nsIAlertsService);
+		    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+		    messagetitle, message,
+		    false, "", null);
+		}
+	    }
+	    if (fmt === "98"){//no available player message
 		message = strbundle.getFormattedString("nostandalone", [ mimetype ]);
 		messagetitle = strbundle.getString("flvideoreplacermessage");
 
@@ -1314,8 +1355,7 @@ var flvideoreplacerListener = {
 		    false, "", null);
 		}
 	    }
-	    //no available plugin message
-	    if (fmt === "99"){
+	    if (fmt === "99"){//no available plugin message
 
 		message = strbundle.getFormattedString("noreplace", [ mimetype ]);
 		messagetitle = strbundle.getString("flvideoreplacermessage");

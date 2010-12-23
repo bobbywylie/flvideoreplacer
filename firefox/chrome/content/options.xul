@@ -149,9 +149,9 @@
 	    </hbox>
 	    <spacer height="10" flex="0"/>
 	    <hbox>
-		<checkbox label="&Other;" preference="pref_other" id="other" size="30"/>
+		<checkbox label="&Other;" preference="pref_other" id="other" size="30" onclick="flvideoreplacerOptions.toggleOptions();"/>
 		<spacer width="5" flex="0"/>
-		<checkbox label="&AlertOther;" preference="pref_alertother" id="alertother" size="30"/>
+		<checkbox label="&AlertOther;" preference="pref_alertother" id="alertother" size="30" hidden="true"/>
 		<spacer width="10" flex="1"/>
 	    </hbox>
 	    <spacer height="10" flex="0"/>
