@@ -16,6 +16,22 @@ var flvideoreplacerListener = {
 	var sourceurl = doc.location.href;
 	var replacevideo = false, videoelement;
 
+	if(sourceurl.match(/youtube.*watch.*v\=.*html5=True/)){
+
+	    //access preferences interface
+	    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+		    .getService(Components.interfaces.nsIPrefService)
+		    .getBranch("extensions.flvideoreplacer.");
+
+	    //fetch prefs
+	    var preferwebm = this.prefs.getBoolPref("preferwebm");
+	    
+	    if(preferwebm === false){
+		var newlocation = sourceurl.replace(/\&html5=True/,"");
+		doc.location.href = newlocation;
+	    }
+	}
+
 	if((sourceurl.match(/youtube.*watch.*v\=/)  && !sourceurl.match("html5=True")) 
 	      || sourceurl.match(/vimeo\.com\/\d{1,8}/)
 	      || (sourceurl.match(/metacafe\.com\/watch\//) && !sourceurl.match(/http.*http:\/\/www.metacafe\.com/))
