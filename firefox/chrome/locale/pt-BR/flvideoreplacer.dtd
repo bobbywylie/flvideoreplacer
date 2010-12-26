@@ -1,4 +1,4 @@
-<!ENTITY AlertOther "Alertar quando suportado">
+<!ENTITY Alerts "Alertas">
 <!ENTITY Autodetect "Auto-detectar">
 <!ENTITY Autoplay "Tocar vídeos automaticamente">
 <!ENTITY BestPlayer "Melhor Disponível">
@@ -10,6 +10,8 @@
 <!ENTITY DownloadDir "Destino do Download">
 <!ENTITY Embedded "Inserido">
 <!ENTITY EmbeddedVideoDetection "Detecção de vídeos inseridos">
+<!ENTITY EnableErrorAlerts "Habilitar alertas de erros">
+<!ENTITY EnableInfoAlerts "Habilitar alertas informativos">
 <!ENTITY FlashVideoReplacerPreferences "Preferências FlashVideoReplacer">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
 <!ENTITY ForcePluginMimeType "Plugin/MimeType">

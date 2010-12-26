@@ -52,6 +52,8 @@ var flvideoreplacerURLBar = {
 		var playerpath = this.prefs.getCharPref("playerpath");
 		var mimetype = this.prefs.getCharPref("filemime");
 		var baseurl = this.prefs.getCharPref("videourl");
+		var alertserror = this.prefs.getBoolPref("alertserror");
+
 		var videoid = baseurl.replace(/.*clip:/,"").replace(/\/.*/,"");
 		//get localization
 		var strbundle = document.getElementById("flvideoreplacerstrings");
@@ -84,18 +86,23 @@ var flvideoreplacerURLBar = {
 				process.run(false, arguments, arguments.length);
 			    }
 			}else{
-			    message = strbundle.getFormattedString("nostandalone", [ mimetype ]);
+			    if(alertserror === true){
+				message = strbundle.getFormattedString("nostandalone", [ mimetype ]);
+				messagetitle = strbundle.getString("flvideoreplacermessage");
+				//alert user
+				prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+				prompts.alert(window, messagetitle, message);
+			    }
+			}
+		    }catch (e){
+
+			if(alertserror === true){
+			    message = strbundle.getFormattedString("noreplace", [ mimetype ]);
 			    messagetitle = strbundle.getString("flvideoreplacermessage");
 			    //alert user
 			    prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 			    prompts.alert(window, messagetitle, message);
 			}
-		    }catch (e){
-			message = strbundle.getFormattedString("noreplace", [ mimetype ]);
-			messagetitle = strbundle.getString("flvideoreplacermessage");
-			//alert user
-			prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-			prompts.alert(window, messagetitle, message);
 		    }
 
 		}else{
@@ -111,18 +118,24 @@ var flvideoreplacerURLBar = {
 				process.run(false, arguments, arguments.length);
 			    }
 			}else{
-			    message = strbundle.getFormattedString("nostandalone", [ mimetype ]);
+
+			    if(alertserror === true){
+				message = strbundle.getFormattedString("nostandalone", [ mimetype ]);
+				messagetitle = strbundle.getString("flvideoreplacermessage");
+				//alert user
+				alertsService = Components.classes["@mozilla.org/alerts-service;1"].getService(Components.interfaces.nsIAlertsService);
+				alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png", messagetitle, message, false, "", null);
+			    }
+			}
+		    }catch (e){
+
+			if(alertserror === true){
+			    message = strbundle.getFormattedString("noreplace", [ mimetype ]);
 			    messagetitle = strbundle.getString("flvideoreplacermessage");
 			    //alert user
 			    alertsService = Components.classes["@mozilla.org/alerts-service;1"].getService(Components.interfaces.nsIAlertsService);
 			    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png", messagetitle, message, false, "", null);
 			}
-		    }catch (e){
-			message = strbundle.getFormattedString("noreplace", [ mimetype ]);
-			messagetitle = strbundle.getString("flvideoreplacermessage");
-			//alert user
-			alertsService = Components.classes["@mozilla.org/alerts-service;1"].getService(Components.interfaces.nsIAlertsService);
-			alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png", messagetitle, message, false, "", null);
 		    }
 		}
 		try{

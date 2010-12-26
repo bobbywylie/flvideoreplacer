@@ -14,7 +14,7 @@ var flvideoreplacerListener = {
 
 	//declare page url
 	var sourceurl = doc.location.href;
-	var replacevideo = false, videoelement;
+	var replacevideo = false, videoelement, alertsinfo;
 
 	if(sourceurl.match(/youtube.*watch.*v\=.*html5=True/)){
 
@@ -25,8 +25,9 @@ var flvideoreplacerListener = {
 
 	    //fetch prefs
 	    var preferwebm = this.prefs.getBoolPref("preferwebm");
+	    replacevideo = this.prefs.getBoolPref("youtube");
 	    
-	    if(preferwebm === false){
+	    if(preferwebm === false && replacevideo == true){
 		var newlocation = sourceurl.replace(/\&html5=True/,"");
 		doc.location.href = newlocation;
 	    }
@@ -171,9 +172,9 @@ var flvideoreplacerListener = {
 				.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
 
 			//get alert pref
-			var alertother = this.prefs.getBoolPref("alertother");
+			alertsinfo = this.prefs.getBoolPref("alertsinfo");
 
-			if(alertother === true && !osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+			if(alertsinfo === true && !osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
 
 			    //get localization
 			    var strbundle = document.getElementById("flvideoreplacerstrings");
@@ -209,6 +210,8 @@ var flvideoreplacerListener = {
 	var autoplay = this.prefs.getBoolPref("autoplay");
 	var prefermp4 = this.prefs.getBoolPref("prefermp4");
 	var videoquality = this.prefs.getCharPref("videoquality");
+	var alertsinfo = this.prefs.getBoolPref("alertsinfo");
+	var alertserror = this.prefs.getBoolPref("alertserror");
 	var newmimetype = mimetype;
 	//get localization
 	var strbundle = document.getElementById("flvideoreplacerstrings");
@@ -966,22 +969,25 @@ var flvideoreplacerListener = {
 			//don't try to replace
 			replacevideo = false;
 
-			//get text from strbundle
-			message = strbundle.getFormattedString("flashblock", [ aSite ]);
-			messagetitle = strbundle.getString("flvideoreplaceralert");
+			if(alertserror === true){
 
-			if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
-			    //alert user
-			    prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-				    .getService(Components.interfaces.nsIPromptService);
-			    prompts.alert(window, messagetitle, message);
-			}else{
-			    //alert user
-			    alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-				.getService(Components.interfaces.nsIAlertsService);
-			    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-			    messagetitle, message,
-			    false, "", null);
+			    //get text from strbundle
+			    message = strbundle.getFormattedString("flashblock", [ aSite ]);
+			    messagetitle = strbundle.getString("flvideoreplaceralert");
+
+			    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+				//alert user
+				prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+					.getService(Components.interfaces.nsIPromptService);
+				prompts.alert(window, messagetitle, message);
+			    }else{
+				//alert user
+				alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+				    .getService(Components.interfaces.nsIAlertsService);
+				alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+				messagetitle, message,
+				false, "", null);
+			    }
 			}
 		    }
 		}
@@ -1017,22 +1023,25 @@ var flvideoreplacerListener = {
 			//don't try to replace
 			replacevideo = false;
 
-			//get text from strbundle
-			message = strbundle.getFormattedString("mpc", [ aSite ]);
-			messagetitle = strbundle.getString("flvideoreplaceralert");
+			if(alertserror === true){
 
-			if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
-			    //alert user
-			    prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-				    .getService(Components.interfaces.nsIPromptService);
-			    prompts.alert(window, messagetitle, message);
-			}else{
-			    //alert user
-			    alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-				.getService(Components.interfaces.nsIAlertsService);
-			    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-			    messagetitle, message,
-			    false, "", null);
+			    //get text from strbundle
+			    message = strbundle.getFormattedString("mpc", [ aSite ]);
+			    messagetitle = strbundle.getString("flvideoreplaceralert");
+
+			    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+				//alert user
+				prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+					.getService(Components.interfaces.nsIPromptService);
+				prompts.alert(window, messagetitle, message);
+			    }else{
+				//alert user
+				alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+				    .getService(Components.interfaces.nsIAlertsService);
+				alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+				messagetitle, message,
+				false, "", null);
+			    }
 			}
 		    }
 		}
@@ -1320,87 +1329,91 @@ var flvideoreplacerListener = {
 		    }
 		}
 	    }
+	    if(alertsinfo === true){
+		//video info alert
+		if (fmt === "5") {
+		    message = strbundle.getFormattedString("videores", [ "240p flv ("+mimetype+")" ]);
+		}
+		if (fmt === "18") {
+		    message = strbundle.getFormattedString("videores", [ "360p mp4 ("+mimetype+")" ]);
+		}
+		if (fmt === "34") {
+		    message = strbundle.getFormattedString("videores", [ "360p flv ("+mimetype+")" ]);
+		}
+		if (fmt === "35") {
+		    message = strbundle.getFormattedString("videores", [ "480p flv ("+mimetype+")" ]);
+		}
+		if (fmt === "22") {
+		    message = strbundle.getFormattedString("videores", [ "720p mp4 ("+mimetype+")" ]);
+		}
+		if (fmt === "37") {
+		    message = strbundle.getFormattedString("videores", [ "1080p mp4 ("+mimetype+")" ]);
+		}
+		if (fmt === "38") {
+		    message = strbundle.getFormattedString("videores", [ original+" ("+mimetype+")" ]);
+		}
+		if (fmt === "97") {
 
-	    //video info alert
-	    if (fmt === "5") {
-		message = strbundle.getFormattedString("videores", [ "240p flv ("+mimetype+")" ]);
-	    }
-	    if (fmt === "18") {
-		message = strbundle.getFormattedString("videores", [ "360p mp4 ("+mimetype+")" ]);
-	    }
-	    if (fmt === "34") {
-		message = strbundle.getFormattedString("videores", [ "360p flv ("+mimetype+")" ]);
-	    }
-	    if (fmt === "35") {
-		message = strbundle.getFormattedString("videores", [ "480p flv ("+mimetype+")" ]);
-	    }
-	    if (fmt === "22") {
-		message = strbundle.getFormattedString("videores", [ "720p mp4 ("+mimetype+")" ]);
-	    }
-	    if (fmt === "37") {
-		message = strbundle.getFormattedString("videores", [ "1080p mp4 ("+mimetype+")" ]);
-	    }
-	    if (fmt === "38") {
-		message = strbundle.getFormattedString("videores", [ original+" ("+mimetype+")" ]);
-	    }
-	    if (fmt === "97") {
+		    if(videourl.match(/\.mp4/)){
+			message = strbundle.getFormattedString("videores", [ standard+" mp4 ("+mimetype+")" ]);
+		    }else if(videourl.match(/\.flv/)){
+			message = strbundle.getFormattedString("videores", [ standard+" flv ("+mimetype+")" ]);
+		    }else{
+			message = strbundle.getFormattedString("videores", [ standard+" ("+mimetype+")" ]);
+		    }
+		}
+		//trigger alerts
+		if (fmt !== "98" && fmt !== "99") {//standard resolution message
 
-		if(videourl.match(/\.mp4/)){
-		    message = strbundle.getFormattedString("videores", [ standard+" mp4 ("+mimetype+")" ]);
-		}else if(videourl.match(/\.flv/)){
-		    message = strbundle.getFormattedString("videores", [ standard+" flv ("+mimetype+")" ]);
-		}else{
-		    message = strbundle.getFormattedString("videores", [ standard+" ("+mimetype+")" ]);
+		    if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+			messagetitle = strbundle.getString("flvideoreplacermessage");
+			//alert user
+			alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+				.getService(Components.interfaces.nsIAlertsService);
+			alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+			messagetitle, message,
+			false, "", null);
+		    }
 		}
 	    }
-	    //trigger alerts
-	    if (fmt !== "98" && fmt !== "99") {//standard resolution message
+	    if(alertserror === true){
 
-		if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+		if (fmt === "98"){//no available player message
+		    message = strbundle.getFormattedString("nostandalone", [ mimetype ]);
 		    messagetitle = strbundle.getString("flvideoreplacermessage");
-		    //alert user
-		    alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+
+		    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+			//alert user
+			prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+				.getService(Components.interfaces.nsIPromptService);
+			prompts.alert(window, messagetitle, message);
+		    }else{
+			//alert user
+			alertsService = Components.classes["@mozilla.org/alerts-service;1"]
 			    .getService(Components.interfaces.nsIAlertsService);
-		    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-		    messagetitle, message,
-		    false, "", null);
+			alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+			messagetitle, message,
+			false, "", null);
+		    }
 		}
-	    }
-	    if (fmt === "98"){//no available player message
-		message = strbundle.getFormattedString("nostandalone", [ mimetype ]);
-		messagetitle = strbundle.getString("flvideoreplacermessage");
+		if (fmt === "99"){//no available plugin message
 
-		if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
-		    //alert user
-		    prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			    .getService(Components.interfaces.nsIPromptService);
-		    prompts.alert(window, messagetitle, message);
-		}else{
-		    //alert user
-		    alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-			.getService(Components.interfaces.nsIAlertsService);
-		    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-		    messagetitle, message,
-		    false, "", null);
-		}
-	    }
-	    if (fmt === "99"){//no available plugin message
+		    message = strbundle.getFormattedString("noreplace", [ mimetype ]);
+		    messagetitle = strbundle.getString("flvideoreplacermessage");
 
-		message = strbundle.getFormattedString("noreplace", [ mimetype ]);
-		messagetitle = strbundle.getString("flvideoreplacermessage");
-
-		if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
-		    //alert user
-		    prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			    .getService(Components.interfaces.nsIPromptService);
-		    prompts.alert(window, messagetitle, message);
-		}else{
-		    //alert user
-		    alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-			.getService(Components.interfaces.nsIAlertsService);
-		    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-		    messagetitle, message,
-		    false, "", null);
+		    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+			//alert user
+			prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+				.getService(Components.interfaces.nsIPromptService);
+			prompts.alert(window, messagetitle, message);
+		    }else{
+			//alert user
+			alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+			    .getService(Components.interfaces.nsIAlertsService);
+			alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+			messagetitle, message,
+			false, "", null);
+		    }
 		}
 	    }
 	}
@@ -1412,13 +1425,18 @@ var flvideoreplacerListener = {
 	var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
 		.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
 
+	//access preferences interface
+	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+		.getService(Components.interfaces.nsIPrefService)
+		.getBranch("extensions.flvideoreplacer.");
+
+	//get alerts prefs
+	var alertsinfo = this.prefs.getBoolPref("alertsinfo");
+
 	//declare document and element
 	var doc = aEvent.originalTarget; // doc is document that triggered "onload" event
 	//declare page url
 	var sourceurl = doc.location.href;
-
-	//get localization
-	var strbundle = document.getElementById("flvideoreplacerstrings");
 
 	if(sourceurl.match(/youtube.*watch.*v\=/)){
 
@@ -1429,16 +1447,21 @@ var flvideoreplacerListener = {
 	    //load webm page
 	    doc.location.href = webmurl;
 
-	    var message = strbundle.getFormattedString("videores", [ "HTML5 WebM" ]);
-	    var messagetitle = strbundle.getString("flvideoreplacermessage");
+	    if(alertsinfo === true){
 
-	    if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
-		//alert user
-		var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-			.getService(Components.interfaces.nsIAlertsService);
-		alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-		messagetitle, message,
-		false, "", null);
+		//get localization
+		var strbundle = document.getElementById("flvideoreplacerstrings");
+		var message = strbundle.getFormattedString("videores", [ "HTML5 WebM" ]);
+		var messagetitle = strbundle.getString("flvideoreplacermessage");
+
+		if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+		    //alert user
+		    var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+			    .getService(Components.interfaces.nsIAlertsService);
+		    alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+		    messagetitle, message,
+		    false, "", null);
+		}
 	    }
 	}
     },

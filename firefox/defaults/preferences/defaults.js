@@ -2,7 +2,8 @@ pref("extensions.flvideoreplacer.youtube", true);
 pref("extensions.flvideoreplacer.vimeo", true);
 pref("extensions.flvideoreplacer.metacafe", true);
 pref("extensions.flvideoreplacer.other", true);
-pref("extensions.flvideoreplacer.alertother", true);
+pref("extensions.flvideoreplacer.alertsinfo", true);
+pref("extensions.flvideoreplacer.alertserror", true);
 
 pref("extensions.flvideoreplacer.method", "prompt");
 pref("extensions.flvideoreplacer.promptmethod", "embedded");

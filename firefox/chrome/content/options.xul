@@ -17,7 +17,8 @@
 	    <preference id="pref_vimeo" name="extensions.flvideoreplacer.vimeo" type="bool"/>
 	    <preference id="pref_metacafe" name="extensions.flvideoreplacer.metacafe" type="bool"/>
 	    <preference id="pref_other" name="extensions.flvideoreplacer.other" type="bool"/>
-	    <preference id="pref_alertother" name="extensions.flvideoreplacer.alertother" type="bool"/>
+	    <preference id="pref_alertsinfo" name="extensions.flvideoreplacer.alertsinfo" type="bool"/>
+	    <preference id="pref_alertserror" name="extensions.flvideoreplacer.alertserror" type="bool"/>
 	    <preference id="pref_method" name="extensions.flvideoreplacer.method" type="string"/>
 	    <preference id="pref_mimetype" name="extensions.flvideoreplacer.mimetype" type="string"/>
 	    <preference id="pref_videoquality" name="extensions.flvideoreplacer.videoquality" type="string"/>
@@ -150,8 +151,6 @@
 	    <spacer height="10" flex="0"/>
 	    <hbox>
 		<checkbox label="&Other;" preference="pref_other" id="other" size="30" onclick="flvideoreplacerOptions.toggleOptions();"/>
-		<spacer width="5" flex="0"/>
-		<checkbox label="&AlertOther;" preference="pref_alertother" id="alertother" size="30" hidden="true"/>
 		<spacer width="10" flex="1"/>
 	    </hbox>
 	    <spacer height="10" flex="0"/>
@@ -169,6 +168,15 @@
 		<checkbox label="&PreferMP4;" preference="pref_prefermp4" id="prefermp4" size="30"/>
 		<spacer width="10" flex="1"/>
 	    </hbox>
+	    <spacer height="10" flex="0"/>
+	    <caption label="&Alerts;" /> 
+	    <spacer height="10" flex="0"/>
+	    <hbox>
+		<checkbox label="&EnableErrorAlerts;" preference="pref_alertserror" id="alertserror" size="30"/>
+		<spacer width="5" flex="0"/>
+		<checkbox label="&EnableInfoAlerts;" preference="pref_alertsinfo" id="alertsinfo" size="30"/>
+		<spacer width="10" flex="1"/>
+	    </hbox>	   
 	</vbox>
     </prefpane>
 </prefwindow>

@@ -156,18 +156,6 @@ var flvideoreplacerOptions = {
 	//get elements values
 	var standalone = document.getElementById('standalone').value;
 	var replacemethod = document.getElementById('method').value;
-	var replaceother = document.getElementById('other').checked;
-
-	if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
-
-	    if(replaceother === false){
-		document.getElementById("alertother").hidden = true;
-	    }else{
-		document.getElementById("alertother").hidden = false;
-	    }
-	}else{
-	    document.getElementById("alertother").hidden = true;
-	}
 
 	if(osString.match(/Windows/)){
 
