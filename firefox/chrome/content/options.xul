@@ -94,7 +94,7 @@
 			<menulist id="standalone" width="330" onselect="flvideoreplacerOptions.toggleOptions();">
 			    <menupopup>
 				<menuitem id="playercustom" label="&Custom;" value="playercustom"/>
-				<menuitem id="playerbest" label="&BestPlayer;" value="playerbest" selected="true" />
+				<menuitem id="playerbest" label="&BestPlayer;" value="playerbest"/>
 				<menuitem id="playerbsp" label="BS.Player" value="playerbsp" />
 				<menuitem id="playergmplayer" label="Gnome MPlayer" value="playergmplayer" />
 				<menuitem id="playerkaffeine" label="Kaffeine" value="playerkaffeine" />
