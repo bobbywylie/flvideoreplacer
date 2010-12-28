@@ -1,25 +1,230 @@
 <!doctype html>
 <html lang="en">
-  <head>
-      <script type='text/javascript'>
+    <head>
+	<script type='text/javascript'>
 
-	  window.addEventListener("load", function(){
-	      var FVRButton;
-	      var toolbar = opera.contexts.toolbar;
-	      var ToolbarUIItemProperties = {
-		  disabled: false,
-		  title: "FlashVideoReplacer",
-		  icon: "icons/flvideoreplacer18.png",
-		  popup: {
-		      href: "popup.html",
-		      width: 550,
-		      height: 400
-		  },
-	      }
-	      FVRButton = toolbar.createItem( ToolbarUIItemProperties );
-	      toolbar.addItem( FVRButton );
+	    window.addEventListener("load", function(){
+		var FVRButton;
+		var toolbar = opera.contexts.toolbar;
+		var ToolbarUIItemProperties = {
+		    disabled: false,
+		    title: "FlashVideoReplacer",
+		    icon: "icons/flvideoreplacer18.png",
+		    popup: {
+			href: "options.html",
+			width: 800,
+			height: 600
+		    },
+		}
+		FVRButton = toolbar.createItem( ToolbarUIItemProperties );
+		toolbar.addItem( FVRButton );
 
-	  }, false);
+		//receive message from popup
+		opera.extension.onmessage = function (event){
+
+		    var sourceurl = event.data;
+		    var replacevideo = "0", pagecontent, newline, videourl, videoid;
+		    var prefs = {};
+		    prefs.replacemethod = widget.preferences.replacemethod;
+		    prefs.videoquality = widget.preferences.videoquality;
+		    prefs.preferwebm = widget.preferences.preferwebm;
+		    prefs.prefermp4 = widget.preferences.prefermp4;
+		    prefs.mimetype = widget.preferences.mimetype;
+		    prefs.autoplay = widget.preferences.autoplay;
+
+		    if(sourceurl.match(/youtube.*watch.*v\=/)){
+
+			prefs.youtube = widget.preferences.youtube;
+
+			if(prefs.youtube === "1"){
+
+			    //fetch video ID from url
+			    videoid = sourceurl.replace(/.*v\=/, "").replace(/\&.*/,"");
+			    prefs.videoid = videoid;
+
+			    if(!sourceurl.match(/html5=True/)){
+
+				if(prefs.preferwebm === "1"){
+
+				    prefs.preferwebm === "0"
+				    //webm redirect url
+				    var redirecturl = "http://www.youtube.com/watch?v="+videoid+"&html5=True";
+
+				    try{
+					var webmRequest = new XMLHttpRequest();
+					webmRequest.open('GET', redirecturl, false);
+					webmRequest.onreadystatechange=function(){
+					    if (webmRequest.readyState === 4 && webmRequest.status === 200) {
+						var webmsource = webmRequest.responseText;
+						var newlinewebm = webmsource.split("\n");
+						var replacewebm = false;
+						for(var i=0; i< newlinewebm.length; i++){
+						    //match patterns
+						    var html5player = /html5-player/.test(newlinewebm[i]);
+						    if (html5player === true) {
+							replacewebm = true;
+						    }
+						}
+						if(replacewebm === true){
+						    //load webm page
+						    prefs.preferwebm = "1";
+						    replacevideo = "1";
+						}
+					    }
+					};
+					webmRequest.send(null);
+				    }catch(e){
+					//do nothing
+				    }
+				}else{
+				    replacevideo = "1";
+				}
+			    }else{
+				if(prefs.preferwebm === "0"){
+				    replacevideo = "1";
+				}
+			    }
+			}
+		    }
+		    if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+
+			prefs.vimeo = widget.preferences.vimeo;
+			var signature = false, signature_expires = false, request_signature, request_signature_expires;
+
+			if(prefs.vimeo === "1"){
+
+			    //fetch video ID from url
+			    videoid = sourceurl.replace(/.*\//g, "");
+			    prefs.videoid = videoid;
+			    //declare xml file with authentication data to be downloaded
+			    xmlsource = "http://vimeo.com/moogaloop/load/clip:"+videoid;
+
+			    //get xml document content
+			    req = new XMLHttpRequest();  
+			    req.open('GET', xmlsource, false);   
+			    req.send(null);  
+			    if(req.status === 200) {//match if data has been downloaded and execute function
+
+				//read lines
+				pagecontent = req.responseText;
+				newline = pagecontent.split("\n");
+
+				for(var i=0; i< newline.length; i++){
+
+				    //match patterns
+				    var matchrequest_signature = /<request_signature>/.test(newline[i]);
+				    var matchrequest_signature_expires = /<request_signature_expires>/.test(newline[i]);
+
+				    if (matchrequest_signature === true) {
+
+					//replace unneeded characters and declare new value
+					request_signature = newline[i].replace(/<request_signature>/, "");
+					request_signature = request_signature.replace(/<\/request_signature>/, "");
+					request_signature = request_signature.replace(/\s/g, "");
+					//declare the video should be replaced
+					signature = true;
+				    }
+
+				    if (matchrequest_signature_expires === true) {
+
+					//replace unneeded characters and declare new value
+					request_signature_expires = newline[i].replace(/<request_signature_expires>/, "");
+					request_signature_expires = request_signature_expires.replace(/<\/request_signature_expires>/, "");
+					request_signature_expires = request_signature_expires.replace(/\s/g, "");
+					//declare the video should be replaced
+					signature_expires = true;
+				    }
+				}
+
+				if(signature === true && signature_expires === true){
+				    replacevideo = "1";
+				    prefs.videourl = "http://vimeo.com/moogaloop/play/clip:"+videoid+"/"+request_signature+"/"+request_signature_expires+"/?q=sd";
+				}
+			    }
+
+			}
+		    }
+		    if((sourceurl.match(/metacafe\.com\/watch\//) && !sourceurl.match(/http.*http:\/\/www.metacafe\.com/))){
+
+			prefs.metacafe = widget.preferences.metacafe;
+
+			if(prefs.metacafe === "1"){
+
+			    //fetch video ID from url
+			    videoid = sourceurl.replace(/.*watch\//, "").replace(/\/.*/,"");
+			    prefs.videoid = videoid;
+			    replacevideo = "1";
+			}
+		    }
+		    if(sourceurl.match(/youporn/)){
+
+			prefs.other = widget.preferences.other;
+
+			if(prefs.other === "1"){
+
+			    //get xml document content
+			    req = new XMLHttpRequest();  
+			    req.open('GET', sourceurl, false);   
+			    req.send(null);  
+			    if(req.status === 200) {//match if data has been downloaded and execute function
+
+				//read lines
+				pagecontent = req.responseXML;
+
+				var eltrackList = pagecontent.getElementsByTagName('trackList');
+				var eltrack = pagecontent.getElementsByTagName('track');
+				var elurl = pagecontent.getElementsByTagName('location');
+				
+				if (eltrackList.length > 0){
+				    try{
+					for(var i=0; i< eltrack.length; i++){
+					    if(eltrack[0]){
+						videourl = elurl[0].firstChild.nodeValue;
+						if(elurl[0]){
+						    prefs.videourl = videourl;
+						    replacevideo = "1";
+						    videoid = "0";
+						}
+					    }
+					}
+				    }catch(e){
+				      //do nothing
+				    }
+				}
+			    }
+			}
+		    }
+		    if(sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)){
+
+			prefs.other = widget.preferences.other;
+
+			if(prefs.other === "1"){
+
+			    //fetch video ID from url
+			    videoid = sourceurl.replace(/.*viewkey=/g, "");
+			    prefs.videoid = videoid;
+			    replacevideo = "1";
+			}
+		    }
+		    if(sourceurl.match(/redtube\.com\/\d{1,8}/)){
+
+			prefs.other = widget.preferences.other;
+
+			if(prefs.other === "1"){
+
+			    //fetch video ID from url
+			    videoid = sourceurl.replace(/.*redtube\.com\//g, "");
+			    prefs.videoid = videoid;
+			    replacevideo = "1";
+			}
+		    }
+		    if(replacevideo === "1"){
+
+			var JSONprefs = JSON.stringify(prefs);
+			event.source.postMessage(JSONprefs);
+		    }
+		};
+	    }, false);
       </script>
   </head>
   <body>

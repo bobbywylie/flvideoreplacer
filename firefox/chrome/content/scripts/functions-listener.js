@@ -73,7 +73,7 @@ var flvideoreplacerListener = {
 	    }
 	    if(sourceurl.match(/redtube\.com\/\d{1,8}/)){
 		replacevideo = this.prefs.getBoolPref("other");
-		videoelement = "redtubeplayer";
+		videoelement = "redtube_flv_player";
 	    }
 
 	    //declare element to be replaced
@@ -878,7 +878,7 @@ var flvideoreplacerListener = {
 	    //fetch video ID from url
 	    videoid = sourceurl.replace(/.*redtube\.com\//g, "");
 	    //declare element to be replaced
-	    videoelement = "redtubeplayer";
+	    videoelement = "redtube_flv_player";
 	    testelement = doc.getElementById(videoelement);
 
 	    if (testelement !== null) {
@@ -894,7 +894,7 @@ var flvideoreplacerListener = {
 
 		    if (matchpattern === true) {
 
-			videourl = newline[i].replace(/.*hashlink=/,"").replace(/\&embed.*/g,"");
+			videourl = newline[i].replace(/.*hashlink=/,"").replace(/\&.*/g,"");
 			videourl = decodeURIComponent(videourl);
 			replacevideo = true;
 		    }
@@ -905,7 +905,7 @@ var flvideoreplacerListener = {
 		    //declare player params
 		    videowidth = "584";
 		    videoheight = "468";
-		    videoelement = "redtubeplayer";
+		    videoelement = "redtube_flv_player";
 		    //declare strings to be used by extension incompatibility check
 		    aSite = "RedTube";
 		    aString = "redtube";

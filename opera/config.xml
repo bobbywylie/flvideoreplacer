@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets" version = "1.0.0" id="extensions:flvideoreplacer">
 	<name>FlashVideoReplacer</name>
-	<description>Replace embedded flash videos with Quicktime and Windows Media Player compatible videos.</description>
-  	<author href="http://flvideoreplacer-extension.blogspot.com/p/opera.html" email="lovinglinux@gmail.com">lovinglinux</author>
+	<description>Replace embedded flash videos and display them with a different plugin.</description>
+  	<author href="http://www.webgapps.org/addons/flashvideoreplacer" email="support@webgapps.org">webgapps</author>
   	<icon src="icons/flvideoreplacer64.png"/>
   	<access origin="http://www.youtube.com" subdomains="true"/>
 	<access origin="http://vimeo.com" subdomains="true"/>
-	<access origin="http://blip.tv" subdomains="true"/>
+	<access origin="http://www.metacafe.com" subdomains="true"/>
+	<access origin="http://www.pornhub.com" subdomains="true"/>
+	<access origin="http://www.youporn.com" subdomains="true"/>
+	<access origin="http://download.youporn.com" subdomains="true"/>
+	<access origin="http://www.redtube.com" subdomains="true"/>
+  	<preference name="youtube" value="1"/>
+  	<preference name="vimeo" value="1"/>
+  	<preference name="metacafe" value="1"/>
+  	<preference name="other" value="1"/>
+  	<preference name="preferwebm" value="0"/>
+  	<preference name="replacemethod" value="embedded"/>
+  	<preference name="videoquality" value="MEDIUM"/>
+  	<preference name="mimetype" value="autodetect"/>
+  	<preference name="autoplay" value="1"/>
 </widget> 
