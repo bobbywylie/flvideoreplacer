@@ -290,5 +290,5 @@ var flvideoreplacerFirstrun = {
 };
 //event listeners to call the functions when Firefox starts and closes
 window.addEventListener("load",function(){ flvideoreplacerFirstrun.init(); },true);
-window.addEventListener("load", function(e) { setTimeout("flvideoreplacerFirstrun.pluginCheck()",150); }, false);
-window.addEventListener("load", function(e) { setTimeout("flvideoreplacerFirstrun.playerCheck()",300); }, false);
+window.addEventListener("load", function(e) { setTimeout(function () { flvideoreplacerFirstrun.pluginCheck(); }, 150); }, false);
+window.addEventListener("load", function(e) { setTimeout(function () { flvideoreplacerFirstrun.playerCheck(); }, 300); }, false);
