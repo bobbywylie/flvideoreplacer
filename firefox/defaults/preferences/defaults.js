@@ -16,10 +16,10 @@ pref("extensions.flvideoreplacer.autoplay", true);
 pref("extensions.flvideoreplacer.downdir", "");
 pref("extensions.flvideoreplacer.videourl", "");
 
-pref("extensions.flvideoreplacer.pluginvmp4", false);
-pref("extensions.flvideoreplacer.pluginxflv", false);
-pref("extensions.flvideoreplacer.pluginaqt", false);
-pref("extensions.flvideoreplacer.pluginawmp", false);
+pref("extensions.flvideoreplacer.pluginmp4", false);
+pref("extensions.flvideoreplacer.pluginflv", false);
+pref("extensions.flvideoreplacer.pluginqt", false);
+pref("extensions.flvideoreplacer.pluginwmp", false);
 
 pref("extensions.flvideoreplacer.playerpath", "");
 pref("extensions.flvideoreplacer.playercustom", true);

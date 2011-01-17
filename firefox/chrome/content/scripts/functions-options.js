@@ -13,10 +13,10 @@ var flvideoreplacerOptions = {
 
 	    //get plugin info
 	    var replacemethod = this.prefs.getCharPref("method");
-	    var pluginvmp4 = this.prefs.getBoolPref("pluginvmp4");
-	    var pluginxflv = this.prefs.getBoolPref("pluginxflv");
-	    var pluginaqt = this.prefs.getBoolPref("pluginaqt");
-	    var pluginawmp = this.prefs.getBoolPref("pluginawmp");
+	    var pluginmp4 = this.prefs.getBoolPref("pluginmp4");
+	    var pluginflv = this.prefs.getBoolPref("pluginflv");
+	    var pluginqt = this.prefs.getBoolPref("pluginqt");
+	    var pluginwmp = this.prefs.getBoolPref("pluginwmp");
 
 	    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 		if(replacemethod === "standalone"){
@@ -30,27 +30,27 @@ var flvideoreplacerOptions = {
 		this.prefs.setBoolPref("prefermp4",true);
 	    }else{
 
-		if(pluginvmp4 === true){
-		    document.getElementById("pluginvmp4").hidden=false;
+		if(pluginmp4 === true){
+		    document.getElementById("pluginmp4").hidden=false;
 		}else{
-		    document.getElementById("pluginvmp4").hidden=true;
+		    document.getElementById("pluginmp4").hidden=true;
 		}
-		if(pluginxflv === true){
-		    document.getElementById("pluginxflv").hidden=false;
+		if(pluginflv === true){
+		    document.getElementById("pluginflv").hidden=false;
 		}else{
-		    document.getElementById("pluginxflv").hidden=true;
+		    document.getElementById("pluginflv").hidden=true;
 		}
-		if(pluginaqt === true){
-		    document.getElementById("pluginaqt").hidden=false;
+		if(pluginqt === true){
+		    document.getElementById("pluginqt").hidden=false;
 		}else{
-		    document.getElementById("pluginaqt").hidden=true;
+		    document.getElementById("pluginqt").hidden=true;
 		}
-		if(pluginawmp === true){
-		    document.getElementById("pluginawmp").hidden=false;
+		if(pluginwmp === true){
+		    document.getElementById("pluginwmp").hidden=false;
 		}else{
-		    document.getElementById("pluginawmp").hidden=true;
+		    document.getElementById("pluginwmp").hidden=true;
 		}
-		if(pluginvmp4 === false && pluginxflv === false){
+		if(pluginmp4 === false && pluginflv === false){
 		    this.prefs.setCharPref("method","standalone");
 		    document.getElementById("mprompt").hidden=true;
 		    document.getElementById("membed").hidden=true;
@@ -58,10 +58,10 @@ var flvideoreplacerOptions = {
 		    document.getElementById("mnewwin").hidden=true;
 		    document.getElementById("mstand").hidden=false;
 		}
-		if(pluginvmp4 === true && pluginxflv === false){
+		if(pluginmp4 === true && pluginflv === false){
 		    this.prefs.setBoolPref("prefermp4",true);
 		}
-		if(pluginvmp4 === false && pluginxflv === true){
+		if(pluginmp4 === false && pluginflv === true){
 		    this.prefs.setBoolPref("prefermp4",false);
 		}
 	    }
@@ -489,19 +489,19 @@ var flvideoreplacerOptions = {
 	    var playerwmp = this.prefs.getBoolPref("playerwmp");
 
 	    //get plugin info
-	    var pluginvmp4 = this.prefs.getBoolPref("pluginvmp4");
-	    var pluginxflv = this.prefs.getBoolPref("pluginxflv");
-	    var pluginaqt = this.prefs.getBoolPref("pluginaqt");
-	    var pluginawmp = this.prefs.getBoolPref("pluginawmp");
+	    var pluginmp4 = this.prefs.getBoolPref("pluginmp4");
+	    var pluginflv = this.prefs.getBoolPref("pluginflv");
+	    var pluginqt = this.prefs.getBoolPref("pluginqt");
+	    var pluginwmp = this.prefs.getBoolPref("pluginwmp");
 
 	    //declare variables
 	    var pluginstatus, bestplugin = false, forcedplugin = false, pluginavaliable, istream;
 
-	    if(pluginvmp4 === true && pluginxflv === true){
+	    if(pluginmp4 === true && pluginflv === true){
 		pluginstatus = "full";
-	    }else if(pluginvmp4 === true && pluginxflv === false){
+	    }else if(pluginmp4 === true && pluginflv === false){
 		pluginstatus = "application/x-flv";
-	    }else if(pluginvmp4 === false && pluginxflv === true){
+	    }else if(pluginmp4 === false && pluginflv === true){
 		pluginstatus = "video/mp4";
 	    }else{
 		pluginstatus = "noplugin";

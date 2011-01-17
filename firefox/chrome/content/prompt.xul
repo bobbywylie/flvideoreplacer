@@ -35,19 +35,19 @@
 				.getBranch("extensions.flvideoreplacer.");
 		
 				//get plugin compatibility
-				var pluginvmp4 = this.prefs.getBoolPref("pluginvmp4");
-				var pluginxflv = this.prefs.getBoolPref("pluginxflv");
+				var pluginmp4 = this.prefs.getBoolPref("pluginmp4");
+				var pluginflv = this.prefs.getBoolPref("pluginflv");
 		
-				if(pluginvmp4 == false && pluginxflv == false){
+				if(pluginmp4 == false && pluginflv == false){
 				    this.prefs.setCharPref("promptmethod","standalone");
 				    document.getElementById("membed").hidden=true;
 				    document.getElementById("mnewtab").hidden=true;
 				    document.getElementById("mnewwin").hidden=true;
 				}
-				if(pluginvmp4 == true && pluginxflv == false){
+				if(pluginmp4 == true && pluginflv == false){
 				    this.prefs.setBoolPref("prefermp4",true);
 				}
-				if(pluginvmp4 == false && pluginxflv == true){
+				if(pluginmp4 == false && pluginflv == true){
 				    this.prefs.setBoolPref("prefermp4",false);
 				}
 			    }

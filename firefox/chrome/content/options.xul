@@ -57,10 +57,10 @@
 						<menulist preference="pref_mimetype" id="mimetype">
 							<menupopup>
 								<menuitem label="&Autodetect;" value="autodetect" selected="true" />
-								<menuitem id="pluginvmp4" label="MP4 (video/mp4)" value="video/mp4"/>
-								<menuitem id="pluginaqt" label="QT (video/quicktime)" value="video/quicktime" />
-								<menuitem id="pluginawmp" label="WMP (application/x-mplayer2)" value="application/x-mplayer2" />
-								<menuitem id="pluginxflv" label="FLV (application/x-flv)" value="application/x-flv"/>
+								<menuitem id="pluginmp4" label="MP4 (video/mp4)" value="video/mp4"/>
+								<menuitem id="pluginqt" label="QT (video/quicktime)" value="video/quicktime" />
+								<menuitem id="pluginwmp" label="WMP (application/x-mplayer2)" value="application/x-mplayer2" />
+								<menuitem id="pluginflv" label="FLV (application/x-flv)" value="application/x-flv"/>
 							</menupopup>
 						</menulist>
 					</hbox>

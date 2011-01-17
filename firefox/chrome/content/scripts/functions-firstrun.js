@@ -109,10 +109,10 @@ var flvideoreplacerFirstrun = {
 	    .getBranch("extensions.flvideoreplacer.");
 
 	    //reset plugin check
-	    this.prefs.setBoolPref("pluginvmp4",false);
-	    this.prefs.setBoolPref("pluginxflv",false);
-	    this.prefs.setBoolPref("pluginaqt",false);
-	    this.prefs.setBoolPref("pluginawmp",false);
+	    this.prefs.setBoolPref("pluginmp4",false);
+	    this.prefs.setBoolPref("pluginflv",false);
+	    this.prefs.setBoolPref("pluginqt",false);
+	    this.prefs.setBoolPref("pluginwmp",false);
 
 	    //initiate file
 	    var pluginreg = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -131,21 +131,21 @@ var flvideoreplacerFirstrun = {
 		lines.push(line.value);
 
 		//check plugins by mime-type
-		var pluginxflv = /video.*x.*flv/.test(line.value);
-		if (pluginxflv === true) {
-		    this.prefs.setBoolPref("pluginxflv",true);
+		var pluginflv = /video.*x.*flv/.test(line.value);
+		if (pluginflv === true) {
+		    this.prefs.setBoolPref("pluginflv",true);
 		}
-		var pluginvmp4 = /video.*mp4/.test(line.value);
-		if (pluginvmp4 === true) {
-		    this.prefs.setBoolPref("pluginvmp4",true);
+		var pluginmp4 = /video.*mp4/.test(line.value);
+		if (pluginmp4 === true) {
+		    this.prefs.setBoolPref("pluginmp4",true);
 		}
-		var pluginaqt = /video.*quicktime/.test(line.value);
-		if (pluginaqt === true) {
-		    this.prefs.setBoolPref("pluginaqt",true);
+		var pluginqt = /video.*quicktime/.test(line.value);
+		if (pluginqt === true) {
+		    this.prefs.setBoolPref("pluginqt",true);
 		}
-		var pluginawmp = /application.*x-mplayer2/.test(line.value);
-		if (pluginawmp === true) {
-		    this.prefs.setBoolPref("pluginawmp",true);
+		var pluginwmp = /application.*x-mplayer2/.test(line.value);
+		if (pluginwmp === true) {
+		    this.prefs.setBoolPref("pluginwmp",true);
 		}
 	    } while(hasmore);
 	    istream.close();

@@ -1061,17 +1061,17 @@ var flvideoreplacerListener = {
 		if(replacemethod === "embedded"){
 
 		    //get plugin compatibility
-		    var pluginvmp4 = this.prefs.getBoolPref("pluginvmp4");
-		    var pluginxflv = this.prefs.getBoolPref("pluginxflv");
-		    var pluginaqt = this.prefs.getBoolPref("pluginaqt");
-		    var pluginawmp = this.prefs.getBoolPref("pluginawmp");
+		    var pluginmp4 = this.prefs.getBoolPref("pluginmp4");
+		    var pluginflv = this.prefs.getBoolPref("pluginflv");
+		    var pluginqt = this.prefs.getBoolPref("pluginqt");
+		    var pluginwmp = this.prefs.getBoolPref("pluginwmp");
 
 		    if(newmimetype === "application/x-flv"){
 
 			//declare element to be replaced
 			videoplayer = doc.getElementById(videoelement);
 
-			if(pluginxflv === true){
+			if(pluginflv === true){
 
 			    //create the object element
 			    flvideoreplacer = doc.createElement('object');
@@ -1100,7 +1100,7 @@ var flvideoreplacerListener = {
 			//declare element to be replaced
 			videoplayer = doc.getElementById(videoelement);
 
-			if(pluginvmp4 === true){
+			if(pluginmp4 === true){
 
 			    //create the object element
 			    flvideoreplacer = doc.createElement('object');
@@ -1132,7 +1132,7 @@ var flvideoreplacerListener = {
 			//declare element to be replaced
 			videoplayer = doc.getElementById(videoelement);
 
-			if(pluginaqt === true){
+			if(pluginqt === true){
 			    //create the object element
 			    flvideoreplacer = doc.createElement('object');
 			    flvideoreplacer.setAttribute("width", videowidth);
@@ -1161,7 +1161,7 @@ var flvideoreplacerListener = {
 			//declare element to be replaced
 			videoplayer = doc.getElementById(videoelement);
 
-			if(pluginawmp === true){
+			if(pluginwmp === true){
 
 			    //create the object element
 			    flvideoreplacer = doc.createElement('object');
