@@ -2,6 +2,7 @@ pref("extensions.flvideoreplacer.youtube", true);
 pref("extensions.flvideoreplacer.vimeo", true);
 pref("extensions.flvideoreplacer.metacafe", true);
 pref("extensions.flvideoreplacer.bliptv", true);
+pref("extensions.flvideoreplacer.ustream", true);
 pref("extensions.flvideoreplacer.other", true);
 pref("extensions.flvideoreplacer.alertsinfo", true);
 pref("extensions.flvideoreplacer.alertserror", true);

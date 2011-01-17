@@ -17,6 +17,7 @@
 			<preference id="pref_vimeo" name="extensions.flvideoreplacer.vimeo" type="bool"/>
 			<preference id="pref_metacafe" name="extensions.flvideoreplacer.metacafe" type="bool"/>
 			<preference id="pref_bliptv" name="extensions.flvideoreplacer.bliptv" type="bool" />
+			<preference id="pref_ustream" name="extensions.flvideoreplacer.ustream" type="bool" />
 			<preference id="pref_other" name="extensions.flvideoreplacer.other" type="bool"/>
 			<preference id="pref_alertsinfo" name="extensions.flvideoreplacer.alertsinfo" type="bool"/>
 			<preference id="pref_alertserror" name="extensions.flvideoreplacer.alertserror" type="bool"/>
@@ -161,6 +162,12 @@
 				<checkbox label="Metacafe" preference="pref_metacafe" id="metacafe" size="30"/>
 				<spacer width="10" flex="0"/>
 				<checkbox label="Blip.tv" preference="pref_bliptv" id="bliptv" size="30" />
+				<spacer width="10" flex="1"/>
+			</hbox>
+			<spacer height="10" flex="0"/>
+			<hbox>
+				<checkbox label="Ustream" preference="pref_ustream" id="ustream" size="30"/>
+				<!--<spacer width="10" flex="0"/>-->
 				<spacer width="10" flex="1"/>
 			</hbox>
 			<spacer height="10" flex="0"/>

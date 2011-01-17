@@ -14,7 +14,7 @@ var flvideoreplacerListener = {
 	    .getService(Components.interfaces.nsIPrefService)
 	    .getBranch("extensions.flvideoreplacer.");
 	    
-	    var delay = this.prefs.getIntPref("delay")
+	    var delay = this.prefs.getIntPref("delay");
 	    
 	    setTimeout(function () { 
 
@@ -46,6 +46,7 @@ var flvideoreplacerListener = {
 			|| sourceurl.match(/vimeo\.com\/\d{1,8}/)
 			|| (sourceurl.match(/metacafe\.com\/watch\//) && !sourceurl.match(/http.*http:\/\/www.metacafe\.com/))
 			|| sourceurl.match(/blip\.tv\/file\/.*/)
+			|| sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)
 			|| sourceurl.match(/youporn\.com\/watch\//)
 			|| sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
 			|| sourceurl.match(/redtube\.com\/\d{1,8}/)
@@ -77,6 +78,10 @@ var flvideoreplacerListener = {
 			replacevideo = this.prefs.getBoolPref("bliptv");
 			videoelement = "video_player";
 		    }
+		    if(sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)){
+			replacevideo = this.prefs.getBoolPref("ustream");
+			videoelement = "v2";
+		    }	    
 		    if(sourceurl.match(/youporn\.com\/watch\//)){
 			replacevideo = this.prefs.getBoolPref("other");
 			videoelement = "player";
@@ -170,6 +175,7 @@ var flvideoreplacerListener = {
 			    if(sourceurl.match(/vimeo\.com\/\d{1,8}/) 
 				    || sourceurl.match(/metacafe\.com\/watch\//) 
 				    || sourceurl.match(/blip\.tv\/file\/.*/)
+				    || sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)
 				    || sourceurl.match(/youporn\.com\/watch\//)
 				    || sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
 				    || sourceurl.match(/redtube\.com\/\d{1,8}/)
@@ -776,6 +782,91 @@ var flvideoreplacerListener = {
 			//declare strings to be used by extension incompatibility check
 			aSite = "Bliptv";
 			aString = "blip.tv";
+			fmt = "97";
+			//declare auto selected mime type
+			if(mimetype === "autodetect"){
+
+			    if(videourl.match(/\.mp4/)){
+				newmimetype = "video/mp4";
+			    }
+			    if(videourl.match(/\.mov/)){
+				newmimetype = "video/x-quicktime";
+			    }
+			    if(videourl.match(/\.m4v/)){
+				newmimetype = "video/x-m4v";
+			    }
+			    if(videourl.match(/\.wmv/)){
+				newmimetype = "application/x-ms-wmv";
+			    }
+			    if(videourl.match(/\.flv/)){
+				newmimetype = "application/x-flv";
+			    }
+			}
+			//declare file mime
+			if(mimetype === "autodetect"){
+			    this.prefs.setCharPref("filemime",newmimetype);
+			    filemime = newmimetype;
+			}else{
+			    this.prefs.setCharPref("filemime",mimetype);
+			    filemime = mimetype;
+			}
+			//access preferences interface
+			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch("extensions.flvideoreplacer.downloadersource.");
+			//store download path
+			this.prefs.setCharPref(videoid,videourl);
+		    }
+		}
+	    }
+	    if(sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)){
+
+		//fetch video ID from url
+		videoid = sourceurl.replace(/.*recorded\//, "").replace(/\/.*/g, "");
+		//declare element to be replaced
+		videoelement = "v2";
+		testelement = doc.getElementById(videoelement);
+
+		if (testelement !== null) {
+
+		    //fetch page html content
+		    pagecontent = doc.getElementsByTagName("head").item(0).innerHTML;
+		    newline = pagecontent.split("\n");
+
+		    for(var i=0; i< newline.length; i++){
+
+			//match patterns
+			var matchpattern = /ustream\.vars\.liveHttpUrl/.test(newline[i]);
+			var matchpattern2 = /ustream\.vars\.videoPictureUrl/.test(newline[i]);
+
+			if (matchpattern == true) {//fetch line with liveHttpUrl
+			    videourl = newline[i].replace(/.*ustream\.vars\.liveHttpUrl=\"/, "").replace(/".*/g, "").replace(/\\/g, "");
+			    replacevideo = true;
+			}else{
+			    if (matchpattern2 == true){
+				var pd;
+				for (pd=1; pd<=10; pd++){
+				    var testurl = newline[i].replace(/.*videopic/,"http://ustream.vo.llnwd.net/pd"+pd).replace(/_\d{1,3}x.*/,".flv").replace(/\\/g, "");
+				    req = new XMLHttpRequest();  
+				    req.open('HEAD', testurl, false);   
+				    req.send(null);  
+				    if(req.status === 200) {
+					replacevideo = true;
+					videourl = newline[i].replace(/.*videopic/,"http://ustream.vo.llnwd.net/pd"+pd).replace(/_\d{1,3}x.*/,".flv").replace(/\\/g, "");
+				    }
+				}
+			    }
+			}
+		    }
+		    if(replacevideo === true){
+
+			//declare player params
+			videowidth = "608";
+			videoheight = "368";
+			videoelement = "v2";
+			//declare strings to be used by extension incompatibility check
+			aSite = "Ustream";
+			aString = "ustream";
 			fmt = "97";
 			//declare auto selected mime type
 			if(mimetype === "autodetect"){
@@ -1793,6 +1884,7 @@ var flvideoreplacerListener = {
 			    && !sourceurl.match(/vimeo/)
 			    && !sourceurl.match(/metacafe/)
 			    && !sourceurl.match(/blip/)
+			    && !sourceurl.match(/ustream/)
 			    && !sourceurl.match(/youporn/)
 			    && !sourceurl.match(/pornhub/)
 			    && !sourceurl.match(/redtube/)
@@ -1957,6 +2049,7 @@ var flvideoreplacerListener = {
 		    || sourceurl.match(/vimeo\.com\/\d{1,8}/)
 		    || sourceurl.match(/metacafe\.com\/watch\//)
 		    || sourceurl.match(/blip\.tv\/file\/.*/)
+		    || sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)
 		    || sourceurl.match(/youporn\.com\/watch\//)
 		    || sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
 		    || sourceurl.match(/redtube\.com\/\d{1,8}/)
@@ -2024,6 +2117,12 @@ var flvideoreplacerListener = {
 			aSite = "blip.tv";
 			//fetch video ID from url
 			videoid = sourceurl.replace(/.*file\//, "").replace(/\//, "").replace(/\?.*/, "");
+			downloadurl = this.prefs.getCharPref(videoid);
+		    }
+		    if(sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)){
+			aSite = "ustream";
+			//fetch video ID from url
+			videoid = sourceurl.replace(/.*recorded\//, "").replace(/\/.*/g, "");
 			downloadurl = this.prefs.getCharPref(videoid);
 		    }
 		    if(sourceurl.match(/youporn\.com\/watch\//)){
@@ -2105,6 +2204,7 @@ var flvideoreplacerListener = {
 			copynewvbox.appendChild(copymenuitem);
 			//append new download menuitem
 			dlmenuitem = document.createElement("menuitem");
+			dlmenuitem.setAttribute("label",newvidfilename);	
 			dlmenuitem.setAttribute('oncommand',"flvideoreplacerListener.vidDownloader('"+aSite+"','"+newvidfilename+"','"+videoid+"','0');");
 			dlnewvbox.appendChild(dlmenuitem);
 		    }
