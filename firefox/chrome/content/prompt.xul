@@ -37,13 +37,7 @@
 				//get plugin compatibility
 				var pluginmp4 = this.prefs.getBoolPref("pluginmp4");
 				var pluginflv = this.prefs.getBoolPref("pluginflv");
-		
-				if(pluginmp4 == false && pluginflv == false){
-				    this.prefs.setCharPref("promptmethod","standalone");
-				    document.getElementById("membed").hidden=true;
-				    document.getElementById("mnewtab").hidden=true;
-				    document.getElementById("mnewwin").hidden=true;
-				}
+
 				if(pluginmp4 == true && pluginflv == false){
 				    this.prefs.setBoolPref("prefermp4",true);
 				}

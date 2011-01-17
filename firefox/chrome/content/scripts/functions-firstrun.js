@@ -2,22 +2,15 @@ var flvideoreplacerFirstrun = {
 
 	init: function(){//get current version from extension manager
 
-	    try {// Firefox <= 3.6
-
-		//get current version from extension manager
+	    try {//Firefox <= 3.6
 		var gExtensionManager = Components.classes["@mozilla.org/extensions/manager;1"]
 		.getService(Components.interfaces.nsIExtensionManager);
 		var current = gExtensionManager.getItemForID("flvideoreplacer@lovinglinux.megabyet.net").version;
-
 		flvideoreplacerFirstrun.updateInstall(current);
 	    }
-	    catch(e){// Firefox >=4.0
-
-		//get current version from extension manager
+	    catch(e){//Firefox >=4.0
 		Components.utils.import("resource://gre/modules/AddonManager.jsm");
-
 		AddonManager.getAddonByID("flvideoreplacer@lovinglinux.megabyet.net", function(addon) {
-
 		    var current = addon.version;
 		    flvideoreplacerFirstrun.updateInstall(current);
 		});
@@ -42,9 +35,7 @@ var flvideoreplacerFirstrun = {
 	    .get("Desk", Components.interfaces.nsIFile);
 
 	    //firstrun, update and current declarations
-	    var ver = -1, firstrun = true;
-	    var current = aVersion;
-	    var dir;
+	    var ver = -1, firstrun = true, current = aVersion, dir;
 
 	    try{//check for existing preferences
 		ver = this.prefs.getCharPref("version");
@@ -81,10 +72,6 @@ var flvideoreplacerFirstrun = {
 			navbar.setAttribute("currentset", newset );
 			document.persist("nav-bar", "currentset");
 
-			//set preferences
-			this.prefs.setBoolPref("firstrun",false);
-			this.prefs.setCharPref("version",current);
-
 			//set default dir pref
 			var dir = this.prefs.getCharPref("downdir");
 			if(dir === ""){
@@ -113,6 +100,9 @@ var flvideoreplacerFirstrun = {
 	    this.prefs.setBoolPref("pluginflv",false);
 	    this.prefs.setBoolPref("pluginqt",false);
 	    this.prefs.setBoolPref("pluginwmp",false);
+	    this.prefs.setBoolPref("pluginwmv",false);
+	    this.prefs.setBoolPref("pluginmov",false);
+	    this.prefs.setBoolPref("pluginm4v",false);
 
 	    //initiate file
 	    var pluginreg = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -139,13 +129,25 @@ var flvideoreplacerFirstrun = {
 		if (pluginmp4 === true) {
 		    this.prefs.setBoolPref("pluginmp4",true);
 		}
+		var pluginm4v = /video.*x-m4v/.test(line.value);
+		if (pluginm4v === true) {
+		    this.prefs.setBoolPref("pluginm4v",true);
+		}
 		var pluginqt = /video.*quicktime/.test(line.value);
 		if (pluginqt === true) {
 		    this.prefs.setBoolPref("pluginqt",true);
 		}
+		var pluginmov = /video.*x-quicktime/.test(line.value);
+		if (pluginmov === true) {
+		    this.prefs.setBoolPref("pluginmov",true);
+		}
 		var pluginwmp = /application.*x-mplayer2/.test(line.value);
 		if (pluginwmp === true) {
 		    this.prefs.setBoolPref("pluginwmp",true);
+		}
+		var pluginwmv = /application.*x-ms-wmv/.test(line.value);
+		if (pluginwmv === true) {
+		    this.prefs.setBoolPref("pluginwmv",true);
 		}
 	    } while(hasmore);
 	    istream.close();
@@ -171,37 +173,17 @@ var flvideoreplacerFirstrun = {
 	    this.prefs.setBoolPref("playerqt",false);
 	    this.prefs.setBoolPref("playerbsp",false);
 	    this.prefs.setBoolPref("playerwmp",false);
+	    this.prefs.setBoolPref("playervlc",false);
 
 	    //declare variables
 	    var playerpath = this.prefs.getCharPref("playerpath");
-	    var playerqt, playerwmp, playerkmp, playerbsp, playertotem, playerkaffeine, playergmplayer, playersmplayer;
+	    var playerqt, playerwmp, playerkmp, playerbsp, playervlc, playertotem, playerkaffeine, playergmplayer, playersmplayer;
 
 	    if(osString.match(/Windows/)){
 
 		//initiate file
-		playerqt = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playerqt.initWithPath("C:\\Program Files\\QuickTime\\QuickTimePlayer.exe");
-
-		if(playerqt.exists()){
-		    this.prefs.setBoolPref("playerqt",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playerqt.path);
-		    }
-		}
-		//initiate file
-		playerwmp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playerwmp.initWithPath("C:\\Program Files\\Windows Media Player\\wmplayer.exe");
-
-		if(playerwmp.exists()){
-		    this.prefs.setBoolPref("playerwmp",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playerwmp.path);
-		    }
-		}
-		//initiate file
 		playerkmp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 		playerkmp.initWithPath("C:\\Program Files\\The KMPlayer\\KMPlayer.exe");
-
 		if(playerkmp.exists()){
 		    this.prefs.setBoolPref("playerkmp",true);
 		    if(playerpath === ""){
@@ -211,50 +193,54 @@ var flvideoreplacerFirstrun = {
 		//initiate file
 		playerbsp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 		playerbsp.initWithPath("C:\\Program Files\\Webteh\\BSPlayer\\bsplayer.exe");
-
 		if(playerbsp.exists()){
 		    this.prefs.setBoolPref("playerbsp",true);
 		    if(playerpath === ""){
 			this.prefs.setCharPref("playerpath",playerbsp.path);
+		    }
+		}	
+		//initiate file
+		playerwmp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		playerwmp.initWithPath("C:\\Program Files\\Windows Media Player\\wmplayer.exe");
+		if(playerwmp.exists()){
+		    this.prefs.setBoolPref("playerwmp",true);
+		    if(playerpath === ""){
+			this.prefs.setCharPref("playerpath",playerwmp.path);
+		    }
+		}
+		//initiate file
+		playerqt = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		playerqt.initWithPath("C:\\Program Files\\QuickTime\\QuickTimePlayer.exe");
+		if(playerqt.exists()){
+		    this.prefs.setBoolPref("playerqt",true);
+		    if(playerpath === ""){
+			this.prefs.setCharPref("playerpath",playerqt.path);
+		    }
+		}
+		//initiate file
+		playervlc = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		playervlc.initWithPath("C:\\Program Files\\VideoLAN\\VLC\\vlc.exe");
+		if(playervlc.exists()){
+		    this.prefs.setBoolPref("playervlc",true);
+		    if(playerpath === ""){
+			this.prefs.setCharPref("playerpath",playervlc.path);
 		    }
 		}
 
 	    }else if(osString.match(/Linux/)){
 
 		//initiate file
-		playertotem = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playertotem.initWithPath("/usr/bin/totem");
-
-		if(playertotem.exists()){
-		    this.prefs.setBoolPref("playertotem",true);
+		playersmplayer = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		playersmplayer.initWithPath("/usr/bin/smplayer");
+		if(playersmplayer.exists()){
+		    this.prefs.setBoolPref("playersmplayer",true);
 		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playertotem.path);
-		    }
-		}
-		//initiate file
-		playerkmp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playerkmp.initWithPath("/usr/bin/kmplayer");
-
-		if(playerkmp.exists()){
-		    this.prefs.setBoolPref("playerkmp",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playerkmp.path);
-		    }
-		}
-		//initiate file
-		playerkaffeine = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playerkaffeine.initWithPath("/usr/bin/kaffeine");
-
-		if(playerkaffeine.exists()){
-		    this.prefs.setBoolPref("playerkaffeine",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playerkaffeine.path);
+			this.prefs.setCharPref("playerpath",playersmplayer.path);
 		    }
 		}
 		//initiate file
 		playergmplayer = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 		playergmplayer.initWithPath("/usr/bin/gnome-mplayer");
-
 		if(playergmplayer.exists()){
 		    this.prefs.setBoolPref("playergmplayer",true);
 		    if(playerpath === ""){
@@ -262,13 +248,39 @@ var flvideoreplacerFirstrun = {
 		    }
 		}
 		//initiate file
-		playersmplayer = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playersmplayer.initWithPath("/usr/bin/smplayer");
-
-		if(playersmplayer.exists()){
-		    this.prefs.setBoolPref("playersmplayer",true);
+		playerkaffeine = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		playerkaffeine.initWithPath("/usr/bin/kaffeine");
+		if(playerkaffeine.exists()){
+		    this.prefs.setBoolPref("playerkaffeine",true);
 		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playersmplayer.path);
+			this.prefs.setCharPref("playerpath",playerkaffeine.path);
+		    }
+		}
+		//initiate file
+		playerkmp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		playerkmp.initWithPath("/usr/bin/kmplayer");
+		if(playerkmp.exists()){
+		    this.prefs.setBoolPref("playerkmp",true);
+		    if(playerpath === ""){
+			this.prefs.setCharPref("playerpath",playerkmp.path);
+		    }
+		}
+		//initiate file
+		playertotem = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		playertotem.initWithPath("/usr/bin/totem");
+		if(playertotem.exists()){
+		    this.prefs.setBoolPref("playertotem",true);
+		    if(playerpath === ""){
+			this.prefs.setCharPref("playerpath",playertotem.path);
+		    }
+		}
+		//initiate file
+		playervlc = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		playervlc.initWithPath("/usr/bin/vlc");
+		if(playervlc.exists()){
+		    this.prefs.setBoolPref("playervlc",true);
+		    if(playerpath === ""){
+			this.prefs.setCharPref("playerpath",playervlc.path);
 		    }
 		}
 
@@ -276,7 +288,6 @@ var flvideoreplacerFirstrun = {
 		//initiate file
 		playerqt = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 		playerqt.initWithPath("/Applications/QuickTime Player.app/Contents/MacOS/QuickTime Player");
-
 		if(playerqt.exists()){
 		    this.prefs.setBoolPref("playerqt",true);
 		    if(playerpath === ""){

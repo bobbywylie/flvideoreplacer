@@ -1,12 +1,14 @@
 pref("extensions.flvideoreplacer.youtube", true);
 pref("extensions.flvideoreplacer.vimeo", true);
 pref("extensions.flvideoreplacer.metacafe", true);
+pref("extensions.flvideoreplacer.bliptv", true);
 pref("extensions.flvideoreplacer.other", true);
 pref("extensions.flvideoreplacer.alertsinfo", true);
 pref("extensions.flvideoreplacer.alertserror", true);
 
 pref("extensions.flvideoreplacer.method", "prompt");
 pref("extensions.flvideoreplacer.promptmethod", "embedded");
+pref("extensions.flvideoreplacer.delay", 0);
 pref("extensions.flvideoreplacer.mimetype", "autodetect");
 pref("extensions.flvideoreplacer.filemime", "video/mp4");
 pref("extensions.flvideoreplacer.videoquality", "HIGH");
@@ -20,6 +22,9 @@ pref("extensions.flvideoreplacer.pluginmp4", false);
 pref("extensions.flvideoreplacer.pluginflv", false);
 pref("extensions.flvideoreplacer.pluginqt", false);
 pref("extensions.flvideoreplacer.pluginwmp", false);
+pref("extensions.flvideoreplacer.pluginwmv", false);
+pref("extensions.flvideoreplacer.pluginmov", false);
+pref("extensions.flvideoreplacer.pluginm4v", false);
 
 pref("extensions.flvideoreplacer.playerpath", "");
 pref("extensions.flvideoreplacer.playercustom", true);
@@ -31,3 +36,4 @@ pref("extensions.flvideoreplacer.playerkmp", false);
 pref("extensions.flvideoreplacer.playerqt", false);
 pref("extensions.flvideoreplacer.playerbsp", false);
 pref("extensions.flvideoreplacer.playerwmp", false);
+pref("extensions.flvideoreplacer.playervlc", false);

@@ -17,7 +17,10 @@ var flvideoreplacerOptions = {
 	    var pluginflv = this.prefs.getBoolPref("pluginflv");
 	    var pluginqt = this.prefs.getBoolPref("pluginqt");
 	    var pluginwmp = this.prefs.getBoolPref("pluginwmp");
-
+	    var pluginwmv = this.prefs.getBoolPref("pluginwmv");
+	    var pluginmov = this.prefs.getBoolPref("pluginmov");
+	    var pluginm4v = this.prefs.getBoolPref("pluginm4v");
+	    
 	    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 		if(replacemethod === "standalone"){
 		    this.prefs.setCharPref("method","prompt");
@@ -50,14 +53,6 @@ var flvideoreplacerOptions = {
 		}else{
 		    document.getElementById("pluginwmp").hidden=true;
 		}
-		if(pluginmp4 === false && pluginflv === false){
-		    this.prefs.setCharPref("method","standalone");
-		    document.getElementById("mprompt").hidden=true;
-		    document.getElementById("membed").hidden=true;
-		    document.getElementById("mnewtab").hidden=true;
-		    document.getElementById("mnewwin").hidden=true;
-		    document.getElementById("mstand").hidden=false;
-		}
 		if(pluginmp4 === true && pluginflv === false){
 		    this.prefs.setBoolPref("prefermp4",true);
 		}
@@ -83,6 +78,7 @@ var flvideoreplacerOptions = {
 	    var playerqt = this.prefs.getBoolPref("playerqt");
 	    var playerbsp = this.prefs.getBoolPref("playerbsp");
 	    var playerwmp = this.prefs.getBoolPref("playerwmp");
+	    var playervlc = this.prefs.getBoolPref("playervlc");
 
 	    if(playertotem === true){
 		document.getElementById("playertotem").hidden=false;
@@ -124,6 +120,11 @@ var flvideoreplacerOptions = {
 	    }else{
 		document.getElementById("playerwmp").hidden=true;
 	    }
+	    if(playervlc === true){
+		document.getElementById("playervlc").hidden=false;
+	    }else{
+		document.getElementById("playervlc").hidden=true;
+	    }
 	},
 
 	toggleOptions: function() {
@@ -146,6 +147,7 @@ var flvideoreplacerOptions = {
 	    var playerqt = this.prefs.getBoolPref("playerqt");
 	    var playerbsp = this.prefs.getBoolPref("playerbsp");
 	    var playerwmp = this.prefs.getBoolPref("playerwmp");
+	    var playervlc = this.prefs.getBoolPref("playervlc");
 
 	    //get localization
 	    var strbundle = document.getElementById("flvideoreplacerstrings");
@@ -172,18 +174,23 @@ var flvideoreplacerOptions = {
 		if(standalone === "playerbsp"){
 		    this.prefs.setCharPref("playerpath","C:\\Program Files\\Webteh\\BSPlayer\\bsplayer.exe");
 		}
+		if(standalone === "playervlc"){
+		    this.prefs.setCharPref("playerpath","C:\\Program Files\\VideoLAN\\VLC\\vlc.exe");
+		}		
 		if(standalone === "playerbest"){
 
-		    if(playerbsp === true){
-			this.prefs.setCharPref("playerpath","C:\\Program Files\\Webteh\\BSPlayer\\bsplayer.exe");
-		    }else if(playerkmp === true){
+		    if(playerkmp === true){
 			this.prefs.setCharPref("playerpath","C:\\Program Files\\The KMPlayer\\KMPlayer.exe");
+		    }else if(playerbsp === true){
+			this.prefs.setCharPref("playerpath","C:\\Program Files\\Webteh\\BSPlayer\\bsplayer.exe");
 		    }else if(playerwmp === true){
 			this.prefs.setCharPref("playerpath","C:\\Program Files\\Windows Media Player\\wmplayer.exe");
 		    }else if(playerqt === true){
 			this.prefs.setCharPref("playerpath","C:\\Program Files\\QuickTime\\QuickTimePlayer.exe");
+		    }else if(playervlc === true){
+			this.prefs.setCharPref("playerpath","C:\\Program Files\\VideoLAN\\VLC\\vlc.exe");
 		    }else{
-			bestplayer = "BS.Player";
+			bestplayer = "KMPlayer";
 			message = strbundle.getFormattedString("nobestplayer", [ bestplayer ]);
 			this.prefs.setCharPref("playerpath",message);
 			document.getElementById('standalone').value = "playercustom";
@@ -208,6 +215,9 @@ var flvideoreplacerOptions = {
 		if(standalone === "playersmplayer"){
 		    this.prefs.setCharPref("playerpath","/usr/bin/smplayer");
 		}
+		if(standalone === "playervlc"){
+		    this.prefs.setCharPref("playerpath","/usr/bin/vlc");
+		}
 		if(standalone === "playerbest"){
 
 		    if(playersmplayer === true){
@@ -220,6 +230,8 @@ var flvideoreplacerOptions = {
 			this.prefs.setCharPref("playerpath","/usr/bin/kmplayer");
 		    }else if(playertotem === true){
 			this.prefs.setCharPref("playerpath","/usr/bin/totem");
+		    }else if(playervlc === true){
+			this.prefs.setCharPref("playerpath","/usr/bin/vlc");
 		    }else{
 			bestplayer = "SMPlayer";
 			message = strbundle.getFormattedString("nobestplayer", [ bestplayer ]);
@@ -487,13 +499,16 @@ var flvideoreplacerOptions = {
 	    var playerqt = this.prefs.getBoolPref("playerqt");
 	    var playerbsp = this.prefs.getBoolPref("playerbsp");
 	    var playerwmp = this.prefs.getBoolPref("playerwmp");
+	    var playervlc = this.prefs.getBoolPref("playervlc");
 
 	    //get plugin info
 	    var pluginmp4 = this.prefs.getBoolPref("pluginmp4");
 	    var pluginflv = this.prefs.getBoolPref("pluginflv");
 	    var pluginqt = this.prefs.getBoolPref("pluginqt");
 	    var pluginwmp = this.prefs.getBoolPref("pluginwmp");
-
+	    var pluginwmv = this.prefs.getBoolPref("pluginwmv");
+	    var pluginmov = this.prefs.getBoolPref("pluginmov");
+	    var pluginm4v = this.prefs.getBoolPref("pluginm4v");
 	    //declare variables
 	    var pluginstatus, bestplugin = false, forcedplugin = false, pluginavaliable, istream;
 
