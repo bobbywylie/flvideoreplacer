@@ -21,6 +21,21 @@ var flvideoreplacerOptions = {
 	    var pluginmov = this.prefs.getBoolPref("pluginmov");
 	    var pluginm4v = this.prefs.getBoolPref("pluginm4v");
 	    
+	    var pluginforce = this.prefs.getBoolPref("pluginforce");
+
+	    //initiate file
+	    var pluginreg = Components.classes["@mozilla.org/file/directory_service;1"]
+	    .getService(Components.interfaces.nsIProperties)
+	    .get("ProfD", Components.interfaces.nsIFile);
+	    pluginreg.append("pluginreg.dat");
+
+	    if(pluginreg.exists()){		
+		document.getElementById("pluginforcebox").hidden = true;		
+	    }else{
+		//document.getElementById("pluginforcebox").hidden = false;
+		//document.getElementById("pluginforcebox").disabled = true;
+	    }
+	    
 	    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 		if(replacemethod === "standalone"){
 		    this.prefs.setCharPref("method","prompt");

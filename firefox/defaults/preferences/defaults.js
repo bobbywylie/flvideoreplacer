@@ -19,6 +19,7 @@ pref("extensions.flvideoreplacer.autoplay", true);
 pref("extensions.flvideoreplacer.downdir", "");
 pref("extensions.flvideoreplacer.videourl", "");
 
+pref("extensions.flvideoreplacer.pluginforce", true);
 pref("extensions.flvideoreplacer.pluginmp4", false);
 pref("extensions.flvideoreplacer.pluginflv", false);
 pref("extensions.flvideoreplacer.pluginqt", false);

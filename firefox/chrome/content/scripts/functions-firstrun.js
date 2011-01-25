@@ -63,7 +63,7 @@ var flvideoreplacerFirstrun = {
 
 		if (ver!=current && !firstrun){//actions specific for extension updates
 
-		    if(ver !== "2.0.0"){
+		    if(ver !== "2.0.2" && ver !== "2.0.1" && ver !== "2.0.0"){
 
 			//add toolbar button
 			var navbar = document.getElementById("nav-bar");
@@ -103,6 +103,8 @@ var flvideoreplacerFirstrun = {
 	    this.prefs.setBoolPref("pluginwmv",false);
 	    this.prefs.setBoolPref("pluginmov",false);
 	    this.prefs.setBoolPref("pluginm4v",false);
+	    //get prefs
+	    var pluginforce = this.prefs.getBoolPref("pluginforce");
 
 	    //initiate file
 	    var pluginreg = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -110,47 +112,64 @@ var flvideoreplacerFirstrun = {
 	    .get("ProfD", Components.interfaces.nsIFile);
 	    pluginreg.append("pluginreg.dat");
 
-	    //read file
-	    var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-	    istream.init(pluginreg, 0x01, 444, 0);
-	    istream.QueryInterface(Components.interfaces.nsILineInputStream);
+	    if(pluginreg.exists()){
+		
+		//disable forceplugin
+		this.prefs.setBoolPref("pluginforce",false);
 
-	    var line = {}, lines = [], hasmore;
-	    do {
-		hasmore = istream.readLine(line);
-		lines.push(line.value);
+		//read file
+		var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+		istream.init(pluginreg, 0x01, 444, 0);
+		istream.QueryInterface(Components.interfaces.nsILineInputStream);
 
-		//check plugins by mime-type
-		var pluginflv = /video.*x.*flv/.test(line.value);
-		if (pluginflv === true) {
-		    this.prefs.setBoolPref("pluginflv",true);
-		}
-		var pluginmp4 = /video.*mp4/.test(line.value);
-		if (pluginmp4 === true) {
+		var line = {}, lines = [], hasmore;
+		do {
+		    hasmore = istream.readLine(line);
+		    lines.push(line.value);
+
+		    //check plugins by mime-type
+		    var pluginflv = /video.*x.*flv/.test(line.value);
+		    if (pluginflv === true) {
+			this.prefs.setBoolPref("pluginflv",true);
+		    }
+		    var pluginmp4 = /video.*mp4/.test(line.value);
+		    if (pluginmp4 === true) {
+			this.prefs.setBoolPref("pluginmp4",true);
+		    }
+		    var pluginm4v = /video.*x-m4v/.test(line.value);
+		    if (pluginm4v === true) {
+			this.prefs.setBoolPref("pluginm4v",true);
+		    }
+		    var pluginqt = /video.*quicktime/.test(line.value);
+		    if (pluginqt === true) {
+			this.prefs.setBoolPref("pluginqt",true);
+		    }
+		    var pluginmov = /video.*x-quicktime/.test(line.value);
+		    if (pluginmov === true) {
+			this.prefs.setBoolPref("pluginmov",true);
+		    }
+		    var pluginwmp = /application.*x-mplayer2/.test(line.value);
+		    if (pluginwmp === true) {
+			this.prefs.setBoolPref("pluginwmp",true);
+		    }
+		    var pluginwmv = /application.*x-ms-wmv/.test(line.value);
+		    if (pluginwmv === true) {
+			this.prefs.setBoolPref("pluginwmv",true);
+		    }
+		} while(hasmore);
+		istream.close();
+
+	    }else{
+		if (pluginforce === true){
 		    this.prefs.setBoolPref("pluginmp4",true);
-		}
-		var pluginm4v = /video.*x-m4v/.test(line.value);
-		if (pluginm4v === true) {
+		    this.prefs.setBoolPref("pluginflv",true);
+		    this.prefs.setBoolPref("pluginqt",true);
+		    this.prefs.setBoolPref("pluginwmp",true);
+		    this.prefs.setBoolPref("pluginwmv",true);
+		    this.prefs.setBoolPref("pluginmov",true);
 		    this.prefs.setBoolPref("pluginm4v",true);
 		}
-		var pluginqt = /video.*quicktime/.test(line.value);
-		if (pluginqt === true) {
-		    this.prefs.setBoolPref("pluginqt",true);
-		}
-		var pluginmov = /video.*x-quicktime/.test(line.value);
-		if (pluginmov === true) {
-		    this.prefs.setBoolPref("pluginmov",true);
-		}
-		var pluginwmp = /application.*x-mplayer2/.test(line.value);
-		if (pluginwmp === true) {
-		    this.prefs.setBoolPref("pluginwmp",true);
-		}
-		var pluginwmv = /application.*x-ms-wmv/.test(line.value);
-		if (pluginwmv === true) {
-		    this.prefs.setBoolPref("pluginwmv",true);
-		}
-	    } while(hasmore);
-	    istream.close();
+	    }
 	},
 
 	playerCheck: function() {

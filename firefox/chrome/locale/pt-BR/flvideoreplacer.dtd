@@ -24,6 +24,7 @@
 <!ENTITY NewWin "Janela">
 <!ENTITY OpenEmbedded "Abrir video inserido nesta página">
 <!ENTITY Other "Outros sites de streaming">
+<!ENTITY PluginForce "Forçar compatibilidade de plugin">
 <!ENTITY Preferences "Preferências">
 <!ENTITY PreferWebM "Preferir WebM quando disponível (não requer plugin)">
 <!ENTITY PreferMP4 "Preferir mp4 sobre flv">
