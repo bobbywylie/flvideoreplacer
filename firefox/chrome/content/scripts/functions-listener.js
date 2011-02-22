@@ -13,9 +13,9 @@ var flvideoreplacerListener = {
 	    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 	    .getService(Components.interfaces.nsIPrefService)
 	    .getBranch("extensions.flvideoreplacer.");
-	    
+
 	    var delay = this.prefs.getIntPref("delay");
-	    
+
 	    setTimeout(function () { 
 
 		//declare document and element
@@ -1246,9 +1246,9 @@ var flvideoreplacerListener = {
 		    var pluginwmv = this.prefs.getBoolPref("pluginwmv");
 		    var pluginmov = this.prefs.getBoolPref("pluginmov");
 		    var pluginm4v = this.prefs.getBoolPref("pluginm4v");
-		    
+
 		    if(newmimetype === "video/x-quicktime"){
-			
+
 			if(pluginmov === true){
 
 			    //declare element to be replaced
@@ -1278,7 +1278,7 @@ var flvideoreplacerListener = {
 			}
 		    }
 		    if(newmimetype === "application/x-ms-wmv"){
-			
+
 			if(pluginwmv === true){
 
 			    //declare element to be replaced
@@ -1306,7 +1306,7 @@ var flvideoreplacerListener = {
 			}
 		    }
 		    if(newmimetype === "video/x-m4v"){
-			
+
 			if(pluginm4v === true){
 
 			    //declare element to be replaced
@@ -2178,7 +2178,7 @@ var flvideoreplacerListener = {
 		    var copymenuitem, dlmenuitem;
 
 		    if(downloadurl !== null){
-			
+
 			if(downloadurl.match(/\.mp4/)){
 			    newvidfilename = vidfilename+".mp4";
 			}else if(downloadurl.match(/\.flv/)){

@@ -113,7 +113,7 @@ var flvideoreplacerFirstrun = {
 	    pluginreg.append("pluginreg.dat");
 
 	    if(pluginreg.exists()){
-		
+
 		//disable forceplugin
 		this.prefs.setBoolPref("pluginforce",false);
 

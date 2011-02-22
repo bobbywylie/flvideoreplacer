@@ -20,7 +20,7 @@ var flvideoreplacerOptions = {
 	    var pluginwmv = this.prefs.getBoolPref("pluginwmv");
 	    var pluginmov = this.prefs.getBoolPref("pluginmov");
 	    var pluginm4v = this.prefs.getBoolPref("pluginm4v");
-	    
+
 	    var pluginforce = this.prefs.getBoolPref("pluginforce");
 
 	    //initiate file
@@ -35,7 +35,7 @@ var flvideoreplacerOptions = {
 		//document.getElementById("pluginforcebox").hidden = false;
 		//document.getElementById("pluginforcebox").disabled = true;
 	    }
-	    
+
 	    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 		if(replacemethod === "standalone"){
 		    this.prefs.setCharPref("method","prompt");

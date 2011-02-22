@@ -3,16 +3,14 @@
 <!DOCTYPE window SYSTEM "chrome://flvideoreplacer/locale/flvideoreplacer.dtd">
 
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	id="flvideoreplacer-prompt"
-	title="FlashVideoReplacer"
-	ondialogaccept="return onOK();"
-	onload="onLoad();"
-	persist="screenX screenY width height">
-  
+	id="flvideoreplacer-prompt" title="FlashVideoReplacer" ondialogaccept="return onOK();"
+	onload="onLoad();" persist="screenX screenY width height">
+
 	<stringbundleset id="strbundles">
-		<stringbundle id="flvideoreplacerstrings" src="chrome://flvideoreplacer/locale/strings.properties"/>
+		<stringbundle id="flvideoreplacerstrings"
+			src="chrome://flvideoreplacer/locale/strings.properties" />
 	</stringbundleset>
-    
+
 	<script>
 		<![CDATA[
 			function onLoad() {
@@ -54,21 +52,22 @@
 			}
 		]]>
 	</script>
-  
+
 	<hbox>
-		<caption label="&Method;"/> 
-		<spacer width="2" flex="0"/>
+		<caption label="&Method;" />
+		<spacer width="2" flex="0" />
 		<vbox flex="0">
-			<spacer height="1" flex="1"/>
+			<spacer height="1" flex="1" />
 			<menulist id="pmethod" width="110">
 				<menupopup>
-					<menuitem id="membed" label="&Embedded;" value="embedded" selected="true" />
+					<menuitem id="membed" label="&Embedded;" value="embedded"
+						selected="true" />
 					<menuitem id="mnewtab" label="&NewTab;" value="newtab" />
 					<menuitem id="mnewwin" label="&NewWin;" value="newwindow" />
-					<menuitem id="mstand" label="&Standalone;" value="standalone"/>
+					<menuitem id="mstand" label="&Standalone;" value="standalone" />
 				</menupopup>
 			</menulist>
-			<spacer height="1" flex="0"/>
+			<spacer height="1" flex="0" />
 		</vbox>
 	</hbox>
 </dialog>
