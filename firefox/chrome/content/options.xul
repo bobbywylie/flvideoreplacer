@@ -98,14 +98,6 @@
 					</hbox>
 					<spacer height="10" flex="0"/>
 				</vbox>
-				<vbox id="checkplugin" >
-					<hbox flex="0">
-						<spacer width="10" flex="1"/>
-						<button orient="vertical" width="200" height="30" flex="2" label="&CheckPlugins;" tooltiptext="&CheckPluginsTooltip;" onclick="flvideoreplacerOptions.checkPlugin();"/>
-						<spacer width="10" flex="1"/>
-					</hbox>
-					<spacer height="10" flex="0"/>
-				</vbox>
 				<vbox id="standaloneplayer">
 					<spacer height="10" flex="0"/>
 					<caption label="&StandalonePlayer;"/>

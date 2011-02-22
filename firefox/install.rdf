@@ -8,8 +8,8 @@
 		<em:type>2</em:type>
 		<em:optionsURL>chrome://flvideoreplacer/content/options.xul</em:optionsURL>
 		<em:name>FlashVideoReplacer</em:name>
-		<em:description>Replace embedded flash videos and display them with a different plugin or standlone player, download or automatically redirect to WebM player when available.</em:description>
-		<em:creator>lovinglinux</em:creator>
+		<em:description>Replace embedded flash videos and display them with a different plugin or standalone player, download or automatically redirect to WebM player when available.</em:description>
+		<em:creator>webgapps</em:creator>
 		<em:homepageURL>http://www.webgapps.org/addons/flashvideoreplacer</em:homepageURL>
 		<em:targetApplication>
 			<Description>

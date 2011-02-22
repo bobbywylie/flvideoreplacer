@@ -284,14 +284,12 @@ var flvideoreplacerOptions = {
 		    document.getElementById("selectplugin").hidden=false;
 		    document.getElementById("standaloneplayer").hidden=true;
 		    document.getElementById("downloader").hidden=false;
-		    document.getElementById("checkplugin").hidden=false;
 		}
 		if(replacemethod === "newtab"){
 
 		    document.getElementById("selectplugin").hidden=true;
 		    document.getElementById("standaloneplayer").hidden=true;
 		    document.getElementById("downloader").hidden=false;
-		    document.getElementById("checkplugin").hidden=false;
 		    document.getElementById('mimetype').value = "autodetect";
 		}
 		if(replacemethod === "newwindow"){
@@ -299,7 +297,6 @@ var flvideoreplacerOptions = {
 		    document.getElementById("selectplugin").hidden=true;
 		    document.getElementById("standaloneplayer").hidden=true;
 		    document.getElementById("downloader").hidden=false;
-		    document.getElementById("checkplugin").hidden=false;
 		    document.getElementById('mimetype').value = "autodetect";
 		}
 		if(replacemethod === "standalone"){
@@ -310,7 +307,6 @@ var flvideoreplacerOptions = {
 		    document.getElementById("selectplugin").hidden=false;
 		    document.getElementById("standaloneplayer").hidden=true;
 		    document.getElementById("downloader").hidden=false;
-		    document.getElementById("checkplugin").hidden=false;
 
 		    //access preferences interface
 		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -346,14 +342,12 @@ var flvideoreplacerOptions = {
 		    document.getElementById("selectplugin").hidden=false;
 		    document.getElementById("standaloneplayer").hidden=false;
 		    document.getElementById("downloader").hidden=false;
-		    document.getElementById("checkplugin").hidden=false;
 		}
 		if(replacemethod === "newtab"){
 
 		    document.getElementById("selectplugin").hidden=true;
 		    document.getElementById("standaloneplayer").hidden=true;
 		    document.getElementById("downloader").hidden=false;
-		    document.getElementById("checkplugin").hidden=false;
 		    document.getElementById('mimetype').value = "autodetect";
 		}
 		if(replacemethod === "newwindow"){
@@ -361,7 +355,6 @@ var flvideoreplacerOptions = {
 		    document.getElementById("selectplugin").hidden=true;
 		    document.getElementById("standaloneplayer").hidden=true;
 		    document.getElementById("downloader").hidden=false;
-		    document.getElementById("checkplugin").hidden=false;
 		    document.getElementById('mimetype').value = "autodetect";
 		}
 		if(replacemethod === "standalone"){
@@ -369,7 +362,6 @@ var flvideoreplacerOptions = {
 		    document.getElementById("selectplugin").hidden=true;
 		    document.getElementById("standaloneplayer").hidden=false;
 		    document.getElementById("downloader").hidden=false;
-		    document.getElementById("checkplugin").hidden=false;
 
 		}
 		if(replacemethod === "embedded"){
@@ -377,7 +369,6 @@ var flvideoreplacerOptions = {
 		    document.getElementById("selectplugin").hidden=false;
 		    document.getElementById("standaloneplayer").hidden=true;
 		    document.getElementById("downloader").hidden=false;
-		    document.getElementById("checkplugin").hidden=false;
 
 		    //access preferences interface
 		    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -484,230 +475,6 @@ var flvideoreplacerOptions = {
 		var file = fp.file;
 		//set path
 		this.prefs.setCharPref("downdir", file.path);
-	    }
-	},
-
-	checkPlugin: function() {
-
-	    //get osString
-	    var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
-	    .getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
-
-	    //initiate file
-	    var pluginreg = Components.classes["@mozilla.org/file/directory_service;1"]
-	    .getService(Components.interfaces.nsIProperties)
-	    .get("ProfD", Components.interfaces.nsIFile);
-	    pluginreg.append("pluginreg.dat");
-
-	    //get localization
-	    var strbundle = document.getElementById("flvideoreplacerstrings");
-	    var messagetitle = strbundle.getString("flvideoreplacermessage");
-	    var alerttitle = strbundle.getString("flvideoreplaceralert");
-	    var message, prompts;
-
-	    //get players info
-	    var playertotem = this.prefs.getBoolPref("playertotem");
-	    var playergmplayer = this.prefs.getBoolPref("playergmplayer");
-	    var playerkaffeine = this.prefs.getBoolPref("playerkaffeine");
-	    var playersmplayer = this.prefs.getBoolPref("playersmplayer");
-	    var playerkmp = this.prefs.getBoolPref("playerkmp");
-	    var playerqt = this.prefs.getBoolPref("playerqt");
-	    var playerbsp = this.prefs.getBoolPref("playerbsp");
-	    var playerwmp = this.prefs.getBoolPref("playerwmp");
-	    var playervlc = this.prefs.getBoolPref("playervlc");
-
-	    //get plugin info
-	    var pluginmp4 = this.prefs.getBoolPref("pluginmp4");
-	    var pluginflv = this.prefs.getBoolPref("pluginflv");
-	    var pluginqt = this.prefs.getBoolPref("pluginqt");
-	    var pluginwmp = this.prefs.getBoolPref("pluginwmp");
-	    var pluginwmv = this.prefs.getBoolPref("pluginwmv");
-	    var pluginmov = this.prefs.getBoolPref("pluginmov");
-	    var pluginm4v = this.prefs.getBoolPref("pluginm4v");
-	    //declare variables
-	    var pluginstatus, bestplugin = false, forcedplugin = false, pluginavaliable, istream;
-
-	    if(pluginmp4 === true && pluginflv === true){
-		pluginstatus = "full";
-	    }else if(pluginmp4 === true && pluginflv === false){
-		pluginstatus = "application/x-flv";
-	    }else if(pluginmp4 === false && pluginflv === true){
-		pluginstatus = "video/mp4";
-	    }else{
-		pluginstatus = "noplugin";
-	    }
-
-	    if(pluginstatus === "noplugin"){
-
-		if(osString.match(/Windows/)){
-
-		    if(playerbsp === true || playerkmp === true){
-			message = strbundle.getString("nopluginplayerbest");
-		    }else if(playerwmp === true){
-			message = strbundle.getString("nopluginplayerfull");
-		    }else if(playerqt === true){
-			message = strbundle.getString("nopluginplayeralt");
-		    }else{
-			message = strbundle.getString("nopluginplayerno");
-		    }
-		    this.prefs.setCharPref("mimetype","autodetect");
-		}
-		if(osString.match(/Linux/)){
-
-		    if(playersmplayer === true){
-			message = strbundle.getString("nopluginplayerbest");
-		    }else if(playergmplayer === true || playertotem === true || playerkaffeine === true || playerkmp === true){
-			message = strbundle.getString("nopluginplayerfull");
-		    }else{
-			message = strbundle.getString("nopluginplayerno");
-		    }
-		    this.prefs.setCharPref("mimetype","autodetect");
-		}
-		if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
-		    message = strbundle.getString("nopluginplayeralt");
-		    this.prefs.setCharPref("mimetype","autodetect");
-		}
-	    }
-
-	    if(pluginstatus === "application/x-flv" || pluginstatus === "video/mp4"){
-
-		if(osString.match(/Windows/)){
-
-		    if(playerbsp === true || playerkmp === true){
-			message = strbundle.getFormattedString("partpluginplayerbest", [ pluginstatus ]);
-		    }else if(playerwmp === true){
-			message = strbundle.getFormattedString("partpluginplayerfull", [ pluginstatus ]);
-		    }else if(playerqt === true){
-			message = strbundle.getFormattedStringg("partpluginplayeralt", [ pluginstatus ]);
-		    }else{
-			message = strbundle.getFormattedString("partpluginplayerno", [ pluginstatus ]);
-		    }
-		    this.prefs.setCharPref("mimetype","autodetect");
-		}
-		if(osString.match(/Linux/)){
-
-		    //read file
-		    istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-		    istream.init(pluginreg, 0x01, 444, 0);
-		    istream.QueryInterface(Components.interfaces.nsILineInputStream);
-
-		    var line = {}, lines = [], hasmore;
-		    do {
-			hasmore = istream.readLine(line);
-			lines.push(line.value);
-
-			//check plugin by name
-			pluginavaliable = /totem/.test(line.value);
-			if (pluginavaliable === true) {
-			    forcedplugin = true;
-			}
-		    } while(hasmore);
-		    istream.close();
-
-		    if(pluginstatus === "application/x-flv" && forcedplugin === true){
-			message = strbundle.getFormattedString("forcedplugin", [ "application/x-mplayer2" ]);
-			this.prefs.setCharPref("mimetype","application/x-mplayer2");
-		    }else{
-			if(playersmplayer === true ){ 
-			    message = strbundle.getString("partpluginplayerbest", [ pluginstatus ]);
-			}else if(playergmplayer === true || playertotem === true || playerkaffeine === true || playerkmp === true){
-			    message = strbundle.getFormattedString("partpluginplayerfull", [ pluginstatus ]);
-			}else{
-			    message = strbundle.getFormattedString("partpluginplayerno", [ pluginstatus ]);
-			}
-			this.prefs.setCharPref("mimetype","autodetect");
-		    }
-		}
-		if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
-		    message = strbundle.getFormattedString("partpluginplayeralt", [ pluginstatus ]);
-		    this.prefs.setCharPref("mimetype","video/quicktime");
-		}
-	    }
-
-	    if(pluginstatus === "full"){
-
-		if(osString.match(/Windows/)){
-		    message = strbundle.getString("fullplugin");
-		    this.prefs.setCharPref("mimetype","autodetect");
-		}
-		if(osString.match(/Linux/)){
-
-		    //read file
-		    istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-		    istream.init(pluginreg, 0x01, 444, 0);
-		    istream.QueryInterface(Components.interfaces.nsILineInputStream);
-
-		    var line = {}, lines = [], hasmore;
-		    do {
-			hasmore = istream.readLine(line);
-			lines.push(line.value);
-
-			//check plugin by name
-			pluginavaliable = /gecko/.test(line.value);
-			if (pluginavaliable === true) {
-			    bestplugin = true;
-			}
-		    } while(hasmore);
-		    istream.close();
-
-		    if(bestplugin === false){
-			message = strbundle.getString("fullplugin");
-		    }else{
-			message = strbundle.getString("bestplugin");
-		    }
-		    this.prefs.setCharPref("mimetype","autodetect");
-		}
-		if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
-		    message = strbundle.getString("fullplugin");
-		    this.prefs.setCharPref("mimetype","autodetect");
-		}
-	    }
-
-	    if(pluginstatus === "full"){
-		//alert user
-		prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-		.getService(Components.interfaces.nsIPromptService);
-		prompts.alert(window, messagetitle, message);
-	    }else{
-		//alert user
-		prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-		.getService(Components.interfaces.nsIPromptService);
-		prompts.alert(window, alerttitle, message);
-	    }
-
-	    if(pluginstatus !== "full"){
-
-		var loc, wm, wmed, win, content;
-
-		loc = "about:plugins";
-
-		//open in new tab
-		wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
-		wmed = wm.QueryInterface(Components.interfaces.nsIWindowMediator);
-		win = wmed.getMostRecentWindow("navigator:browser");
-
-		if ( !win ) {
-		    win = window.openDialog("chrome://browser/content/browser.xul","_blank","chrome,all,dialog=no",loc, null, null);
-		}
-		else {
-		    content = win.document.getElementById("content");
-		    content.selectedTab = content.addTab(loc);
-		}
-
-		loc = "http://www.webgapps.org/addons/flashvideoreplacer";
-
-		//open in new tab
-		wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
-		wmed = wm.QueryInterface(Components.interfaces.nsIWindowMediator);
-		win = wmed.getMostRecentWindow("navigator:browser");
-
-		if ( !win ) {
-		    win = window.openDialog("chrome://browser/content/browser.xul","_blank","chrome,all,dialog=no",loc, null, null);
-		}
-		else {
-		    content = win.document.getElementById("content");
-		    content.selectedTab = content.addTab(loc);
-		}
 	    }
 	}
 };

@@ -2,8 +2,6 @@
 <!ENTITY Autodetect "Autodetect">
 <!ENTITY Autoplay "Play videos automatically">
 <!ENTITY BestPlayer "Best Available">
-<!ENTITY CheckPlugins "Check Plugin Compatibility">
-<!ENTITY CheckPluginsTooltip "Click here to check if you have the appropriate plugin for your operating system.">
 <!ENTITY Clipboard "Copy url to clipboard">
 <!ENTITY Custom "Custom">
 <!ENTITY Delay "Replace Delay">
