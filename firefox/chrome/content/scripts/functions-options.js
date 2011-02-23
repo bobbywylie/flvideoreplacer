@@ -29,7 +29,7 @@ var flvideoreplacerOptions = {
 	    .get("ProfD", Components.interfaces.nsIFile);
 	    pluginreg.append("pluginreg.dat");
 
-	    if(pluginreg.exists()){		
+	    if(pluginreg.exists()){
 		document.getElementById("pluginforcebox").hidden = true;		
 	    }else{
 		//document.getElementById("pluginforcebox").hidden = false;
