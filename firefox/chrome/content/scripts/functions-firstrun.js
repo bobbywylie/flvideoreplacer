@@ -29,11 +29,6 @@ var flvideoreplacerFirstrun = {
 	    .getService(Components.interfaces.nsIPrefService)
 	    .getBranch("extensions.flvideoreplacer.");
 
-	    //set download dir
-	    var defaultdir = Components.classes["@mozilla.org/file/directory_service;1"]
-	    .getService(Components.interfaces.nsIProperties)
-	    .get("Desk", Components.interfaces.nsIFile);
-
 	    //firstrun, update and current declarations
 	    var ver = -1, firstrun = true, current = aVersion, dir;
 
@@ -58,7 +53,15 @@ var flvideoreplacerFirstrun = {
 		    this.prefs.setCharPref("version",current);
 
 		    //set default dir pref
-		    this.prefs.setCharPref("downdir",defaultdir.path);
+		    var dir = this.prefs.getCharPref("downdir");
+		    if(dir === ""){
+			//set download dir
+			var defaultdir = Components.classes["@mozilla.org/file/directory_service;1"]
+			.getService(Components.interfaces.nsIProperties)
+			.get("Desk", Components.interfaces.nsIFile);
+
+			this.prefs.setCharPref("downdir",defaultdir.path);
+		    }
 		}
 
 		if (ver!=current && !firstrun){//actions specific for extension updates
@@ -75,6 +78,11 @@ var flvideoreplacerFirstrun = {
 			//set default dir pref
 			var dir = this.prefs.getCharPref("downdir");
 			if(dir === ""){
+			    //set download dir
+			    var defaultdir = Components.classes["@mozilla.org/file/directory_service;1"]
+			    .getService(Components.interfaces.nsIProperties)
+			    .get("Desk", Components.interfaces.nsIFile);
+
 			    this.prefs.setCharPref("downdir",defaultdir.path);
 			}
 		    }
