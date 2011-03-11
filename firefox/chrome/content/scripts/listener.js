@@ -232,6 +232,14 @@ var flvideoreplacerListener = {
 		testelement = doc.getElementById('movie_player');
 
 		if (testelement !== null) {
+		  
+		    var divreplacer, childdivs, videodiv;
+
+		    //injected empty div
+		    divreplacer = doc.createElement('div');
+		    divreplacer.setAttribute("id", "movie_player");
+		    divreplacer.setAttribute("style"," width:"+videowidth+";"+" height:"+videoheight+";"+" text-align:center; vertical-align:middle; margin: auto;");
+		    testelement.parentNode.replaceChild(divreplacer, testelement);
 
 		    //get xml document content
 		    req = new XMLHttpRequest();   
