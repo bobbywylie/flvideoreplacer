@@ -243,7 +243,8 @@ var flvideoreplacerListener = {
 				pagecontent = req.responseText;
 			    }else{
 				//fetch page html content
-				pagecontent = doc.getElementsByTagName("body").item(0).innerHTML;
+				//pagecontent = doc.getElementsByTagName("body").item(0).innerHTML;
+				pagecontent = doc.getElementById("postpage").innerHTML;
 			    }
 			    newline = pagecontent.split("\n");
 
@@ -256,6 +257,11 @@ var flvideoreplacerListener = {
 
 				    //declare video quality based on user settings and video availability
 				    fmt = "18";
+				    
+				    //access preferences interface
+				    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+				    .getService(Components.interfaces.nsIPrefService)
+				    .getBranch("extensions.flvideoreplacer.downloadersource.");
 
 				    if (videoquality === "LOW"){
 
@@ -266,10 +272,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "application/x-flv";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -280,10 +282,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "video/mp4";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -294,10 +292,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "application/x-flv";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -308,10 +302,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "application/x-flv";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -323,10 +313,6 @@ var flvideoreplacerListener = {
 						if(mimetype === "autodetect"){
 						    newmimetype = "video/mp4";
 						}
-						//access preferences interface
-						this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-						.getService(Components.interfaces.nsIPrefService)
-						.getBranch("extensions.flvideoreplacer.downloadersource.");
 						//store download path
 						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					    }
@@ -342,10 +328,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "application/x-flv";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -356,10 +338,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "video/mp4";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -370,10 +348,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "application/x-flv";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -384,10 +358,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "application/x-flv";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -400,10 +370,6 @@ var flvideoreplacerListener = {
 						    newmimetype = "video/mp4";
 						}
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -414,10 +380,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "video/mp4";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -432,10 +394,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "application/x-flv";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -446,10 +404,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "video/mp4";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -460,10 +414,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "application/x-flv";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -474,10 +424,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "application/x-flv";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -490,10 +436,6 @@ var flvideoreplacerListener = {
 						    newmimetype = "video/mp4";
 						}
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -504,10 +446,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "video/mp4";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -518,10 +456,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "video/mp4";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
@@ -532,10 +466,6 @@ var flvideoreplacerListener = {
 					    if(mimetype === "autodetect"){
 						newmimetype = "video/mp4";
 					    }
-					    //access preferences interface
-					    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					    .getService(Components.interfaces.nsIPrefService)
-					    .getBranch("extensions.flvideoreplacer.downloadersource.");
 					    //store download path
 					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					}
