@@ -217,109 +217,132 @@ var flvideoreplacerFirstrun = {
 	    //declare variables
 	    var playerpath = this.prefs.getCharPref("playerpath");
 	    var playerqt, playerwmp, playerkmp, playerbsp, playervlc, playertotem, playerkaffeine, playergmplayer, playersmplayer;
+	    var envpaths, newpath;
 
 	    if(osString.match(/Windows/)){
 
-		//initiate file
-		playerkmp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playerkmp.initWithPath("C:\\Program Files\\The KMPlayer\\KMPlayer.exe");
-		if(playerkmp.exists()){
-		    this.prefs.setBoolPref("playerkmp",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playerkmp.path);
-		    }
-		}
-		//initiate file
-		playerbsp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playerbsp.initWithPath("C:\\Program Files\\Webteh\\BSPlayer\\bsplayer.exe");
-		if(playerbsp.exists()){
-		    this.prefs.setBoolPref("playerbsp",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playerbsp.path);
-		    }
-		}	
-		//initiate file
-		playerwmp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playerwmp.initWithPath("C:\\Program Files\\Windows Media Player\\wmplayer.exe");
-		if(playerwmp.exists()){
-		    this.prefs.setBoolPref("playerwmp",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playerwmp.path);
-		    }
-		}
-		//initiate file
-		playerqt = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playerqt.initWithPath("C:\\Program Files\\QuickTime\\QuickTimePlayer.exe");
-		if(playerqt.exists()){
-		    this.prefs.setBoolPref("playerqt",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playerqt.path);
-		    }
-		}
-		//initiate file
-		playervlc = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playervlc.initWithPath("C:\\Program Files\\VideoLAN\\VLC\\vlc.exe");
-		if(playervlc.exists()){
-		    this.prefs.setBoolPref("playervlc",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playervlc.path);
-		    }
-		}
+		//get paths from environment variables
+		envprogramfiles = Components.classes["@mozilla.org/process/environment;1"]
+		.getService(Components.interfaces.nsIEnvironment)
+		.get('PROGRAMFILES');
 
+		if(envprogramfiles){
+
+		    //initiate file
+		    playervlc = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		    playervlc.initWithPath(envprogramfiles+"\\VideoLAN\\VLC\\vlc.exe");
+		    if(playervlc.exists()){
+			this.prefs.setBoolPref("playervlc",true);
+			if(playerpath === ""){
+			    this.prefs.setCharPref("playerpath",playervlc.path);
+			}
+		    }
+		    //initiate file
+		    playerqt = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		    playerqt.initWithPath(envprogramfiles+"\\QuickTime\\QuickTimePlayer.exe");
+		    if(playerqt.exists()){
+			this.prefs.setBoolPref("playerqt",true);
+			if(playerpath === ""){
+			    this.prefs.setCharPref("playerpath",playerqt.path);
+			}
+		    }
+		    //initiate file
+		    playerwmp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		    playerwmp.initWithPath(envprogramfiles+"\\Windows Media Player\\wmplayer.exe");
+		    if(playerwmp.exists()){
+			this.prefs.setBoolPref("playerwmp",true);
+			if(playerpath === ""){
+			    this.prefs.setCharPref("playerpath",playerwmp.path);
+			}
+		    }	
+		    //initiate file
+		    playerbsp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		    playerbsp.initWithPath(envprogramfiles+"\\Webteh\\BSPlayer\\bsplayer.exe");
+		    if(playerbsp.exists()){
+			this.prefs.setBoolPref("playerbsp",true);
+			if(playerpath === ""){
+			    this.prefs.setCharPref("playerpath",playerbsp.path);
+			}
+		    }	
+		    //initiate file
+		    playerkmp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		    playerkmp.initWithPath(envprogramfiles+"\\The KMPlayer\\KMPlayer.exe");
+		    if(playerkmp.exists()){
+			this.prefs.setBoolPref("playerkmp",true);
+			if(playerpath === ""){
+			    this.prefs.setCharPref("playerpath",playerkmp.path);
+			}
+		    }
+		}
 	    }else if(osString.match(/Linux/)){
 
-		//initiate file
-		playersmplayer = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playersmplayer.initWithPath("/usr/bin/smplayer");
-		if(playersmplayer.exists()){
-		    this.prefs.setBoolPref("playersmplayer",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playersmplayer.path);
-		    }
-		}
-		//initiate file
-		playergmplayer = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playergmplayer.initWithPath("/usr/bin/gnome-mplayer");
-		if(playergmplayer.exists()){
-		    this.prefs.setBoolPref("playergmplayer",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playergmplayer.path);
-		    }
-		}
-		//initiate file
-		playerkaffeine = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playerkaffeine.initWithPath("/usr/bin/kaffeine");
-		if(playerkaffeine.exists()){
-		    this.prefs.setBoolPref("playerkaffeine",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playerkaffeine.path);
-		    }
-		}
-		//initiate file
-		playerkmp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playerkmp.initWithPath("/usr/bin/kmplayer");
-		if(playerkmp.exists()){
-		    this.prefs.setBoolPref("playerkmp",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playerkmp.path);
-		    }
-		}
-		//initiate file
-		playertotem = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playertotem.initWithPath("/usr/bin/totem");
-		if(playertotem.exists()){
-		    this.prefs.setBoolPref("playertotem",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playertotem.path);
-		    }
-		}
-		//initiate file
-		playervlc = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		playervlc.initWithPath("/usr/bin/vlc");
-		if(playervlc.exists()){
-		    this.prefs.setBoolPref("playervlc",true);
-		    if(playerpath === ""){
-			this.prefs.setCharPref("playerpath",playervlc.path);
+		//get paths from environment variables
+		envpaths = Components.classes["@mozilla.org/process/environment;1"]
+		.getService(Components.interfaces.nsIEnvironment)
+		.get('PATH');
+
+		if(envpaths){
+
+		    //split
+		    newpath = envpaths.split(":");
+
+		    //find
+		    for(var i=0; i< newpath.length; i++){
+
+			//initiate file
+			playervlc = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			playervlc.initWithPath(newpath[i]+"/vlc");
+			if(playervlc.exists()){
+			    this.prefs.setBoolPref("playervlc",true);
+			    if(playerpath === ""){
+				this.prefs.setCharPref("playerpath",playervlc.path);
+			    }
+			}
+			//initiate file
+			playertotem = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			playertotem.initWithPath(newpath[i]+"/totem");
+			if(playertotem.exists()){
+			    this.prefs.setBoolPref("playertotem",true);
+			    if(playerpath === ""){
+				this.prefs.setCharPref("playerpath",playertotem.path);
+			    }
+			}
+			//initiate file
+			playerkmp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			playerkmp.initWithPath(newpath[i]+"/kmplayer");
+			if(playerkmp.exists()){
+			    this.prefs.setBoolPref("playerkmp",true);
+			    if(playerpath === ""){
+				this.prefs.setCharPref("playerpath",playerkmp.path);
+			    }
+			}
+			//initiate file
+			playerkaffeine = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			playerkaffeine.initWithPath(newpath[i]+"/kaffeine");
+			if(playerkaffeine.exists()){
+			    this.prefs.setBoolPref("playerkaffeine",true);
+			    if(playerpath === ""){
+				this.prefs.setCharPref("playerpath",playerkaffeine.path);
+			    }
+			}
+			//initiate file
+			playergmplayer = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			playergmplayer.initWithPath(newpath[i]+"/gnome-mplayer");
+			if(playergmplayer.exists()){
+			    this.prefs.setBoolPref("playergmplayer",true);
+			    if(playerpath === ""){
+				this.prefs.setCharPref("playerpath",playergmplayer.path);
+			    }
+			}
+			//initiate file
+			playersmplayer = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			playersmplayer.initWithPath(newpath[i]+"/smplayer");
+			if(playersmplayer.exists()){
+			    this.prefs.setBoolPref("playersmplayer",true);
+			    if(playerpath === ""){
+				this.prefs.setCharPref("playerpath",playersmplayer.path);
+			    }
+			}
 		    }
 		}
 

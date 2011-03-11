@@ -174,82 +174,140 @@ var flvideoreplacerOptions = {
 
 	    if(osString.match(/Windows/)){
 
-		//set playerpath
-		if(standalone === "playerqt"){
-		    this.prefs.setCharPref("playerpath","C:\\Program Files\\QuickTime\\QuickTimePlayer.exe");
-		}
-		if(standalone === "playerwmp"){
-		    this.prefs.setCharPref("playerpath","C:\\Program Files\\Windows Media Player\\wmplayer.exe");
-		}
-		if(standalone === "playerkmp"){
-		    this.prefs.setCharPref("playerpath","C:\\Program Files\\The KMPlayer\\KMPlayer.exe");
-		}
-		if(standalone === "playerbsp"){
-		    this.prefs.setCharPref("playerpath","C:\\Program Files\\Webteh\\BSPlayer\\bsplayer.exe");
-		}
-		if(standalone === "playervlc"){
-		    this.prefs.setCharPref("playerpath","C:\\Program Files\\VideoLAN\\VLC\\vlc.exe");
-		}		
-		if(standalone === "playerbest"){
+		//get paths from environment variables
+		var envprogramfiles = Components.classes["@mozilla.org/process/environment;1"]
+		.getService(Components.interfaces.nsIEnvironment)
+		.get('PROGRAMFILES');
 
-		    if(playerkmp === true){
-			this.prefs.setCharPref("playerpath","C:\\Program Files\\The KMPlayer\\KMPlayer.exe");
-		    }else if(playerbsp === true){
-			this.prefs.setCharPref("playerpath","C:\\Program Files\\Webteh\\BSPlayer\\bsplayer.exe");
-		    }else if(playerwmp === true){
-			this.prefs.setCharPref("playerpath","C:\\Program Files\\Windows Media Player\\wmplayer.exe");
-		    }else if(playerqt === true){
-			this.prefs.setCharPref("playerpath","C:\\Program Files\\QuickTime\\QuickTimePlayer.exe");
-		    }else if(playervlc === true){
-			this.prefs.setCharPref("playerpath","C:\\Program Files\\VideoLAN\\VLC\\vlc.exe");
-		    }else{
-			bestplayer = "KMPlayer";
-			message = strbundle.getFormattedString("nobestplayer", [ bestplayer ]);
-			this.prefs.setCharPref("playerpath",message);
-			document.getElementById('standalone').value = "playercustom";
+		if(envprogramfiles){
+
+		    //set playerpath
+		    if(standalone === "playerqt"){
+			this.prefs.setCharPref("playerpath",envprogramfiles+"\\QuickTime\\QuickTimePlayer.exe");
+		    }
+		    if(standalone === "playerwmp"){
+			this.prefs.setCharPref("playerpath",envprogramfiles+"\\Windows Media Player\\wmplayer.exe");
+		    }
+		    if(standalone === "playerkmp"){
+			this.prefs.setCharPref("playerpath",envprogramfiles+"\\The KMPlayer\\KMPlayer.exe");
+		    }
+		    if(standalone === "playerbsp"){
+			this.prefs.setCharPref("playerpath",envprogramfiles+"\\Webteh\\BSPlayer\\bsplayer.exe");
+		    }
+		    if(standalone === "playervlc"){
+			this.prefs.setCharPref("playerpath",envprogramfiles+"\\VideoLAN\\VLC\\vlc.exe");
+		    }		
+		    if(standalone === "playerbest"){
+
+			if(playerkmp === true){
+			    this.prefs.setCharPref("playerpath",envprogramfiles+"\\The KMPlayer\\KMPlayer.exe");
+			}else if(playerbsp === true){
+			    this.prefs.setCharPref("playerpath",envprogramfiles+"\\Webteh\\BSPlayer\\bsplayer.exe");
+			}else if(playerwmp === true){
+			    this.prefs.setCharPref("playerpath",envprogramfiles+"\\Windows Media Player\\wmplayer.exe");
+			}else if(playerqt === true){
+			    this.prefs.setCharPref("playerpath",envprogramfiles+"\\QuickTime\\QuickTimePlayer.exe");
+			}else if(playervlc === true){
+			    this.prefs.setCharPref("playerpath",envprogramfiles+"\\VideoLAN\\VLC\\vlc.exe");
+			}else{
+			    bestplayer = "KMPlayer";
+			    message = strbundle.getFormattedString("nobestplayer", [ bestplayer ]);
+			    this.prefs.setCharPref("playerpath",message);
+			    document.getElementById('standalone').value = "playercustom";
+			}
 		    }
 		}
 
 	    }else if(osString.match(/Linux/)){
 
-		//set playerpath
-		if(standalone === "playertotem"){
-		    this.prefs.setCharPref("playerpath","/usr/bin/totem");
-		}
-		if(standalone === "playergmplayer"){
-		    this.prefs.setCharPref("playerpath","/usr/bin/gnome-mplayer");
-		}
-		if(standalone === "playerkaffeine"){
-		    this.prefs.setCharPref("playerpath","/usr/bin/kaffeine");
-		}
-		if(standalone === "playerkmp"){
-		    this.prefs.setCharPref("playerpath","/usr/bin/kmplayer");
-		}
-		if(standalone === "playersmplayer"){
-		    this.prefs.setCharPref("playerpath","/usr/bin/smplayer");
-		}
-		if(standalone === "playervlc"){
-		    this.prefs.setCharPref("playerpath","/usr/bin/vlc");
-		}
-		if(standalone === "playerbest"){
+		//get paths from environment variables
+		var envpaths = Components.classes["@mozilla.org/process/environment;1"]
+		.getService(Components.interfaces.nsIEnvironment)
+		.get('PATH');
 
-		    if(playersmplayer === true){
-			this.prefs.setCharPref("playerpath","/usr/bin/smplayer");
-		    }else if(playergmplayer === true){
-			this.prefs.setCharPref("playerpath","/usr/bin/gnome-mplayer");
-		    }else if(playerkaffeine === true){
-			this.prefs.setCharPref("playerpath","/usr/bin/kaffeine");
-		    }else if(playerkmp === true){
-			this.prefs.setCharPref("playerpath","/usr/bin/kmplayer");
-		    }else if(playertotem === true){
-			this.prefs.setCharPref("playerpath","/usr/bin/totem");
-		    }else if(playervlc === true){
-			this.prefs.setCharPref("playerpath","/usr/bin/vlc");
-		    }else{
-			bestplayer = "SMPlayer";
-			message = strbundle.getFormattedString("nobestplayer", [ bestplayer ]);
-			this.prefs.setCharPref("playerpath",message);
-			document.getElementById('standalone').value = "playercustom";
+		if(envpaths){
+
+		    //split
+		    var newpath = envpaths.split(":");
+
+		    //find
+		    for(var i=0; i< newpath.length; i++){
+
+			//initiate file
+			playertotem = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			playertotem.initWithPath(newpath[i]+"/totem");
+			if(playertotem.exists()){
+			    var playertotempath = playertotem.path;				
+			}
+			//initiate file
+			playergmplayer = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			playergmplayer.initWithPath(newpath[i]+"/gnome-mplayer");
+			if(playergmplayer.exists()){
+			    var playergmplayerpath = playergmplayer.path;
+			}
+			//initiate file
+			playerkaffeine = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			playerkaffeine.initWithPath(newpath[i]+"/kaffeine");
+			if(playerkaffeine.exists()){
+			    var playerkaffeinepath = playerkaffeine.path;
+			}
+			//initiate file
+			playerkmp = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			playerkmp.initWithPath(newpath[i]+"/kmplayer");
+			if(playerkmp.exists()){
+			    var playerkmppath = playerkmp.path;
+			}
+			//initiate file
+			playersmplayer = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			playersmplayer.initWithPath(newpath[i]+"/smplayer");
+			if(playersmplayer.exists()){
+			    var playersmplayerpath = playersmplayer.path;
+			}
+			//initiate file
+			playervlc = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			playervlc.initWithPath(newpath[i]+"/vlc");
+			if(playervlc.exists()){
+			    var playervlcpath = playervlc.path;
+			}
+		    }
+		    //set playerpath
+		    if(standalone === "playertotem" && playertotempath !== null){
+			this.prefs.setCharPref("playerpath",playertotempath);
+		    }
+		    if(standalone === "playergmplayer" && playergmplayerpath !== null){
+			this.prefs.setCharPref("playerpath",playergmplayerpath);
+		    }
+		    if(standalone === "playerkaffeine" && playerkaffeinepath !== null){
+			this.prefs.setCharPref("playerpath",playerkaffeinepath);
+		    }
+		    if(standalone === "playerkmp" && playerkmppath !== null){
+			this.prefs.setCharPref("playerpath",playerkmppath);
+		    }
+		    if(standalone === "playersmplayer" && playersmplayerpath !== null){
+			this.prefs.setCharPref("playerpath",playersmplayerpath);
+		    }
+		    if(standalone === "playervlc" && playervlcpath !== null){
+			this.prefs.setCharPref("playerpath",playervlcpath);
+		    }
+		    if(standalone === "playerbest"){
+			if(playersmplayerpath !== null){
+			    this.prefs.setCharPref("playerpath",playersmplayerpath);
+			}else if(playergmplayerpath !== null){
+			    this.prefs.setCharPref("playerpath",playergmplayerpath);
+			}else if(playerkaffeinepath !== null){
+			    this.prefs.setCharPref("playerpath",playerkaffeinepath);
+			}else if(playerkmppath !== null){
+			    this.prefs.setCharPref("playerpath",playerkmppath);
+			}else if(playertotempath !== null){
+			    this.prefs.setCharPref("playerpath",playertotempath);
+			}else if(playervlcpath !== null){
+			    this.prefs.setCharPref("playerpath",playervlcpath);
+			}else{
+			    bestplayer = "SMPlayer";
+			    message = strbundle.getFormattedString("nobestplayer", [ bestplayer ]);
+			    this.prefs.setCharPref("playerpath",message);
+			    document.getElementById('standalone').value = "playercustom";
+			}
 		    }
 		}
 
