@@ -1,3 +1,4 @@
+pref("extensions.flvideoreplacer.performance", 3);
 pref("extensions.flvideoreplacer.enabled", true);
 pref("extensions.flvideoreplacer.youtube", true);
 pref("extensions.flvideoreplacer.vimeo", true);

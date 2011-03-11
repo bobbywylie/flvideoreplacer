@@ -210,6 +210,7 @@ var flvideoreplacerListener = {
 	    var prefermp4 = this.prefs.getBoolPref("prefermp4");
 	    var videoquality = this.prefs.getCharPref("videoquality");
 	    var placeholder = this.prefs.getBoolPref("placeholder");
+	    var performance = this.prefs.getIntPref("performance");
 
 	    //get mime prefs and declare variables
 	    var mimetype = this.prefs.getCharPref("mimetype");
@@ -233,13 +234,14 @@ var flvideoreplacerListener = {
 
 		if (testelement !== null) {
 
-		    var divreplacer, childdivs, videodiv;
+		    if(performance === 3){
 
-		    //injected empty div
-		    divreplacer = doc.createElement('div');
-		    divreplacer.setAttribute("id", "movie_player");
-		    divreplacer.setAttribute("style"," width:"+videowidth+";"+" height:"+videoheight+";"+" text-align:center; vertical-align:middle; margin: auto;");
-		    testelement.parentNode.replaceChild(divreplacer, testelement);
+			//injected empty div
+			var divreplacer = doc.createElement('div');
+			divreplacer.setAttribute("id", "movie_player");
+			divreplacer.setAttribute("style"," width:"+videowidth+";"+" height:"+videoheight+";"+" text-align:center; vertical-align:middle; margin: auto;");
+			testelement.parentNode.replaceChild(divreplacer, testelement);
+		    }
 
 		    //get xml document content
 		    req = new XMLHttpRequest();   
@@ -274,49 +276,20 @@ var flvideoreplacerListener = {
 				    .getService(Components.interfaces.nsIPrefService)
 				    .getBranch("extensions.flvideoreplacer.downloadersource.");
 
-				    if (videoquality === "LOW"){
+				    if(performance === 4){
 
-					if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
-					    fmt = "5";
-					    videourl = newline[i].replace(/.*5\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "application/x-flv";
+					if (videoquality === "LOW"){
+
+					    if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
+						fmt = "5";
+						videourl = newline[i].replace(/.*5\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "application/x-flv";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
-					    fmt = "18";
-					    videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "video/mp4";
-					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
-					    fmt = "34";
-					    videourl = newline[i].replace(/.*34\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "application/x-flv";
-					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if (newline[i].match(/\,35\|http\:/) || newline[i].match(/\"35\|http\:/)) {
-					    fmt = "35";
-					    videourl = newline[i].replace(/.*35\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "application/x-flv";
-					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if(prefermp4 === true){
 					    if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
 						fmt = "18";
 						videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
@@ -327,52 +300,42 @@ var flvideoreplacerListener = {
 						//store download path
 						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					    }
+					    if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
+						fmt = "34";
+						videourl = newline[i].replace(/.*34\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "application/x-flv";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+					    if(prefermp4 === true){
+						if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
+						    fmt = "18";
+						    videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						    replacevideo = true;
+						    if(mimetype === "autodetect"){
+							newmimetype = "video/mp4";
+						    }
+						    //store download path
+						    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+						}
+					    }
 					}
-				    }
 
-				    if (videoquality === "MEDIUM"){
+					if (videoquality === "MEDIUM"){
 
-					if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
-					    fmt = "5";
-					    videourl = newline[i].replace(/.*5\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "application/x-flv";
+					    if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
+						fmt = "5";
+						videourl = newline[i].replace(/.*5\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "application/x-flv";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
-					    fmt = "18";
-					    videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "video/mp4";
-					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
-					    fmt = "34";
-					    videourl = newline[i].replace(/.*34\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "application/x-flv";
-					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if (newline[i].match(/\,35\|http\:/) || newline[i].match(/\"35\|http\:/)) {
-					    fmt = "35";
-					    videourl = newline[i].replace(/.*35\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "application/x-flv";
-					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if(prefermp4 === true){
 					    if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
 						fmt = "18";
 						videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
@@ -380,65 +343,55 @@ var flvideoreplacerListener = {
 						if(mimetype === "autodetect"){
 						    newmimetype = "video/mp4";
 						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if (newline[i].match(/\,22\|http\:/) || newline[i].match(/\"22\|http\:/)) {
-					    fmt = "22";
-					    videourl = newline[i].replace(/.*22\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "video/mp4";
+					    if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
+						fmt = "34";
+						videourl = newline[i].replace(/.*34\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "application/x-flv";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    if (newline[i].match(/\,35\|http\:/) || newline[i].match(/\"35\|http\:/)) {
+						fmt = "35";
+						videourl = newline[i].replace(/.*35\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "application/x-flv";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+					    if(prefermp4 === true){
+						if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
+						    fmt = "18";
+						    videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						    replacevideo = true;
+						    if(mimetype === "autodetect"){
+							newmimetype = "video/mp4";
+						    }
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
 					}
-				    }
 
-				    if (videoquality === "HIGH"){
+					if (videoquality === "HIGH"){
 
-					if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
-					    fmt = "5";
-					    videourl = newline[i].replace(/.*5\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "application/x-flv";
+					    if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
+						fmt = "5";
+						videourl = newline[i].replace(/.*5\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "application/x-flv";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
-					    fmt = "18";
-					    videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "video/mp4";
-					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
-					    fmt = "34";
-					    videourl = newline[i].replace(/.*34\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "application/x-flv";
-					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if (newline[i].match(/\,35\|http\:/) || newline[i].match(/\"35\|http\:/)) {
-					    fmt = "35";
-					    videourl = newline[i].replace(/.*35\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "application/x-flv";
-					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
-					}
-					if(prefermp4 === true){
 					    if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
 						fmt = "18";
 						videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
@@ -446,42 +399,401 @@ var flvideoreplacerListener = {
 						if(mimetype === "autodetect"){
 						    newmimetype = "video/mp4";
 						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
+						fmt = "34";
+						videourl = newline[i].replace(/.*34\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "application/x-flv";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+					    if (newline[i].match(/\,35\|http\:/) || newline[i].match(/\"35\|http\:/)) {
+						fmt = "35";
+						videourl = newline[i].replace(/.*35\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "application/x-flv";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+					    if(prefermp4 === true){
+						if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
+						    fmt = "18";
+						    videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						    replacevideo = true;
+						    if(mimetype === "autodetect"){
+							newmimetype = "video/mp4";
+						    }
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+					    if (newline[i].match(/\,22\|http\:/) || newline[i].match(/\"22\|http\:/)) {
+						fmt = "22";
+						videourl = newline[i].replace(/.*22\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "video/mp4";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
 					}
-					if (newline[i].match(/\,22\|http\:/) || newline[i].match(/\"22\|http\:/)) {
-					    fmt = "22";
-					    videourl = newline[i].replace(/.*22\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "video/mp4";
+
+					if (videoquality === "SUPER"){
+
+					    if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
+						fmt = "5";
+						videourl = newline[i].replace(/.*5\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "application/x-flv";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
+						fmt = "18";
+						videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "video/mp4";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+					    if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
+						fmt = "34";
+						videourl = newline[i].replace(/.*34\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "application/x-flv";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+					    if (newline[i].match(/\,35\|http\:/) || newline[i].match(/\"35\|http\:/)) {
+						fmt = "35";
+						videourl = newline[i].replace(/.*35\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "application/x-flv";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+					    if(prefermp4 === true){
+						if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
+						    fmt = "18";
+						    videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						    replacevideo = true;
+						    if(mimetype === "autodetect"){
+							newmimetype = "video/mp4";
+						    }
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+					    if (newline[i].match(/\,22\|http\:/) || newline[i].match(/\"22\|http\:/)) {
+						fmt = "22";
+						videourl = newline[i].replace(/.*22\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "video/mp4";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+					    if (newline[i].match(/\,37\|http\:/) || newline[i].match(/\"37\|http\:/)) {
+						fmt = "37";
+						videourl = newline[i].replace(/.*37\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "video/mp4";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+					    if (newline[i].match(/\,38\|http\:/) || newline[i].match(/\"38\|http\:/)) {
+						fmt = "38";
+						videourl = newline[i].replace(/.*38\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "video/mp4";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
 					}
-					if (newline[i].match(/\,37\|http\:/) || newline[i].match(/\"37\|http\:/)) {
-					    fmt = "37";
-					    videourl = newline[i].replace(/.*37\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "video/mp4";
+
+				    }else{
+
+					if (videoquality === "LOW"){
+
+					    if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
+						fmt = "18";
+						videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "video/mp4";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+
+					    if((replacevideo === false) || (replacevideo === true && prefermp4 === false)){
+
+						if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
+						    fmt = "34";
+						    videourl = newline[i].replace(/.*34\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						    replacevideo = true;
+						    if(mimetype === "autodetect"){
+							newmimetype = "application/x-flv";
+						    }
+						    //store download path
+						    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+						}
+
+						if(replacevideo === false){
+
+						    if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
+							fmt = "5";
+							videourl = newline[i].replace(/.*5\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+							replacevideo = true;
+							if(mimetype === "autodetect"){
+							    newmimetype = "application/x-flv";
+							}
+							//store download path
+							this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+						    }
+						}
+					    }
 					}
-					if (newline[i].match(/\,38\|http\:/) || newline[i].match(/\"38\|http\:/)) {
-					    fmt = "38";
-					    videourl = newline[i].replace(/.*38\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
-					    replacevideo = true;
-					    if(mimetype === "autodetect"){
-						newmimetype = "video/mp4";
+
+					if (videoquality === "MEDIUM"){
+
+					    if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
+						fmt = "18";
+						videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "video/mp4";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
 					    }
-					    //store download path
-					    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+
+					    if(replacevideo === false || (replacevideo === true && prefermp4 === false)){
+
+						if (newline[i].match(/\,35\|http\:/) || newline[i].match(/\"35\|http\:/)) {
+						    fmt = "35";
+						    videourl = newline[i].replace(/.*35\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						    replacevideo = true;
+						    if(mimetype === "autodetect"){
+							newmimetype = "application/x-flv";
+						    }
+						    //store download path
+						    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+						}
+
+						if(replacevideo === false){
+
+						    if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
+							fmt = "34";
+							videourl = newline[i].replace(/.*34\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+							replacevideo = true;
+							if(mimetype === "autodetect"){
+							    newmimetype = "application/x-flv";
+							}
+							//store download path
+							this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+						    }
+
+						    if(replacevideo === false){
+							if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
+							    fmt = "5";
+							    videourl = newline[i].replace(/.*5\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+							    replacevideo = true;
+							    if(mimetype === "autodetect"){
+								newmimetype = "application/x-flv";
+							    }
+							    //store download path
+							    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+							}
+						    }
+						}
+					    }
+					}
+
+					if (videoquality === "HIGH"){
+
+					    if (newline[i].match(/\,22\|http\:/) || newline[i].match(/\"22\|http\:/)) {
+						fmt = "22";
+						videourl = newline[i].replace(/.*22\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "video/mp4";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+
+					    if(replacevideo === false){
+
+						if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
+						    fmt = "18";
+						    videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						    replacevideo = true;
+						    if(mimetype === "autodetect"){
+							newmimetype = "video/mp4";
+						    }
+						    //store download path
+						    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+						}
+
+						if(replacevideo === false || (replacevideo === true && prefermp4 === false)){
+
+						    if (newline[i].match(/\,35\|http\:/) || newline[i].match(/\"35\|http\:/)) {
+							fmt = "35";
+							videourl = newline[i].replace(/.*35\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+							replacevideo = true;
+							if(mimetype === "autodetect"){
+							    newmimetype = "application/x-flv";
+							}
+							//store download path
+							this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+						    }
+						    if(replacevideo === false){
+
+							if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
+							    fmt = "34";
+							    videourl = newline[i].replace(/.*34\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+							    replacevideo = true;
+							    if(mimetype === "autodetect"){
+								newmimetype = "application/x-flv";
+							    }
+							    //store download path
+							    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+							}
+
+							if(replacevideo === false){
+							    if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
+								fmt = "5";
+								videourl = newline[i].replace(/.*5\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+								replacevideo = true;
+								if(mimetype === "autodetect"){
+								    newmimetype = "application/x-flv";
+								}
+								//store download path
+								this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+							    }
+							}
+						    }
+						}
+					    }
+					}
+					if (videoquality === "SUPER"){
+
+					    if (newline[i].match(/\,38\|http\:/) || newline[i].match(/\"38\|http\:/)) {
+						fmt = "38";
+						videourl = newline[i].replace(/.*38\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						replacevideo = true;
+						if(mimetype === "autodetect"){
+						    newmimetype = "video/mp4";
+						}
+						//store download path
+						this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+					    }
+
+					    if(replacevideo === false){
+
+						if (newline[i].match(/\,37\|http\:/) || newline[i].match(/\"37\|http\:/)) {
+						    fmt = "37";
+						    videourl = newline[i].replace(/.*37\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+						    replacevideo = true;
+						    if(mimetype === "autodetect"){
+							newmimetype = "video/mp4";
+						    }
+						    //store download path
+						    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+						}
+
+						if(replacevideo === false){
+
+						    if (newline[i].match(/\,22\|http\:/) || newline[i].match(/\"22\|http\:/)) {
+							fmt = "22";
+							videourl = newline[i].replace(/.*22\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+							replacevideo = true;
+							if(mimetype === "autodetect"){
+							    newmimetype = "video/mp4";
+							}
+							//store download path
+							this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+						    }
+
+						    if(replacevideo === false){
+
+							if (newline[i].match(/\,18\|http\:/) || newline[i].match(/\"18\|http\:/)) {
+							    fmt = "18";
+							    videourl = newline[i].replace(/.*18\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+							    replacevideo = true;
+							    if(mimetype === "autodetect"){
+								newmimetype = "video/mp4";
+							    }
+							    //store download path
+							    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+							}
+
+							if(replacevideo === false || (replacevideo === true && prefermp4 === false)){
+
+							    if (newline[i].match(/\,35\|http\:/) || newline[i].match(/\"35\|http\:/)) {
+								fmt = "35";
+								videourl = newline[i].replace(/.*35\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+								replacevideo = true;
+								if(mimetype === "autodetect"){
+								    newmimetype = "application/x-flv";
+								}
+								//store download path
+								this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+							    }
+							    if(replacevideo === false){
+
+								if (newline[i].match(/\,34\|http\:/) || newline[i].match(/\"34\|http\:/)) {
+								    fmt = "34";
+								    videourl = newline[i].replace(/.*34\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+								    replacevideo = true;
+								    if(mimetype === "autodetect"){
+									newmimetype = "application/x-flv";
+								    }
+								    //store download path
+								    this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+								}
+
+								if(replacevideo === false){
+								    if (newline[i].match(/\,5\|http\:/) || newline[i].match(/\"5\|http\:/)) {
+									fmt = "5";
+									videourl = newline[i].replace(/.*5\|/g,"").replace(/\\/g,"").replace(/\|\|.*/g,"");
+									replacevideo = true;
+									if(mimetype === "autodetect"){
+									    newmimetype = "application/x-flv";
+									}
+									//store download path
+									this.prefs.setCharPref("youtube."+videoid+"."+fmt,videourl);
+								    }
+								}
+							    }
+							}
+						    }
+						}
+					    }
 					}
 				    }
-
 				    if (replacevideo === true){
 
 					//access preferences interface
@@ -524,7 +836,7 @@ var flvideoreplacerListener = {
 					    flvideoreplacerListener.placeHolder(aEvent,"youtube."+videoid);
 					}
 				    }
-				    break;
+				    break;    
 				}
 			    }
 			}

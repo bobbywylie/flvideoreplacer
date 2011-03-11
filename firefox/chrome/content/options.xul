@@ -239,6 +239,7 @@
 						<menuitem label="&LOW;" value="LOW" />
 						<menuitem label="&MEDIUM;" value="MEDIUM" />
 						<menuitem label="&HIGH;" value="HIGH" selected="true" />
+						<menuitem label="&SUPER;" value="SUPER" />
 					</menupopup>
 				</menulist>
 				<spacer width="5" flex="0" />

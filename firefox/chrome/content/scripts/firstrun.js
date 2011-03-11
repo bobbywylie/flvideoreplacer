@@ -2,17 +2,32 @@ var flvideoreplacerFirstrun = {
 
 	init: function(){//get current version from extension manager
 
+	    //access preferences interface
+	    this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+	    .getService(Components.interfaces.nsIPrefService)
+	    .getBranch("extensions.flvideoreplacer.");
+
 	    try {//Firefox <= 3.6
+
+		//store browser version
+		this.prefs.setIntPref("performance",3);
+
 		var gExtensionManager = Components.classes["@mozilla.org/extensions/manager;1"]
 		.getService(Components.interfaces.nsIExtensionManager);
 		var current = gExtensionManager.getItemForID("flvideoreplacer@lovinglinux.megabyet.net").version;
 		flvideoreplacerFirstrun.updateInstall(current);
+
 	    }
 	    catch(e){//Firefox >=4.0
+
+		//store browser version
+		this.prefs.setIntPref("performance",4);
+
 		Components.utils.import("resource://gre/modules/AddonManager.jsm");
 		AddonManager.getAddonByID("flvideoreplacer@lovinglinux.megabyet.net", function(addon) {
 		    var current = addon.version;
 		    flvideoreplacerFirstrun.updateInstall(current);
+
 		});
 	    }
 	    window.removeEventListener("load",function(){ flvideoreplacerFirstrun.init(); },true);
