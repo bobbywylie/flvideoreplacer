@@ -22,11 +22,11 @@
 <!ENTITY NewWin "Janela">
 <!ENTITY OpenEmbedded "Abrir video inserido nesta página">
 <!ENTITY Other "Outros sites de streaming">
+<!ENTITY Placeholder "Mostrar Placeholder">
 <!ENTITY PluginForce "Forçar compatibilidade de plugin">
 <!ENTITY Preferences "Preferências">
 <!ENTITY PreferWebM "Preferir WebM quando disponível (não requer plugin)">
 <!ENTITY PreferMP4 "Preferir mp4 sobre flv">
-<!ENTITY Prompt "Perguntar">
 <!ENTITY Quality "Qualidade">
 <!ENTITY Reset "Limpar">
 <!ENTITY Search "Buscar">

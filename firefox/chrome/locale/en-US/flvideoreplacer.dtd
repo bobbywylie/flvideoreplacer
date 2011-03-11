@@ -22,11 +22,11 @@
 <!ENTITY NewWin "Window">
 <!ENTITY OpenEmbedded "Open video embedded on this page">
 <!ENTITY Other "Other streaming websites">
+<!ENTITY Placeholder "Display placeholder">
 <!ENTITY PluginForce "Force plugin compatibility">
 <!ENTITY Preferences "Preferences">
 <!ENTITY PreferWebM "Prefer WebM when available (no plugin required)">
 <!ENTITY PreferMP4 "Prefer mp4 over flv">
-<!ENTITY Prompt "Prompt">
 <!ENTITY Quality "Quality">
 <!ENTITY Reset "Reset">
 <!ENTITY Search "Search">

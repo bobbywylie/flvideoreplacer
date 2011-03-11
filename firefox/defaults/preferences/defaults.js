@@ -1,3 +1,4 @@
+pref("extensions.flvideoreplacer.enabled", true);
 pref("extensions.flvideoreplacer.youtube", true);
 pref("extensions.flvideoreplacer.vimeo", true);
 pref("extensions.flvideoreplacer.metacafe", true);
@@ -7,8 +8,9 @@ pref("extensions.flvideoreplacer.other", true);
 pref("extensions.flvideoreplacer.alertsinfo", true);
 pref("extensions.flvideoreplacer.alertserror", true);
 
-pref("extensions.flvideoreplacer.method", "prompt");
+pref("extensions.flvideoreplacer.method", "embedded");
 pref("extensions.flvideoreplacer.promptmethod", "embedded");
+pref("extensions.flvideoreplacer.placeholder", true);
 pref("extensions.flvideoreplacer.delay", 0);
 pref("extensions.flvideoreplacer.mimetype", "autodetect");
 pref("extensions.flvideoreplacer.filemime", "video/mp4");

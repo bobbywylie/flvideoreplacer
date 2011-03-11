@@ -8,7 +8,7 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<script type="application/x-javascript"
-		src="chrome://flvideoreplacer/content/scripts/functions-options.js" />
+		src="chrome://flvideoreplacer/content/scripts/options.js" />
 
 	<stringbundleset id="strbundles">
 		<stringbundle id="flvideoreplacerstrings"
@@ -35,6 +35,8 @@
 				type="bool" />
 			<preference id="pref_method" name="extensions.flvideoreplacer.method"
 				type="string" />
+			<preference id="pref_placeholder" name="extensions.flvideoreplacer.placeholder"
+				type="bool" />
 			<preference id="pref_delay" name="extensions.flvideoreplacer.delay"
 				type="int" />
 			<preference id="pref_mimetype" name="extensions.flvideoreplacer.mimetype"
@@ -65,7 +67,6 @@
 						<menulist preference="pref_method" id="method" width="110"
 							onselect="flvideoreplacerOptions.toggleOptions();">
 							<menupopup>
-								<menuitem id="mprompt" label="&Prompt;" value="prompt" />
 								<menuitem id="membed" label="&Embedded;" value="embedded"
 									selected="true" />
 								<menuitem id="mnewtab" label="&NewTab;" value="newtab" />
@@ -126,6 +127,13 @@
 						<spacer width="10" flex="0" />
 						<checkbox label="&Autoplay;" preference="pref_autoplay"
 							id="autoplay" size="30" />
+						<spacer width="10" flex="0" />
+					</hbox>
+					<spacer height="10" flex="0" />
+					<hbox id="placeholderbox">
+						<spacer width="10" flex="0" />
+						<checkbox label="&Placeholder;" preference="pref_placeholder"
+							id="placeholder" size="30" />
 						<spacer width="10" flex="0" />
 					</hbox>
 					<spacer height="10" flex="0" />

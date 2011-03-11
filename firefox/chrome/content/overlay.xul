@@ -7,11 +7,11 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<script type="application/x-javascript"
-		src="chrome://flvideoreplacer/content/scripts/functions-firstrun.js" />
+		src="chrome://flvideoreplacer/content/scripts/firstrun.js" />
 	<script type="application/x-javascript"
-		src="chrome://flvideoreplacer/content/scripts/functions-listener.js" />
+		src="chrome://flvideoreplacer/content/scripts/listener.js" />
 	<script type="application/x-javascript"
-		src="chrome://flvideoreplacer/content/scripts/functions-urlbarlistener.js" />
+		src="chrome://flvideoreplacer/content/scripts/urlbarlistener.js" />
 
 	<window id="main-window">
 		<stringbundleset id="strbundles">
@@ -24,7 +24,8 @@
 		<toolbarbutton id="flvideoreplacer-toolbar-button"
 			label="&FlashVideoReplacerTitle;" tooltiptext="&FlashVideoReplacerTitle;"
 			popup="flvideoreplacer-contextmenu"
-			class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+			onclick="flvideoreplacerListener.menuClickDetect(event);"
+			class="toolbarbutton-1 chromeclass-toolbar-additional toolbaractive"/>
 	</toolbarpalette>
 
 	<popupset>

@@ -38,42 +38,40 @@ var flvideoreplacerOptions = {
 
 	    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 		if(replacemethod === "standalone"){
-		    this.prefs.setCharPref("method","prompt");
+		    this.prefs.setCharPref("method","membed");
 		}
-		document.getElementById("mprompt").hidden=false;
 		document.getElementById("membed").hidden=false;
 		document.getElementById("mnewtab").hidden=false;
 		document.getElementById("mnewwin").hidden=false;
 		document.getElementById("mstand").hidden=true;
 		this.prefs.setBoolPref("prefermp4",true);
 	    }else{
-
-		if(pluginmp4 === true){
-		    document.getElementById("pluginmp4").hidden=false;
-		}else{
-		    document.getElementById("pluginmp4").hidden=true;
-		}
-		if(pluginflv === true){
-		    document.getElementById("pluginflv").hidden=false;
-		}else{
-		    document.getElementById("pluginflv").hidden=true;
-		}
-		if(pluginqt === true){
-		    document.getElementById("pluginqt").hidden=false;
-		}else{
-		    document.getElementById("pluginqt").hidden=true;
-		}
-		if(pluginwmp === true){
-		    document.getElementById("pluginwmp").hidden=false;
-		}else{
-		    document.getElementById("pluginwmp").hidden=true;
-		}
 		if(pluginmp4 === true && pluginflv === false){
 		    this.prefs.setBoolPref("prefermp4",true);
 		}
 		if(pluginmp4 === false && pluginflv === true){
 		    this.prefs.setBoolPref("prefermp4",false);
 		}
+	    }
+	    if(pluginmp4 === true){
+		document.getElementById("pluginmp4").hidden=false;
+	    }else{
+		document.getElementById("pluginmp4").hidden=true;
+	    }
+	    if(pluginflv === true){
+		document.getElementById("pluginflv").hidden=false;
+	    }else{
+		document.getElementById("pluginflv").hidden=true;
+	    }
+	    if(pluginqt === true){
+		document.getElementById("pluginqt").hidden=false;
+	    }else{
+		document.getElementById("pluginqt").hidden=true;
+	    }
+	    if(pluginwmp === true){
+		document.getElementById("pluginwmp").hidden=false;
+	    }else{
+		document.getElementById("pluginwmp").hidden=true;
 	    }
 	},
 
@@ -279,12 +277,6 @@ var flvideoreplacerOptions = {
 	    if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 
 		//toggle elements visibility
-		if(replacemethod === "prompt"){
-
-		    document.getElementById("selectplugin").hidden=false;
-		    document.getElementById("standaloneplayer").hidden=true;
-		    document.getElementById("downloader").hidden=false;
-		}
 		if(replacemethod === "newtab"){
 
 		    document.getElementById("selectplugin").hidden=true;
@@ -300,7 +292,7 @@ var flvideoreplacerOptions = {
 		    document.getElementById('mimetype').value = "autodetect";
 		}
 		if(replacemethod === "standalone"){
-		    this.prefs.setCharPref("method","prompt");
+		    this.prefs.setCharPref("method","embedded");
 		}
 		if(replacemethod === "embedded"){
 
@@ -337,12 +329,6 @@ var flvideoreplacerOptions = {
 	    }else{
 
 		//toggle elements visibility
-		if(replacemethod === "prompt"){
-
-		    document.getElementById("selectplugin").hidden=false;
-		    document.getElementById("standaloneplayer").hidden=false;
-		    document.getElementById("downloader").hidden=false;
-		}
 		if(replacemethod === "newtab"){
 
 		    document.getElementById("selectplugin").hidden=true;

@@ -66,7 +66,7 @@ var flvideoreplacerFirstrun = {
 
 		if (ver!=current && !firstrun){//actions specific for extension updates
 
-		    if(ver !== "2.0.2" && ver !== "2.0.1" && ver !== "2.0.0"){
+		    if(ver !== "2.0.3" && ver !== "2.0.2" && ver !== "2.0.1" && ver !== "2.0.0"){
 
 			//add toolbar button
 			var navbar = document.getElementById("nav-bar");
@@ -85,9 +85,21 @@ var flvideoreplacerFirstrun = {
 
 			    this.prefs.setCharPref("downdir",defaultdir.path);
 			}
+			//reset method because of deleted prompt method
+			this.prefs.setCharPref("method","embedded");
+			this.prefs.setCharPref("promptmethod","embedded");
 		    }
 		    //set preferences
 		    this.prefs.setCharPref("version",current);
+		}
+
+		//get prefs
+		var enabled = this.prefs.getBoolPref("enabled");
+		//toggle toolbar button style
+		if(enabled === true){
+		    document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbaractive");
+		}else{
+		    document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbarinactive");
 		}
 	    }
 	},
@@ -123,7 +135,7 @@ var flvideoreplacerFirstrun = {
 	    if(pluginreg.exists()){
 
 		//disable forceplugin
-		this.prefs.setBoolPref("pluginforce",false);
+		//this.prefs.setBoolPref("pluginforce",false);
 
 		//read file
 		var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
