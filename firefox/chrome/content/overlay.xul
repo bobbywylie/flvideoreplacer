@@ -14,7 +14,7 @@
 		src="chrome://flvideoreplacer/content/scripts/urlbarlistener.js" />
 
 	<window id="main-window">
-		<stringbundleset id="strbundles">
+		<stringbundleset id="flvideoreplacerstrbundles">
 			<stringbundle id="flvideoreplacerstrings"
 				src="chrome://flvideoreplacer/locale/strings.properties" />
 		</stringbundleset>
