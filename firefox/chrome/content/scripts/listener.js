@@ -2041,7 +2041,7 @@ var nstemp = this.prefs.getCharPref("temp");
 						}else{//fallback
 
 							var fmt = "99";
-/*
+							/*
 							//create the object element
 							flvideoreplacer = doc.createElement('object');
 							flvideoreplacer.setAttribute("width", videowidth);
@@ -2060,7 +2060,7 @@ var nstemp = this.prefs.getCharPref("temp");
 								//replace video
 								videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
 							}
-*/
+							 */
 						}
 					}
 				}
