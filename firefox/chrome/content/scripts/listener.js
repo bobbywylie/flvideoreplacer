@@ -269,7 +269,7 @@ var flvideoreplacerListener = {
 
 								if (matchpattern === true) {
 
-									newline[i] = newline[i].replace(/.*"fmt_stream_map": "/,"").replace(/\\u0026/g,"&");
+									newline[i] = newline[i].replace(/.*"fmt_stream_map": /,"").replace(/\\u0026/g,"&");
 
 									//declare video quality based on user settings and video availability
 									fmt = "18";
