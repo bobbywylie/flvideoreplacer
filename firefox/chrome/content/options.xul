@@ -55,6 +55,8 @@
 				type="string" />
 			<preference id="pref_pluginforce" name="extensions.flvideoreplacer.pluginforce"
 				type="bool" />
+			<preference id="pref_silentdownload" name="extensions.flvideoreplacer.silentdownload"
+				type="bool" />
 		</preferences>
 		<vbox style="width:390px;height:530px;overflow:auto;" flex="1">
 			<vbox flex="1">
@@ -196,7 +198,11 @@
 						</vbox>
 						<spacer width="10" flex="0" />
 					</hbox>
-					<spacer height="10" flex="0" />
+					<hbox>
+						<checkbox label="&SilentDownload;" preference="pref_silentdownload" id="silentdownload" size="30" />
+						<spacer width="10" flex="0" />
+					</hbox>
+					<spacer height="5" flex="0" />
 				</vbox>
 			</vbox>
 			<spacer height="15" flex="0" />

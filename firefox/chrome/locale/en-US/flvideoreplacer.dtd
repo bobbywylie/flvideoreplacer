@@ -32,6 +32,7 @@
 <!ENTITY Search "Search">
 <!ENTITY SelectFile "Select File">
 <!ENTITY SelectDir "Select Directory">
+<!ENTITY SilentDownload "Silent Download">
 <!ENTITY Standalone "Standalone">
 <!ENTITY StandalonePlayer "Standalone Player">
 <!ENTITY SUPER "SUPER">

@@ -2878,6 +2878,10 @@ var nstemp = this.prefs.getCharPref("temp");
 
 			//get prefs
 			var dir = this.prefs.getCharPref("downdir");
+			var silentdownload = this.prefs.getBoolPref("silentdownload");
+
+			//get localization
+			var strbundle = document.getElementById("flvideoreplacerstrings");
 
 			if(dir !== null){
 
@@ -2908,9 +2912,29 @@ var nstemp = this.prefs.getCharPref("temp");
 				pers.progressListener = dl.QueryInterface(Components.interfaces.nsIWebProgressListener);
 				pers.saveURI(dl.source, null, null, null, null, dl.targetFile);
 
-				//Show download manager
-				var dm_ui = Components.classes["@mozilla.org/download-manager-ui;1"].createInstance(Components.interfaces.nsIDownloadManagerUI);
-				dm_ui.show(window, dl.id, Components.interfaces.nsIDownloadManagerUI.REASON_NEW_DOWNLOAD);
+				if(silentdownload === false){
+					//Show download manager
+					var dm_ui = Components.classes["@mozilla.org/download-manager-ui;1"].createInstance(Components.interfaces.nsIDownloadManagerUI);
+					dm_ui.show(window, dl.id, Components.interfaces.nsIDownloadManagerUI.REASON_NEW_DOWNLOAD);
+				}else{
+					//get osString
+					var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+					.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
+
+					if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+
+						//get localization strings
+						var message = strbundle.getFormattedString("videodownload", [ aFile ]);
+						var messagetitle = strbundle.getString("flvideoreplacermessage");
+
+						//alert user
+						var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+						.getService(Components.interfaces.nsIAlertsService);
+						alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+								messagetitle, message,
+								false, "", null);
+					}					
+				}
 			}
 		},
 
