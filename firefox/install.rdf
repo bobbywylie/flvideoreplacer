@@ -10,7 +10,7 @@
 		<em:name>FlashVideoReplacer</em:name>
 		<em:description>Replace embedded flash videos and display them with a different plugin or standalone player, download or automatically redirect to WebM player when available.</em:description>
 		<em:creator>webgapps</em:creator>
-		<em:contributor>famoog</em:contributor>
+		<em:contributor>famo</em:contributor>
 		<em:homepageURL>http://www.webgapps.org/addons/flashvideoreplacer</em:homepageURL>
 		<em:targetApplication>
 			<Description>

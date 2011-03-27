@@ -1,10 +1,13 @@
 <!ENTITY Alerts "Meldungen">
 <!ENTITY Autodetect "Autodetect">
-<!ENTITY Autoplay "Videos automatisch abspielen">
+<!ENTITY AutoLaunchEmbed "Videos automatisch abspielen">
+<!ENTITY AutoLaunchPlayer "Launch player automatically">
+<!ENTITY AutoLaunchTab "Open video tab automatically">
+<!ENTITY AutoLaunchWindow "Open video window automatically">
 <!ENTITY BestPlayer "Besten Player">
 <!ENTITY Clipboard "URL in die Zwischenablag kopieren">
 <!ENTITY Custom "Benutzerdefiniert">
-<!ENTITY Delay "Ablöse Verzögerung">
+<!ENTITY Delay "Verzögerung">
 <!ENTITY Download "Download">
 <!ENTITY DownloadDir "Speicherort">
 <!ENTITY Embedded "Eingebettet">
@@ -14,15 +17,14 @@
 <!ENTITY FlashVideoReplacerPreferences "FlashVideoReplacer Einstellungen">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
 <!ENTITY ForcePluginMimeType "Plugin/MimeType">
-<!ENTITY HIGH "hoch">
-<!ENTITY LOW "gering">
-<!ENTITY MEDIUM "mittel">
+<!ENTITY HIGH "HOCH">
+<!ENTITY LOW "GERING">
+<!ENTITY MEDIUM "MITTEL">
 <!ENTITY Method "Ablösemethode">
 <!ENTITY NewTab "Neuer Tab">
 <!ENTITY NewWin "Neues Fenster">
 <!ENTITY OpenEmbedded "Öffne eingebundene Videos auf dieser Seite">
 <!ENTITY Other "Andere streaming Seiten">
-<!ENTITY Placeholder "Platzhalter anzeigen">
 <!ENTITY PluginForce "Forciere Plugin Kompatibilität">
 <!ENTITY Preferences "Einstellungen">
 <!ENTITY PreferWebM "WebM bevorzugen, wenn verfügbar (benötigt klein Plugin)">
@@ -32,7 +34,7 @@
 <!ENTITY Search "Suche">
 <!ENTITY SelectFile "Datei auswählen">
 <!ENTITY SelectDir "Verzeichnis auswählen">
-<!ENTITY SilentDownload "Schweigsam heruntergeladen">
+<!ENTITY SilentDownload "Im Hintergrund runterladen">
 <!ENTITY Standalone "Extern">
 <!ENTITY StandalonePlayer "Externer Player">
 <!ENTITY SUPER "SUPER">

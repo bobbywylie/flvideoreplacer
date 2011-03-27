@@ -1,10 +1,13 @@
 <!ENTITY Alerts "Alerts">
 <!ENTITY Autodetect "Autodetect">
-<!ENTITY Autoplay "Play videos automatically">
+<!ENTITY AutoLaunchEmbed "Play videos automatically">
+<!ENTITY AutoLaunchPlayer "Launch player automatically">
+<!ENTITY AutoLaunchTab "Open video tab automatically">
+<!ENTITY AutoLaunchWindow "Open video window automatically">
 <!ENTITY BestPlayer "Best Available">
 <!ENTITY Clipboard "Copy url to clipboard">
 <!ENTITY Custom "Custom">
-<!ENTITY Delay "Replace Delay">
+<!ENTITY Delay "Delay">
 <!ENTITY Download "Download">
 <!ENTITY DownloadDir "Download Destination">
 <!ENTITY Embedded "Embedded">
@@ -22,7 +25,6 @@
 <!ENTITY NewWin "Window">
 <!ENTITY OpenEmbedded "Open video embedded on this page">
 <!ENTITY Other "Other streaming websites">
-<!ENTITY Placeholder "Display placeholder">
 <!ENTITY PluginForce "Force plugin compatibility">
 <!ENTITY Preferences "Preferences">
 <!ENTITY PreferWebM "Prefer WebM when available (no plugin required)">

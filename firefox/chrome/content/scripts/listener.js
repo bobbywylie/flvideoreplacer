@@ -102,7 +102,7 @@ var flvideoreplacerListener = {
 
 						//declare element to be replaced
 						testelement = doc.getElementById(videoelement);
-						
+
 						if(testelement === null && sourceurl.match(/youtube.*watch.*v\=/)){
 							//declare element to be replaced
 							testelement = doc.getElementById("watch-player");
@@ -214,7 +214,10 @@ var flvideoreplacerListener = {
 			var replacemethod = this.prefs.getCharPref("promptmethod");
 			var prefermp4 = this.prefs.getBoolPref("prefermp4");
 			var videoquality = this.prefs.getCharPref("videoquality");
-			var placeholder = this.prefs.getBoolPref("placeholder");
+			var autolaunchembed = this.prefs.getBoolPref("autolaunchembed");
+			var autolaunchplayer = this.prefs.getBoolPref("autolaunchplayer");
+			var autolaunchtab = this.prefs.getBoolPref("autolaunchtab");
+			var autolaunchwindow = this.prefs.getBoolPref("autolaunchwindow");
 			var performance = this.prefs.getIntPref("performance");
 
 			//get mime prefs and declare variables
@@ -240,7 +243,7 @@ var flvideoreplacerListener = {
 				//declare element to be replaced
 				videoelement = "movie_player";
 				testelement = doc.getElementById(videoelement);
-				
+
 				if(testelement === null){
 					//declare element to be replaced
 					videoelement = "watch-player";
@@ -842,13 +845,32 @@ var flvideoreplacerListener = {
 
 										//replace
 										if(replacemethod === "embedded"){
-											if(placeholder === true){
+											if(autolaunchembed === false){
 												flvideoreplacerListener.placeHolder(aEvent,"youtube."+videoid);
 											}else{
 												flvideoreplacerListener.videoReplace(aEvent,"youtube."+videoid);
 											}
-										}else{
-											flvideoreplacerListener.placeHolder(aEvent,"youtube."+videoid);
+										}
+										if(replacemethod === "standalone"){
+											if(autolaunchplayer === false){
+												flvideoreplacerListener.placeHolder(aEvent,"youtube."+videoid);
+											}else{
+												flvideoreplacerListener.videoReplace(aEvent,"youtube."+videoid);
+											}
+										}
+										if(replacemethod === "newtab"){
+											if(autolaunchtab === false){
+												flvideoreplacerListener.placeHolder(aEvent,"youtube."+videoid);
+											}else{
+												flvideoreplacerListener.videoReplace(aEvent,"youtube."+videoid);
+											}
+										}
+										if(replacemethod === "newwindow"){
+											if(autolaunchwindow === false){
+												flvideoreplacerListener.placeHolder(aEvent,"youtube."+videoid);
+											}else{
+												flvideoreplacerListener.videoReplace(aEvent,"youtube."+videoid);
+											}
 										}
 									}
 									break;    
@@ -955,13 +977,32 @@ var flvideoreplacerListener = {
 
 								//replace
 								if(replacemethod === "embedded"){
-									if(placeholder === true){
+									if(autolaunchembed === false){
 										flvideoreplacerListener.placeHolder(aEvent,"vimeo."+videoid);
 									}else{
 										flvideoreplacerListener.videoReplace(aEvent,"vimeo."+videoid);
 									}
-								}else{
-									flvideoreplacerListener.placeHolder(aEvent,"vimeo."+videoid);
+								}
+								if(replacemethod === "standalone"){
+									if(autolaunchplayer === false){
+										flvideoreplacerListener.placeHolder(aEvent,"vimeo."+videoid);
+									}else{
+										flvideoreplacerListener.videoReplace(aEvent,"vimeo."+videoid);
+									}
+								}
+								if(replacemethod === "newtab"){
+									if(autolaunchtab === false){
+										flvideoreplacerListener.placeHolder(aEvent,"vimeo."+videoid);
+									}else{
+										flvideoreplacerListener.videoReplace(aEvent,"vimeo."+videoid);
+									}
+								}
+								if(replacemethod === "newwindow"){
+									if(autolaunchwindow === false){
+										flvideoreplacerListener.placeHolder(aEvent,"vimeo."+videoid);
+									}else{
+										flvideoreplacerListener.videoReplace(aEvent,"vimeo."+videoid);
+									}
 								}
 							}
 						}
@@ -1040,13 +1081,32 @@ var flvideoreplacerListener = {
 
 						//replace
 						if(replacemethod === "embedded"){
-							if(placeholder === true){
+							if(autolaunchembed === false){
 								flvideoreplacerListener.placeHolder(aEvent,"metacafe."+videoid);
 							}else{
 								flvideoreplacerListener.videoReplace(aEvent,"metacafe."+videoid);
 							}
-						}else{
-							flvideoreplacerListener.placeHolder(aEvent,"metacafe."+videoid);
+						}
+						if(replacemethod === "standalone"){
+							if(autolaunchplayer === false){
+								flvideoreplacerListener.placeHolder(aEvent,"metacafe."+videoid);
+							}else{
+								flvideoreplacerListener.videoReplace(aEvent,"metacafe."+videoid);
+							}
+						}
+						if(replacemethod === "newtab"){
+							if(autolaunchtab === false){
+								flvideoreplacerListener.placeHolder(aEvent,"metacafe."+videoid);
+							}else{
+								flvideoreplacerListener.videoReplace(aEvent,"metacafe."+videoid);
+							}
+						}
+						if(replacemethod === "newwindow"){
+							if(autolaunchwindow === false){
+								flvideoreplacerListener.placeHolder(aEvent,"metacafe."+videoid);
+							}else{
+								flvideoreplacerListener.videoReplace(aEvent,"metacafe."+videoid);
+							}
 						}
 					}
 				}
@@ -1125,13 +1185,32 @@ var flvideoreplacerListener = {
 
 						//replace
 						if(replacemethod === "embedded"){
-							if(placeholder === true){
+							if(autolaunchembed === false){
 								flvideoreplacerListener.placeHolder(aEvent,"bliptv."+videoid);
 							}else{
 								flvideoreplacerListener.videoReplace(aEvent,"bliptv."+videoid);
 							}
-						}else{
-							flvideoreplacerListener.placeHolder(aEvent,"bliptv."+videoid);
+						}
+						if(replacemethod === "standalone"){
+							if(autolaunchplayer === false){
+								flvideoreplacerListener.placeHolder(aEvent,"bliptv."+videoid);
+							}else{
+								flvideoreplacerListener.videoReplace(aEvent,"bliptv."+videoid);
+							}
+						}
+						if(replacemethod === "newtab"){
+							if(autolaunchtab === false){
+								flvideoreplacerListener.placeHolder(aEvent,"bliptv."+videoid);
+							}else{
+								flvideoreplacerListener.videoReplace(aEvent,"bliptv."+videoid);
+							}
+						}
+						if(replacemethod === "newwindow"){
+							if(autolaunchwindow === false){
+								flvideoreplacerListener.placeHolder(aEvent,"bliptv."+videoid);
+							}else{
+								flvideoreplacerListener.videoReplace(aEvent,"bliptv."+videoid);
+							}
 						}
 					}
 				}
@@ -1206,13 +1285,32 @@ var flvideoreplacerListener = {
 
 							//replace
 							if(replacemethod === "embedded"){
-								if(placeholder === true){
+								if(autolaunchembed === false){
 									flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
 								}else{
 									flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
 								}
-							}else{
-								flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
+							}
+							if(replacemethod === "standalone"){
+								if(autolaunchplayer === false){
+									flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
+								}else{
+									flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
+								}
+							}
+							if(replacemethod === "newtab"){
+								if(autolaunchtab === false){
+									flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
+								}else{
+									flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
+								}
+							}
+							if(replacemethod === "newwindow"){
+								if(autolaunchwindow === false){
+									flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
+								}else{
+									flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
+								}
 							}
 						}else{
 							if (matchpattern2 == true){
@@ -1282,13 +1380,32 @@ var flvideoreplacerListener = {
 
 											//replace
 											if(replacemethod === "embedded"){
-												if(placeholder === true){
+												if(autolaunchembed === false){
 													flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
 												}else{
 													flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
 												}
-											}else{
-												flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
+											}
+											if(replacemethod === "standalone"){
+												if(autolaunchplayer === false){
+													flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
+												}else{
+													flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
+												}
+											}
+											if(replacemethod === "newtab"){
+												if(autolaunchtab === false){
+													flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
+												}else{
+													flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
+												}
+											}
+											if(replacemethod === "newwindow"){
+												if(autolaunchwindow === false){
+													flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
+												}else{
+													flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
+												}
 											}
 										}
 									};
@@ -1394,13 +1511,32 @@ var flvideoreplacerListener = {
 
 									//replace
 									if(replacemethod === "embedded"){
-										if(placeholder === true){
+										if(autolaunchembed === false){
 											flvideoreplacerListener.placeHolder(aEvent,"youporn."+videoid);
 										}else{
 											flvideoreplacerListener.videoReplace(aEvent,"youporn."+videoid);
 										}
-									}else{
-										flvideoreplacerListener.placeHolder(aEvent,"youporn."+videoid);
+									}
+									if(replacemethod === "standalone"){
+										if(autolaunchplayer === false){
+											flvideoreplacerListener.placeHolder(aEvent,"youporn."+videoid);
+										}else{
+											flvideoreplacerListener.videoReplace(aEvent,"youporn."+videoid);
+										}
+									}
+									if(replacemethod === "newtab"){
+										if(autolaunchtab === false){
+											flvideoreplacerListener.placeHolder(aEvent,"youporn."+videoid);
+										}else{
+											flvideoreplacerListener.videoReplace(aEvent,"youporn."+videoid);
+										}
+									}
+									if(replacemethod === "newwindow"){
+										if(autolaunchwindow === false){
+											flvideoreplacerListener.placeHolder(aEvent,"youporn."+videoid);
+										}else{
+											flvideoreplacerListener.videoReplace(aEvent,"youporn."+videoid);
+										}
 									}
 								}
 							}
@@ -1469,13 +1605,32 @@ var flvideoreplacerListener = {
 
 						//replace
 						if(replacemethod === "embedded"){
-							if(placeholder === true){
+							if(autolaunchembed === false){
 								flvideoreplacerListener.placeHolder(aEvent,"pornhub."+videoid);
 							}else{
 								flvideoreplacerListener.videoReplace(aEvent,"pornhub."+videoid);
 							}
-						}else{
-							flvideoreplacerListener.placeHolder(aEvent,"pornhub."+videoid);
+						}
+						if(replacemethod === "standalone"){
+							if(autolaunchplayer === false){
+								flvideoreplacerListener.placeHolder(aEvent,"pornhub."+videoid);
+							}else{
+								flvideoreplacerListener.videoReplace(aEvent,"pornhub."+videoid);
+							}
+						}
+						if(replacemethod === "newtab"){
+							if(autolaunchtab === false){
+								flvideoreplacerListener.placeHolder(aEvent,"pornhub."+videoid);
+							}else{
+								flvideoreplacerListener.videoReplace(aEvent,"pornhub."+videoid);
+							}
+						}
+						if(replacemethod === "newwindow"){
+							if(autolaunchwindow === false){
+								flvideoreplacerListener.placeHolder(aEvent,"pornhub."+videoid);
+							}else{
+								flvideoreplacerListener.videoReplace(aEvent,"pornhub."+videoid);
+							}
 						}
 					}
 				}
@@ -1542,13 +1697,32 @@ var flvideoreplacerListener = {
 
 						//replace
 						if(replacemethod === "embedded"){
-							if(placeholder === true){
+							if(autolaunchembed === false){
 								flvideoreplacerListener.placeHolder(aEvent,"redtube."+videoid);
 							}else{
 								flvideoreplacerListener.videoReplace(aEvent,"redtube."+videoid);
 							}
-						}else{
-							flvideoreplacerListener.placeHolder(aEvent,"redtube."+videoid);
+						}
+						if(replacemethod === "standalone"){
+							if(autolaunchplayer === false){
+								flvideoreplacerListener.placeHolder(aEvent,"redtube."+videoid);
+							}else{
+								flvideoreplacerListener.videoReplace(aEvent,"redtube."+videoid);
+							}
+						}
+						if(replacemethod === "newtab"){
+							if(autolaunchtab === false){
+								flvideoreplacerListener.placeHolder(aEvent,"redtube."+videoid);
+							}else{
+								flvideoreplacerListener.videoReplace(aEvent,"redtube."+videoid);
+							}
+						}
+						if(replacemethod === "newwindow"){
+							if(autolaunchwindow === false){
+								flvideoreplacerListener.placeHolder(aEvent,"redtube."+videoid);
+							}else{
+								flvideoreplacerListener.videoReplace(aEvent,"redtube."+videoid);
+							}
 						}
 					}
 				}
@@ -1557,9 +1731,15 @@ var flvideoreplacerListener = {
 
 		placeHolder: function(aEvent,aBranch) {
 
-			//get original target document and url
-			var doc = aEvent.originalTarget;
-			var sourceurl = doc.location.href;
+			if(aEvent == content.document){
+				//get original target document and url
+				var doc = content.document; 
+				var sourceurl = content.document.location.href;
+			}else{
+				//get original target document and url
+				var doc = aEvent.originalTarget;
+				var sourceurl = doc.location.href;
+			}
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -1704,10 +1884,12 @@ var flvideoreplacerListener = {
 
 			//get prefs
 			var replacemethod = this.prefs.getCharPref("promptmethod");
-			var autoplay = this.prefs.getBoolPref("autoplay");
 			var alertsinfo = this.prefs.getBoolPref("alertsinfo");
 			var alertserror = this.prefs.getBoolPref("alertserror");
 			var mimetype = this.prefs.getCharPref("mimetype");
+			var autolaunchplayer = this.prefs.getBoolPref("autolaunchplayer");
+			var autolaunchtab = this.prefs.getBoolPref("autolaunchtab");
+			var autolaunchwindow = this.prefs.getBoolPref("autolaunchwindow");
 
 			//get localization
 			var strbundle = document.getElementById("flvideoreplacerstrings");
@@ -1863,7 +2045,7 @@ var nstemp = this.prefs.getCharPref("temp");
 							flvideoreplacer.setAttribute("codebase", "http://www.apple.com/qtactivex/qtplugin.cab");  
 							flvideoreplacer.setAttribute("type", "video/x-quicktime");
 							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\""+autoplay+"\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/x-quicktime\" autoplay=\""+autoplay+"\" controller=\"true\" loop=\"false\" </embed>";
+							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/x-quicktime\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
 							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 								childdivs = videoplayer.getElementsByTagName("div");
 								videodiv = childdivs[2];
@@ -1891,7 +2073,7 @@ var nstemp = this.prefs.getCharPref("temp");
 							flvideoreplacer.setAttribute("height", videoheight);
 							flvideoreplacer.setAttribute("type", "application/x-ms-wmv");
 							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\""+autoplay+"\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"application/x-ms-wmv\" autoplay=\""+autoplay+"\" controller=\"true\" loop=\"false\" </embed>";
+							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"application/x-ms-wmv\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
 							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 								childdivs = videoplayer.getElementsByTagName("div");
 								videodiv = childdivs[2];
@@ -1919,7 +2101,7 @@ var nstemp = this.prefs.getCharPref("temp");
 							flvideoreplacer.setAttribute("height", videoheight);
 							flvideoreplacer.setAttribute("type", "video/x-m4v");
 							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\""+autoplay+"\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/x-m4v\" autoplay=\""+autoplay+"\" controller=\"true\" loop=\"false\" </embed>";
+							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/x-m4v\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
 							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 								childdivs = videoplayer.getElementsByTagName("div");
 								videodiv = childdivs[2];
@@ -1947,7 +2129,7 @@ var nstemp = this.prefs.getCharPref("temp");
 							flvideoreplacer.setAttribute("height", videoheight);
 							flvideoreplacer.setAttribute("type", "application/x-flv");
 							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\""+autoplay+"\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"application/x-flv\" autoplay=\""+autoplay+"\" controller=\"true\" loop=\"false\" </embed>";
+							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"application/x-flv\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
 							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 								childdivs = videoplayer.getElementsByTagName("div");
 								videodiv = childdivs[2];
@@ -1978,7 +2160,7 @@ var nstemp = this.prefs.getCharPref("temp");
 							flvideoreplacer.setAttribute("codebase", "http://www.apple.com/qtactivex/qtplugin.cab");
 							flvideoreplacer.setAttribute("type", "video/mp4");
 							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\""+autoplay+"\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"> <embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/mp4\" autoplay=\""+autoplay+"\" controller=\"true\" loop=\"false\" </embed>";
+							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"> <embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/mp4\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
 							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 								childdivs = videoplayer.getElementsByTagName("div");
 								videodiv = childdivs[2];
@@ -2008,7 +2190,7 @@ var nstemp = this.prefs.getCharPref("temp");
 							flvideoreplacer.setAttribute("codebase", "http://www.apple.com/qtactivex/qtplugin.cab");
 							flvideoreplacer.setAttribute("type", "video/quicktime");
 							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\""+autoplay+"\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/quicktime\" autoplay=\""+autoplay+"\" controller=\"true\" loop=\"false\" </embed>";
+							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/quicktime\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
 							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 								childdivs = videoplayer.getElementsByTagName("div");
 								videodiv = childdivs[2];
@@ -2039,7 +2221,7 @@ var nstemp = this.prefs.getCharPref("temp");
 							flvideoreplacer.setAttribute("standby", "Loading Microsoft Windows Media Player components...");
 							flvideoreplacer.setAttribute("type", "application/x-oleobject");
 							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"fileName\" value=\""+videourl+"\"></param><param name=\"autoStart\" value=\""+autoplay+"\"><param name=\"showControls\" value=\"true\"><param name=\"loop\" value=\"false\"><embed type=\"application/x-mplayer2\" autostart=\""+autoplay+"\" showcontrols=\"true\" loop=\"false\" src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" </embed>";
+							flvideoreplacer.innerHTML = "<param name=\"fileName\" value=\""+videourl+"\"></param><param name=\"autoStart\" value=\"true\"><param name=\"showControls\" value=\"true\"><param name=\"loop\" value=\"false\"><embed type=\"application/x-mplayer2\" autostart=\"true\" showcontrols=\"true\" loop=\"false\" src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" </embed>";
 							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 								childdivs = videoplayer.getElementsByTagName("div");
 								videodiv = childdivs[2];
@@ -2061,7 +2243,7 @@ var nstemp = this.prefs.getCharPref("temp");
 							flvideoreplacer.setAttribute("type", "application/x-shockwave-flash");
 							flvideoreplacer.setAttribute("data", "http://releases.flowplayer.org/swf/flowplayer-3.2.7.swf");
 							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"movie\" value=\"http://releases.flowplayer.org/swf/flowplayer-3.2.7.swf\"></param><param name=\"allowfullscreen\" value=\"true\"></param><param name=\"flashvars\" value='config={\"playlist\":[\"http://www.webgapps.org/flowplayer/flashvideoreplacer.png\", {\"url\": \""+videourl+"\",\"autoPlay\":"+autoplay+",\"autoBuffering\":true}]}'></param><img src=\"http://www.webgapps.org/flowplayer/flashvideoreplacer.png\" width=\""+videowidth+"\" height=\""+videowidth+"\" alt=\"FlashVideoReplacer\" title=\"No video playback capabilities.\" />";
+							flvideoreplacer.innerHTML = "<param name=\"movie\" value=\"http://releases.flowplayer.org/swf/flowplayer-3.2.7.swf\"></param><param name=\"allowfullscreen\" value=\"true\"></param><param name=\"flashvars\" value='config={\"playlist\":[\"http://www.webgapps.org/flowplayer/flashvideoreplacer.png\", {\"url\": \""+videourl+"\",\"autoPlay\":true,\"autoBuffering\":true}]}'></param><img src=\"http://www.webgapps.org/flowplayer/flashvideoreplacer.png\" width=\""+videowidth+"\" height=\""+videowidth+"\" alt=\"FlashVideoReplacer\" title=\"No video playback capabilities.\" />";
 							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 								childdivs = videoplayer.getElementsByTagName("div");
 								videodiv = childdivs[2];
@@ -2078,6 +2260,11 @@ var nstemp = this.prefs.getCharPref("temp");
 				}
 
 				if(replacemethod === "newtab"){
+
+					//autolaunch placeholder
+					if(autolaunchtab === true){
+						flvideoreplacerListener.placeHolder(aEvent,aBranch);
+					}
 
 					//open media in new tab
 					var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
@@ -2096,6 +2283,12 @@ var nstemp = this.prefs.getCharPref("temp");
 
 					//set videourl pref
 					this.prefs.setCharPref("videourl",videourl);
+
+					//autolaunch placeholder
+					if(autolaunchwindow === true){
+						flvideoreplacerListener.placeHolder(aEvent,aBranch);
+					}
+
 					//launch player
 					if(osString.match(/Windows/)){
 						window.open(videourl, 'flvideoreplacer-player', 'content,centerscreen,alwaysRaised,resizable=yes,width=600em,height=400em').focus();
@@ -2111,6 +2304,11 @@ var nstemp = this.prefs.getCharPref("temp");
 					//declare variables
 					var player, process;
 
+					//autolaunch placeholder
+					if(autolaunchplayer === true){
+						flvideoreplacerListener.placeHolder(aEvent,aBranch);
+					}
+
 					if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 
 						//load url bar change listener for getting url redirection 
@@ -2122,6 +2320,11 @@ var nstemp = this.prefs.getCharPref("temp");
 						gBrowser.selectedTab = newTab;
 
 					}else{
+
+						//access preferences interface
+						this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+						.getService(Components.interfaces.nsIPrefService)
+						.getBranch("extensions.flvideoreplacer.");
 
 						//get player path
 						var playerpath = this.prefs.getCharPref("playerpath");

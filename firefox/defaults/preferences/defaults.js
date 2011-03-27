@@ -11,14 +11,16 @@ pref("extensions.flvideoreplacer.alertserror", true);
 
 pref("extensions.flvideoreplacer.method", "embedded");
 pref("extensions.flvideoreplacer.promptmethod", "embedded");
-pref("extensions.flvideoreplacer.placeholder", true);
+pref("extensions.flvideoreplacer.autolaunchembed", false);
+pref("extensions.flvideoreplacer.autolaunchplayer", false);
+pref("extensions.flvideoreplacer.autolaunchwindow", false);
+pref("extensions.flvideoreplacer.autolaunchtab", false);
 pref("extensions.flvideoreplacer.delay", 0);
 pref("extensions.flvideoreplacer.mimetype", "autodetect");
 pref("extensions.flvideoreplacer.filemime", "video/mp4");
 pref("extensions.flvideoreplacer.videoquality", "HIGH");
 pref("extensions.flvideoreplacer.preferwebm", false);
 pref("extensions.flvideoreplacer.prefermp4", true);
-pref("extensions.flvideoreplacer.autoplay", true);
 pref("extensions.flvideoreplacer.downdir", "");
 pref("extensions.flvideoreplacer.silentdownload", false);
 pref("extensions.flvideoreplacer.videourl", "");

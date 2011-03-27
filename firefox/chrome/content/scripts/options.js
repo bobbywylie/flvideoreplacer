@@ -362,9 +362,13 @@ var flvideoreplacerOptions = {
 				//toggle elements visibility
 				if(replacemethod === "newtab"){
 
-					document.getElementById("selectplugin").hidden=true;
-					document.getElementById("standaloneplayer").hidden=true;
-					document.getElementById("downloader").hidden=false;
+					document.getElementById("selectplugin").hidden = true;
+					document.getElementById("standaloneplayer").hidden = true;
+					document.getElementById("downloader").hidden = false;
+					document.getElementById('autolaunchembedbox').hidden = true;
+					document.getElementById('autolaunchplayerbox').hidden = true;
+					document.getElementById('autolaunchtabbox').hidden = false;
+					document.getElementById('autolaunchwindowbox').hidden = true;
 					document.getElementById('mimetype').value = "autodetect";
 				}
 				if(replacemethod === "newwindow"){
@@ -372,6 +376,10 @@ var flvideoreplacerOptions = {
 					document.getElementById("selectplugin").hidden=true;
 					document.getElementById("standaloneplayer").hidden=true;
 					document.getElementById("downloader").hidden=false;
+					document.getElementById('autolaunchembedbox').hidden = true;
+					document.getElementById('autolaunchplayerbox').hidden = true;
+					document.getElementById('autolaunchtabbox').hidden = true;
+					document.getElementById('autolaunchwindowbox').hidden = false;
 					document.getElementById('mimetype').value = "autodetect";
 				}
 				if(replacemethod === "standalone"){
@@ -382,6 +390,10 @@ var flvideoreplacerOptions = {
 					document.getElementById("selectplugin").hidden=false;
 					document.getElementById("standaloneplayer").hidden=true;
 					document.getElementById("downloader").hidden=false;
+					document.getElementById('autolaunchembedbox').hidden = false;
+					document.getElementById('autolaunchplayerbox').hidden = true;
+					document.getElementById('autolaunchtabbox').hidden = true;
+					document.getElementById('autolaunchwindowbox').hidden = true;
 
 					//access preferences interface
 					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -417,6 +429,10 @@ var flvideoreplacerOptions = {
 					document.getElementById("selectplugin").hidden=true;
 					document.getElementById("standaloneplayer").hidden=true;
 					document.getElementById("downloader").hidden=false;
+					document.getElementById('autolaunchembedbox').hidden = true;
+					document.getElementById('autolaunchplayerbox').hidden = true;
+					document.getElementById('autolaunchtabbox').hidden = false;
+					document.getElementById('autolaunchwindowbox').hidden = true;
 					document.getElementById('mimetype').value = "autodetect";
 				}
 				if(replacemethod === "newwindow"){
@@ -424,6 +440,10 @@ var flvideoreplacerOptions = {
 					document.getElementById("selectplugin").hidden=true;
 					document.getElementById("standaloneplayer").hidden=true;
 					document.getElementById("downloader").hidden=false;
+					document.getElementById('autolaunchembedbox').hidden = true;
+					document.getElementById('autolaunchplayerbox').hidden = true;
+					document.getElementById('autolaunchtabbox').hidden = true;
+					document.getElementById('autolaunchwindowbox').hidden = false;	
 					document.getElementById('mimetype').value = "autodetect";
 				}
 				if(replacemethod === "standalone"){
@@ -431,6 +451,10 @@ var flvideoreplacerOptions = {
 					document.getElementById("selectplugin").hidden=true;
 					document.getElementById("standaloneplayer").hidden=false;
 					document.getElementById("downloader").hidden=false;
+					document.getElementById('autolaunchembedbox').hidden = true;
+					document.getElementById('autolaunchplayerbox').hidden = false;
+					document.getElementById('autolaunchtabbox').hidden = true;
+					document.getElementById('autolaunchwindowbox').hidden = true;
 
 				}
 				if(replacemethod === "embedded"){
@@ -438,6 +462,10 @@ var flvideoreplacerOptions = {
 					document.getElementById("selectplugin").hidden=false;
 					document.getElementById("standaloneplayer").hidden=true;
 					document.getElementById("downloader").hidden=false;
+					document.getElementById('autolaunchembedbox').hidden = false;
+					document.getElementById('autolaunchplayerbox').hidden = true;
+					document.getElementById('autolaunchtabbox').hidden = true;
+					document.getElementById('autolaunchwindowbox').hidden = true;
 
 					//access preferences interface
 					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
