@@ -15,6 +15,7 @@
 <!ENTITY EmbeddedVideoDetection "Embedded video detection">
 <!ENTITY EnableErrorAlerts "Enable error alerts">
 <!ENTITY EnableInfoAlerts "Enable info alerts">
+<!ENTITY Fallback "Fallback Player">
 <!ENTITY FlashVideoReplacerPreferences "FlashVideoReplacer Preferences">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
 <!ENTITY ForcePluginMimeType "Plugin/MimeType">
@@ -24,6 +25,7 @@
 <!ENTITY Method "Replace Method">
 <!ENTITY NewTab "New Tab">
 <!ENTITY NewWin "Window">
+<!ENTITY NoThirdPartyPlugin "Do not use">
 <!ENTITY OpenEmbedded "Open video embedded on this page">
 <!ENTITY Other "Other streaming websites">
 <!ENTITY PluginForce "Force plugin compatibility">

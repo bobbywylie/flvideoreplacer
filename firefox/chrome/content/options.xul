@@ -61,9 +61,11 @@
 				type="bool" />
 			<preference id="pref_autolaunchwindow" name="extensions.flvideoreplacer.autolaunchwindow"
 				type="bool" />
+			<preference id="pref_fallback" name="extensions.flvideoreplacer.fallback"
+				type="string" />
 
 		</preferences>
-		<vbox style="width:390px;height:260px;overflow:auto;" flex="1">
+		<vbox style="width:390px;height:300px;overflow:auto;" flex="1">
 			
 			<tabbox flex="1">
 				<tabs>
@@ -145,6 +147,15 @@
 											<spacer width="10" flex="0" />
 										</hbox>
 									</vbox>
+									<vbox id="webmbox">
+										<spacer height="10" flex="0" />
+										<hbox>
+											<spacer width="10" flex="0" />
+											<checkbox label="&PreferWebM;" preference="pref_preferwebm"
+												id="preferwebm" size="30" />
+											<spacer width="10" flex="0" />
+										</hbox>
+									</vbox>
 									<spacer height="15" flex="0" />
 								</vbox>
 							</stack>
@@ -179,11 +190,16 @@
 										<spacer width="10" flex="0" />
 									</hbox>
 									<spacer height="10" flex="0" />
-									<hbox id="webmbox">
+									<hbox>
+										<caption label="&Fallback;" />
 										<spacer width="10" flex="0" />
-										<checkbox label="&PreferWebM;" preference="pref_preferwebm"
-											id="preferwebm" size="30" />
-										<spacer width="10" flex="0" />
+										<menulist preference="pref_fallback" id="fallback">
+											<menupopup>
+												<menuitem label="&NoThirdPartyPlugin;" value="noplugin" selected="true" />
+												<menuitem label="Neolao" value="neolao" />
+												<menuitem label="Flowplayer" value="flowplayer" />
+											</menupopup>
+										</menulist>
 									</hbox>
 									<spacer height="15" flex="0" />
 								</vbox>

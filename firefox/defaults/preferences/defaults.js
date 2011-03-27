@@ -24,6 +24,7 @@ pref("extensions.flvideoreplacer.prefermp4", true);
 pref("extensions.flvideoreplacer.downdir", "");
 pref("extensions.flvideoreplacer.silentdownload", false);
 pref("extensions.flvideoreplacer.videourl", "");
+pref("extensions.flvideoreplacer.fallback", "noplugin");
 
 pref("extensions.flvideoreplacer.pluginforce", true);
 pref("extensions.flvideoreplacer.pluginmp4", false);

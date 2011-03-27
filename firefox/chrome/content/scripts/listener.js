@@ -2051,6 +2051,7 @@ var flvideoreplacerListener = {
 			var autolaunchplayer = this.prefs.getBoolPref("autolaunchplayer");
 			var autolaunchtab = this.prefs.getBoolPref("autolaunchtab");
 			var autolaunchwindow = this.prefs.getBoolPref("autolaunchwindow");
+			var fallback = this.prefs.getCharPref("fallback");
 
 			//get localization
 			var strbundle = document.getElementById("flvideoreplacerstrings");
@@ -2281,27 +2282,59 @@ var flvideoreplacerListener = {
 						}
 					}else{//fallback
 
-						var fmt = "99";
-						/*
-							//create the object element
-							flvideoreplacer = doc.createElement('object');
-							flvideoreplacer.setAttribute("width", videowidth);
-							flvideoreplacer.setAttribute("height", videoheight);
-							flvideoreplacer.setAttribute("type", "application/x-shockwave-flash");
-							flvideoreplacer.setAttribute("data", "http://releases.flowplayer.org/swf/flowplayer-3.2.7.swf");
-							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"movie\" value=\"http://releases.flowplayer.org/swf/flowplayer-3.2.7.swf\"></param><param name=\"allowfullscreen\" value=\"true\"></param><param name=\"flashvars\" value='config={\"playlist\":[\"http://www.webgapps.org/flowplayer/flashvideoreplacer.png\", {\"url\": \""+videourl+"\",\"autoPlay\":true,\"autoBuffering\":true}]}'></param><img src=\"http://www.webgapps.org/flowplayer/flashvideoreplacer.png\" width=\""+videowidth+"\" height=\""+videowidth+"\" alt=\"FlashVideoReplacer\" title=\"No video playback capabilities.\" />";
-							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
-								childdivs = videoplayer.getElementsByTagName("div");
-								videodiv = childdivs[2];
-								//replace video
-								videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
+				
+						if(fallback === "flowplayer"){
+							
+							if(!sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/) && !sourceurl.match(/redtube\.com\/\d{1,8}/)){
+								//create the object element
+								flvideoreplacer = doc.createElement('object');
+								flvideoreplacer.setAttribute("width", videowidth);
+								flvideoreplacer.setAttribute("height", videoheight);
+								flvideoreplacer.setAttribute("type", "application/x-shockwave-flash");
+								flvideoreplacer.setAttribute("data", "http://releases.flowplayer.org/swf/flowplayer-3.2.7.swf");
+								//append innerHTML code
+								flvideoreplacer.innerHTML = "<param name=\"movie\" value=\"http://releases.flowplayer.org/swf/flowplayer-3.2.7.swf\"></param><param name=\"allowfullscreen\" value=\"true\"></param><param name=\"flashvars\" value='config={\"playlist\":[\"http://www.webgapps.org/flowplayer/flashvideoreplacer.png\", {\"url\": \""+videourl+"\",\"autoPlay\":true,\"autoBuffering\":true}]}'></param><img src=\"http://www.webgapps.org/flowplayer/flashvideoreplacer.png\" width=\""+videowidth+"\" height=\""+videowidth+"\" alt=\"FlashVideoReplacer\" title=\"No video playback capabilities.\" />";
+								if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+									childdivs = videoplayer.getElementsByTagName("div");
+									videodiv = childdivs[2];
+									//replace video
+									videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
 
+								}else{
+									//replace video
+									videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
+								}	
 							}else{
-								//replace video
-								videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
+								var fmt = "99";
 							}
-						 */
+						}else if(fallback === "neolao"){
+							if(!sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/) && !sourceurl.match(/redtube\.com\/\d{1,8}/)){
+								//create the object element
+								flvideoreplacer = doc.createElement('object');
+								flvideoreplacer.setAttribute("width", videowidth);
+								flvideoreplacer.setAttribute("height", videoheight);
+								flvideoreplacer.setAttribute("type", "application/x-shockwave-flash");
+								flvideoreplacer.setAttribute("data", "http://flv-player.net/medias/player_flv_maxi.swf");
+								//append innerHTML code
+								flvideoreplacer.innerHTML = "<param name=\"movie\" value=\"http://flv-player.net/medias/player_flv_maxi.swf\"></param>" +
+										"<param name=\"allowfullscreen\" value=\"true\"></param>" +
+										"<param name=\"FlashVars\" value=\"flv="+videourl+"&amp;title=FlashVideoReplacer&amp;startimage=http://www.webgapps.org/flowplayer/flashvideoreplacer.png\"</param>";								
+								if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+									childdivs = videoplayer.getElementsByTagName("div");
+									videodiv = childdivs[2];
+									//replace video
+									videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
+
+								}else{
+									//replace video
+									videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
+								}	
+							}else{
+								var fmt = "99";
+							}	
+						}else{
+							var fmt = "99";
+						}
 					}
 				}
 			}
