@@ -2282,9 +2282,9 @@ var flvideoreplacerListener = {
 						}
 					}else{//fallback
 
-				
+
 						if(fallback === "flowplayer"){
-							
+
 							if(!sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/) && !sourceurl.match(/redtube\.com\/\d{1,8}/)){
 								//create the object element
 								flvideoreplacer = doc.createElement('object');
@@ -2317,8 +2317,8 @@ var flvideoreplacerListener = {
 								flvideoreplacer.setAttribute("data", "http://flv-player.net/medias/player_flv_maxi.swf");
 								//append innerHTML code
 								flvideoreplacer.innerHTML = "<param name=\"movie\" value=\"http://flv-player.net/medias/player_flv_maxi.swf\"></param>" +
-										"<param name=\"allowfullscreen\" value=\"true\"></param>" +
-										"<param name=\"FlashVars\" value=\"flv="+videourl+"&amp;title=FlashVideoReplacer&amp;startimage=http://www.webgapps.org/flowplayer/flashvideoreplacer.png\"</param>";								
+								"<param name=\"allowfullscreen\" value=\"true\"></param>" +
+								"<param name=\"FlashVars\" value=\"flv="+videourl+"&amp;title=FlashVideoReplacer&amp;startimage=http://www.webgapps.org/flowplayer/flashvideoreplacer.png\"</param>";								
 								if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 									childdivs = videoplayer.getElementsByTagName("div");
 									videodiv = childdivs[2];
