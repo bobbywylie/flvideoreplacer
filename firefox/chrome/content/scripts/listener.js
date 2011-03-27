@@ -17,6 +17,7 @@ var flvideoreplacerListener = {
 			//get prefs
 			var delay = this.prefs.getIntPref("delay");
 			var enabled = this.prefs.getBoolPref("enabled");
+			var performance = this.prefs.getIntPref("performance");
 
 			if(enabled === true){
 
@@ -27,7 +28,7 @@ var flvideoreplacerListener = {
 					var sourceurl = doc.location.href;
 
 					//declare variables
-					var replacevideo = false, replacemethod, preferwebm, videoelement, testelement;
+					var replacevideo = false, replacemethod, preferwebm, videoelement, testelement, videowidth, videoheight;
 
 					if(sourceurl.match(/youtube.*watch.*v\=.*html5=True/)){
 						//access preferences interface
@@ -70,47 +71,91 @@ var flvideoreplacerListener = {
 						if(sourceurl.match(/youtube.*watch.*v\=/)){
 							replacevideo = this.prefs.getBoolPref("youtube");
 							videoelement = "movie_player";
+							videowidth = "642";
+							videoheight = "390";
 						}
 						if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 							replacevideo = this.prefs.getBoolPref("vimeo");
 							videoelement = "meat";
+							videowidth = "640";
+							videoheight = "384";
 						}
 						if(sourceurl.match(/metacafe\.com\/watch\//)){
 							replacevideo = this.prefs.getBoolPref("metacafe");
 							videoelement = "FlashWrap";
+							videowidth = "615";
+							videoheight = "400";
 						}
 						if(sourceurl.match(/blip\.tv\/file\/.*/)){
 							replacevideo = this.prefs.getBoolPref("bliptv");
 							videoelement = "video_player";
+							videowidth = "624";
+							videoheight = "380";
 						}
 						if(sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)){
 							replacevideo = this.prefs.getBoolPref("ustream");
-							videoelement = "v2";
+							videoelement = "channelFlashContent";
+							videowidth = "608";
+							videoheight = "368";
 						}	    
 						if(sourceurl.match(/youporn\.com\/watch\//)){
 							replacevideo = this.prefs.getBoolPref("other");
 							videoelement = "player";
+							videowidth = "610";
+							videoheight = "480";
 						}
 						if(sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)){
 							replacevideo = this.prefs.getBoolPref("other");
-							videoelement = "VideoPlayer";
+							videoelement = "playerDiv_1";
+							videowidth = "642";
+							videoheight = "390";
 						}
 						if(sourceurl.match(/redtube\.com\/\d{1,8}/)){
 							replacevideo = this.prefs.getBoolPref("other");
 							videoelement = "redtube_flv_player";
+							videowidth = "584";
+							videoheight = "468";
 						}
 
 						//declare element to be replaced
-						testelement = doc.getElementById(videoelement);
-
-						if(testelement === null && sourceurl.match(/youtube.*watch.*v\=/)){
-							//declare element to be replaced
-							testelement = doc.getElementById("watch-player");
+						if(sourceurl.match(/youtube.*watch.*v\=/)){
+							
+							testelement = doc.getElementById(videoelement);
+							if(testelement === null){
+								testelement = doc.getElementById("watch-player");
+							}
+						}else{
+							testelement = doc.getElementById(videoelement);
 						}
 
 						if (testelement !== null) {
 
 							if(replacevideo === true){
+
+								if(delay === "0" || performance === "3"){
+
+									if(sourceurl.match(/youtube.*watch.*v\=/) 
+											|| sourceurl.match(/vimeo\.com\/\d{1,8}/)
+											|| sourceurl.match(/blip\.tv\/file\/.*/)
+											|| sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)
+									){
+										//replace with empty div
+										var divreplacer = doc.createElement('div');
+										divreplacer.setAttribute("id", videoelement);
+										divreplacer.setAttribute("style"," width:"+videowidth+"; height:"+videoheight+"; text-align:center; vertical-align:middle;");
+
+										if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+											var childdivs = testelement.getElementsByTagName("div");
+											var videodiv = childdivs[2];
+											//replace video
+											videodiv.parentNode.replaceChild(divreplacer, videodiv);
+
+										}else{
+											//replace video
+											testelement.parentNode.replaceChild(divreplacer, testelement);
+										}
+									}
+								}
 
 								if(sourceurl.match(/youtube.*watch.*v\=/)){
 
@@ -251,15 +296,6 @@ var flvideoreplacerListener = {
 				}
 
 				if (testelement !== null) {
-
-					if(performance === 3){
-
-						//injected empty div
-						var divreplacer = doc.createElement('div');
-						divreplacer.setAttribute("id", videoelement);
-						divreplacer.setAttribute("style"," width:642; height:390; text-align:center; vertical-align:middle;");
-						testelement.parentNode.replaceChild(divreplacer, testelement);
-					}
 
 					//get xml document content
 					req = new XMLHttpRequest();   
@@ -1220,7 +1256,7 @@ var flvideoreplacerListener = {
 				//fetch video ID from url
 				videoid = sourceurl.replace(/.*recorded\//, "").replace(/\/.*/g, "");
 				//declare element to be replaced
-				videoelement = "v2";
+				videoelement = "channelFlashContent";
 				testelement = doc.getElementById(videoelement);
 
 				if (testelement !== null) {
@@ -1276,7 +1312,7 @@ var flvideoreplacerListener = {
 							videojson.sitestring = "ustream";
 							videojson.videowidth = "608";
 							videojson.videoheight = "368";
-							videojson.videoelement = "v2";
+							videojson.videoelement = "channelFlashContent";
 							videojson.videofmt = "97";
 							videojson.videomime = newmimetype;
 							videojson.videourl = videourl;
@@ -1371,7 +1407,7 @@ var flvideoreplacerListener = {
 											videojson.sitestring = "ustream";
 											videojson.videowidth = "608";
 											videojson.videoheight = "368";
-											videojson.videoelement = "v2";
+											videojson.videoelement = "channelFlashContent";
 											videojson.videofmt = "97";
 											videojson.videomime = newmimetype;
 											videojson.videourl = videourl;
@@ -1550,7 +1586,7 @@ var flvideoreplacerListener = {
 				//fetch video ID from url
 				videoid = sourceurl.replace(/.*viewkey=/g, "");
 				//declare element to be replaced
-				videoelement = "VideoPlayer";
+				videoelement = "playerDiv_1";
 				testelement = doc.getElementById(videoelement);
 
 				if (testelement !== null) {
@@ -1596,7 +1632,7 @@ var flvideoreplacerListener = {
 						videojson.sitestring = "pornhub";
 						videojson.videowidth = "610";
 						videojson.videoheight = "480";
-						videojson.videoelement = "VideoPlayer";
+						videojson.videoelement = "playerDiv_1";
 						videojson.videofmt = "97";
 						videojson.videomime = newmimetype;
 						videojson.videourl = videourl;
@@ -1740,6 +1776,10 @@ var flvideoreplacerListener = {
 				var doc = aEvent.originalTarget;
 				var sourceurl = doc.location.href;
 			}
+			
+			//get osString
+			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -1748,6 +1788,7 @@ var flvideoreplacerListener = {
 
 			//get prefs
 			var replacemethod = this.prefs.getCharPref("promptmethod");
+			var alertsinfo = this.prefs.getBoolPref("alertsinfo");
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -1820,6 +1861,73 @@ var flvideoreplacerListener = {
 
 			}else{
 				videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
+			}
+
+			//**********************check flashblock************************************
+
+			//access preferences interface
+			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch("extensions.");
+
+			var enableditems, whitelist;
+
+			//check enabled extensions
+			try{
+				enableditems = this.prefs.getCharPref("enabledAddons");
+			}catch(e){
+				enableditems = this.prefs.getCharPref("enabledItems");
+			}finally{
+
+				if (enableditems.match(/\{3d7eb24f-2740-49df-8937-200b1cc08f8a\}/)) {//flashblock
+
+					//access preferences interface
+					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+					.getService(Components.interfaces.nsIPrefService)
+					.getBranch("flashblock.");
+
+					try{
+						whitelist = this.prefs.getCharPref("whitelist");
+					}catch(e){
+						whitelist = "";
+					}
+
+					if(whitelist.match(sitestring)){
+
+						if(alertsinfo === true){
+
+							//get text from strbundle
+							message = strbundle.getString("flashblockbl");
+							messagetitle = strbundle.getString("flvideoreplaceralert");
+
+							if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+								//alert user
+								alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+								.getService(Components.interfaces.nsIAlertsService);
+								alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+										messagetitle, message,
+										false, "", null);
+							}
+						}
+					}
+				}else{
+				
+					if(alertsinfo === true){
+
+						//get text from strbundle
+						message = strbundle.getString("flashblockno");
+						messagetitle = strbundle.getString("flvideoreplaceralert");
+
+						if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+							//alert user
+							alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+							.getService(Components.interfaces.nsIAlertsService);
+							alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+									messagetitle, message,
+									false, "", null);
+						}
+					}
+				}
 			}
 		},
 
@@ -1897,7 +2005,7 @@ var flvideoreplacerListener = {
 			var standard = strbundle.getString("standard");
 			var message, messagetitle, prompts, alertsService;
 
-			//**********************check incompatible extensions************************************
+			//**********************check blocking extensions************************************
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -1913,46 +2021,6 @@ var flvideoreplacerListener = {
 				enableditems = this.prefs.getCharPref("enabledItems");
 			}finally{
 
-				if (enableditems.match(/\{3d7eb24f-2740-49df-8937-200b1cc08f8a\}/)) {//flashblock
-
-					//access preferences interface
-					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					.getService(Components.interfaces.nsIPrefService)
-					.getBranch("flashblock.");
-
-					try{
-						whitelist = this.prefs.getCharPref("whitelist");
-					}catch(e){
-						whitelist = "";
-					}
-
-					if(!whitelist.match(sitestring)){
-
-						//don't try to replace
-						replacevideo = false;
-
-						if(alertserror === true){
-
-							//get text from strbundle
-							message = strbundle.getFormattedString("flashblock", [ sitename ]);
-							messagetitle = strbundle.getString("flvideoreplaceralert");
-
-							if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
-								//alert user
-								prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-								.getService(Components.interfaces.nsIPromptService);
-								prompts.alert(window, messagetitle, message);
-							}else{
-								//alert user
-								alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-								.getService(Components.interfaces.nsIAlertsService);
-								alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-										messagetitle, message,
-										false, "", null);
-							}
-						}
-					}
-				}
 				/*
 if (enableditems.match(/\{73a6fe31-595d-460b-a920-fcc0f8843232\}/)) {//NoScript
 
