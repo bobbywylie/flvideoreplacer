@@ -1,14 +1,14 @@
-<!ENTITY Alerts "Meldungen">
-<!ENTITY Autodetect "Autodetect">
+<!ENTITY Alerts "Warnungen">
+<!ENTITY Autodetect "Automatische Erkennung">
 <!ENTITY AutoLaunchEmbed "Videos automatisch abspielen">
-<!ENTITY AutoLaunchPlayer "Launch player automatically">
-<!ENTITY AutoLaunchTab "Open video tab automatically">
-<!ENTITY AutoLaunchWindow "Open video window automatically">
+<!ENTITY AutoLaunchPlayer "Player automatisch starten">
+<!ENTITY AutoLaunchTab "Videos in neuem Tab automatisch öffnen">
+<!ENTITY AutoLaunchWindow "Videos in neuem Fenster automatisch öffnen">
 <!ENTITY BestPlayer "Besten Player">
-<!ENTITY Clipboard "URL in die Zwischenablag kopieren">
+<!ENTITY Clipboard "URL in die Zwischenablage kopieren">
 <!ENTITY Custom "Benutzerdefiniert">
 <!ENTITY Delay "Verzögerung">
-<!ENTITY Download "Download">
+<!ENTITY Download "Herunterladen">
 <!ENTITY DownloadDir "Speicherort">
 <!ENTITY Embedded "Eingebettet">
 <!ENTITY EmbeddedVideoDetection "Eingebettete Video Erkennung">
@@ -18,18 +18,18 @@
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
 <!ENTITY ForcePluginMimeType "Plugin/MimeType">
 <!ENTITY HIGH "HOCH">
-<!ENTITY LOW "GERING">
+<!ENTITY LOW "NIEDRIG">
 <!ENTITY MEDIUM "MITTEL">
 <!ENTITY Method "Ablösemethode">
 <!ENTITY NewTab "Neuer Tab">
 <!ENTITY NewWin "Neues Fenster">
 <!ENTITY OpenEmbedded "Öffne eingebundene Videos auf dieser Seite">
-<!ENTITY Other "Andere streaming Seiten">
-<!ENTITY PluginForce "Forciere Plugin Kompatibilität">
+<!ENTITY Other "Andere Video-Webseiten">
+<!ENTITY PluginForce "Forciere Plugin-Kompatibilität">
 <!ENTITY Preferences "Einstellungen">
 <!ENTITY PreferWebM "WebM bevorzugen, wenn verfügbar (benötigt klein Plugin)">
 <!ENTITY PreferMP4 "mp4 vor flv bevorzugen">
-<!ENTITY Quality "Qualität">
+<!ENTITY Quality "Videoqualität">
 <!ENTITY Reset "Zurücksetzen">
 <!ENTITY Search "Suche">
 <!ENTITY SelectFile "Datei auswählen">
