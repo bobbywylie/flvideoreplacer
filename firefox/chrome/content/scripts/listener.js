@@ -119,7 +119,7 @@ var flvideoreplacerListener = {
 
 						//declare element to be replaced
 						if(sourceurl.match(/youtube.*watch.*v\=/)){
-							
+
 							testelement = doc.getElementById(videoelement);
 							if(testelement === null){
 								testelement = doc.getElementById("watch-player");
@@ -1776,7 +1776,7 @@ var flvideoreplacerListener = {
 				var doc = aEvent.originalTarget;
 				var sourceurl = doc.location.href;
 			}
-			
+
 			//get osString
 			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
 			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
@@ -1863,7 +1863,7 @@ var flvideoreplacerListener = {
 				videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
 			}
 
-			//**********************check flashblock************************************
+			//**********************check third-party extensions************************************
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -1911,12 +1911,12 @@ var flvideoreplacerListener = {
 						}
 					}
 				}else{
-				
+
 					if(alertsinfo === true){
 
 						//get text from strbundle
 						message = strbundle.getString("flashblockno");
-						messagetitle = strbundle.getString("flvideoreplaceralert");
+						messagetitle = strbundle.getString("flvideoreplacermessage");
 
 						if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
 							//alert user
@@ -1928,6 +1928,58 @@ var flvideoreplacerListener = {
 						}
 					}
 				}
+
+				if (enableditems.match(/\{84b24861-62f6-364b-eba5-2e5e2061d7e6\}/)) {//mediaplayerconnectivity
+
+					//access preferences interface
+					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+					.getService(Components.interfaces.nsIPrefService)
+					.getBranch("extensions.mediaplayerconnectivity.");
+
+					try{
+						whitelist = this.prefs.getCharPref("whiteList");
+					}catch(e){
+						whitelist = "";
+					}
+
+					if(!whitelist.match(sitestring)){
+
+						if(alertserror === true){
+
+							//get text from strbundle
+							message = strbundle.getFormattedString("mpc", [ sitename ]);
+							messagetitle = strbundle.getString("flvideoreplaceralert");
+
+							if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+								//alert user
+								prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+								.getService(Components.interfaces.nsIPromptService);
+								prompts.alert(window, messagetitle, message);
+							}else{
+								//alert user
+								alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+								.getService(Components.interfaces.nsIAlertsService);
+								alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+										messagetitle, message,
+										false, "", null);
+							}
+						}
+					}
+				}
+
+				/*
+				if (enableditems.match(/\{73a6fe31-595d-460b-a920-fcc0f8843232\}/)) {//NoScript
+
+					//access preferences interface
+					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+					.getService(Components.interfaces.nsIPrefService)
+					.getBranch("noscript.");
+
+					var forbidflash = this.prefs.getBoolPref("forbidFlash");
+					var forbidplugins = this.prefs.getBoolPref("forbidPlugins");
+					var nstemp = this.prefs.getCharPref("temp");
+				}
+				 */
 			}
 		},
 
@@ -1961,6 +2013,7 @@ var flvideoreplacerListener = {
 				var doc = aEvent.originalTarget;
 				var sourceurl = doc.location.href;
 			}
+
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
@@ -2005,305 +2058,231 @@ var flvideoreplacerListener = {
 			var standard = strbundle.getString("standard");
 			var message, messagetitle, prompts, alertsService;
 
-			//**********************check blocking extensions************************************
+			//declare variables
+			var params, videoplayer, flvideoreplacer, childdivs, videodiv;
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("extensions.");
+			.getBranch("extensions.flvideoreplacer.");
 
-			var enableditems, whitelist, replacevideo = true;
+			if(replacemethod === "embedded"){
 
-			//check enabled extensions
-			try{
-				enableditems = this.prefs.getCharPref("enabledAddons");
-			}catch(e){
-				enableditems = this.prefs.getCharPref("enabledItems");
-			}finally{
+				//get plugin compatibility
+				var pluginmp4 = this.prefs.getBoolPref("pluginmp4");
+				var pluginflv = this.prefs.getBoolPref("pluginflv");
+				var pluginqt = this.prefs.getBoolPref("pluginqt");
+				var pluginwmp = this.prefs.getBoolPref("pluginwmp");
+				var pluginwmv = this.prefs.getBoolPref("pluginwmv");
+				var pluginmov = this.prefs.getBoolPref("pluginmov");
+				var pluginm4v = this.prefs.getBoolPref("pluginm4v");
 
-				/*
-if (enableditems.match(/\{73a6fe31-595d-460b-a920-fcc0f8843232\}/)) {//NoScript
+				if(newmimetype === "video/x-quicktime"){
 
-//access preferences interface
-this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-.getService(Components.interfaces.nsIPrefService)
-.getBranch("noscript.");
+					if(pluginmov === true){
 
-var forbidflash = this.prefs.getBoolPref("forbidFlash");
-var forbidplugins = this.prefs.getBoolPref("forbidPlugins");
-var nstemp = this.prefs.getCharPref("temp");
-}
-				 */
+						//declare element to be replaced
+						videoplayer = doc.getElementById(videoelement);
 
-				if (enableditems.match(/\{84b24861-62f6-364b-eba5-2e5e2061d7e6\}/)) {//mediaplayerconnectivity
+						//create the object element
+						flvideoreplacer = doc.createElement('object');
+						flvideoreplacer.setAttribute("width", videowidth);
+						flvideoreplacer.setAttribute("height", videoheight);
+						flvideoreplacer.setAttribute("classid", "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B");
+						flvideoreplacer.setAttribute("codebase", "http://www.apple.com/qtactivex/qtplugin.cab");  
+						flvideoreplacer.setAttribute("type", "video/x-quicktime");
+						//append innerHTML code
+						flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/x-quicktime\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
+						if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+							childdivs = videoplayer.getElementsByTagName("div");
+							videodiv = childdivs[2];
+							//replace video
+							videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
 
-					//access preferences interface
-					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					.getService(Components.interfaces.nsIPrefService)
-					.getBranch("extensions.mediaplayerconnectivity.");
-
-					try{
-						whitelist = this.prefs.getCharPref("whiteList");
-					}catch(e){
-						whitelist = "";
-					}
-
-					if(!whitelist.match(sitestring)){
-
-						//don't try to replace
-						replacevideo = false;
-
-						if(alertserror === true){
-
-							//get text from strbundle
-							message = strbundle.getFormattedString("mpc", [ sitename ]);
-							messagetitle = strbundle.getString("flvideoreplaceralert");
-
-							if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
-								//alert user
-								prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-								.getService(Components.interfaces.nsIPromptService);
-								prompts.alert(window, messagetitle, message);
-							}else{
-								//alert user
-								alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-								.getService(Components.interfaces.nsIAlertsService);
-								alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-										messagetitle, message,
-										false, "", null);
-							}
+						}else{
+							//replace video
+							videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
 						}
+					}else{
+						newmimetype = "video/mp4";
 					}
 				}
-			}
+				if(newmimetype === "application/x-ms-wmv"){
 
-			if(replacevideo === true){
+					if(pluginwmv === true){
 
-				//declare variables
-				var params, videoplayer, flvideoreplacer, childdivs, videodiv;
+						//declare element to be replaced
+						videoplayer = doc.getElementById(videoelement);
 
-				//access preferences interface
-				this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-				.getService(Components.interfaces.nsIPrefService)
-				.getBranch("extensions.flvideoreplacer.");
+						//create the object element
+						flvideoreplacer = doc.createElement('object');
+						flvideoreplacer.setAttribute("width", videowidth);
+						flvideoreplacer.setAttribute("height", videoheight);
+						flvideoreplacer.setAttribute("type", "application/x-ms-wmv");
+						//append innerHTML code
+						flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"application/x-ms-wmv\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
+						if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+							childdivs = videoplayer.getElementsByTagName("div");
+							videodiv = childdivs[2];
+							//replace video
+							videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
 
-				if(replacemethod === "embedded"){
-
-					//get plugin compatibility
-					var pluginmp4 = this.prefs.getBoolPref("pluginmp4");
-					var pluginflv = this.prefs.getBoolPref("pluginflv");
-					var pluginqt = this.prefs.getBoolPref("pluginqt");
-					var pluginwmp = this.prefs.getBoolPref("pluginwmp");
-					var pluginwmv = this.prefs.getBoolPref("pluginwmv");
-					var pluginmov = this.prefs.getBoolPref("pluginmov");
-					var pluginm4v = this.prefs.getBoolPref("pluginm4v");
-
-					if(newmimetype === "video/x-quicktime"){
-
-						if(pluginmov === true){
-
-							//declare element to be replaced
-							videoplayer = doc.getElementById(videoelement);
-
-							//create the object element
-							flvideoreplacer = doc.createElement('object');
-							flvideoreplacer.setAttribute("width", videowidth);
-							flvideoreplacer.setAttribute("height", videoheight);
-							flvideoreplacer.setAttribute("classid", "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B");
-							flvideoreplacer.setAttribute("codebase", "http://www.apple.com/qtactivex/qtplugin.cab");  
-							flvideoreplacer.setAttribute("type", "video/x-quicktime");
-							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/x-quicktime\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
-							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
-								childdivs = videoplayer.getElementsByTagName("div");
-								videodiv = childdivs[2];
-								//replace video
-								videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
-
-							}else{
-								//replace video
-								videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
-							}
 						}else{
-							newmimetype = "video/mp4";
+							//replace video
+							videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
 						}
+					}else{
+						newmimetype = "video/mp4";
 					}
-					if(newmimetype === "application/x-ms-wmv"){
+				}
+				if(newmimetype === "video/x-m4v"){
 
-						if(pluginwmv === true){
+					if(pluginm4v === true){
 
-							//declare element to be replaced
-							videoplayer = doc.getElementById(videoelement);
+						//declare element to be replaced
+						videoplayer = doc.getElementById(videoelement);
 
-							//create the object element
-							flvideoreplacer = doc.createElement('object');
-							flvideoreplacer.setAttribute("width", videowidth);
-							flvideoreplacer.setAttribute("height", videoheight);
-							flvideoreplacer.setAttribute("type", "application/x-ms-wmv");
-							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"application/x-ms-wmv\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
-							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
-								childdivs = videoplayer.getElementsByTagName("div");
-								videodiv = childdivs[2];
-								//replace video
-								videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
+						//create the object element
+						flvideoreplacer = doc.createElement('object');
+						flvideoreplacer.setAttribute("width", videowidth);
+						flvideoreplacer.setAttribute("height", videoheight);
+						flvideoreplacer.setAttribute("type", "video/x-m4v");
+						//append innerHTML code
+						flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/x-m4v\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
+						if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+							childdivs = videoplayer.getElementsByTagName("div");
+							videodiv = childdivs[2];
+							//replace video
+							videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
 
-							}else{
-								//replace video
-								videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
-							}
 						}else{
-							newmimetype = "video/mp4";
+							//replace video
+							videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
 						}
+					}else{
+						newmimetype = "video/mp4";
 					}
-					if(newmimetype === "video/x-m4v"){
+				}
+				if(newmimetype === "application/x-flv"){
 
-						if(pluginm4v === true){
+					//declare element to be replaced
+					videoplayer = doc.getElementById(videoelement);
 
-							//declare element to be replaced
-							videoplayer = doc.getElementById(videoelement);
+					if(pluginflv === true){
 
-							//create the object element
-							flvideoreplacer = doc.createElement('object');
-							flvideoreplacer.setAttribute("width", videowidth);
-							flvideoreplacer.setAttribute("height", videoheight);
-							flvideoreplacer.setAttribute("type", "video/x-m4v");
-							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/x-m4v\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
-							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
-								childdivs = videoplayer.getElementsByTagName("div");
-								videodiv = childdivs[2];
-								//replace video
-								videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
+						//create the object element
+						flvideoreplacer = doc.createElement('object');
+						flvideoreplacer.setAttribute("width", videowidth);
+						flvideoreplacer.setAttribute("height", videoheight);
+						flvideoreplacer.setAttribute("type", "application/x-flv");
+						//append innerHTML code
+						flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"application/x-flv\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
+						if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+							childdivs = videoplayer.getElementsByTagName("div");
+							videodiv = childdivs[2];
+							//replace video
+							videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
 
-							}else{
-								//replace video
-								videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
-							}
 						}else{
-							newmimetype = "video/mp4";
+							//replace video
+							videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
 						}
+					}else{//fallback
+						newmimetype = "video/mp4";
 					}
-					if(newmimetype === "application/x-flv"){
+				}
 
-						//declare element to be replaced
-						videoplayer = doc.getElementById(videoelement);
+				if(newmimetype === "video/mp4"){
 
-						if(pluginflv === true){
+					//declare element to be replaced
+					videoplayer = doc.getElementById(videoelement);
 
-							//create the object element
-							flvideoreplacer = doc.createElement('object');
-							flvideoreplacer.setAttribute("width", videowidth);
-							flvideoreplacer.setAttribute("height", videoheight);
-							flvideoreplacer.setAttribute("type", "application/x-flv");
-							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"application/x-flv\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
-							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
-								childdivs = videoplayer.getElementsByTagName("div");
-								videodiv = childdivs[2];
-								//replace video
-								videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
+					if(pluginmp4 === true){
 
-							}else{
-								//replace video
-								videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
-							}
-						}else{//fallback
-							newmimetype = "video/mp4";
+						//create the object element
+						flvideoreplacer = doc.createElement('object');
+						flvideoreplacer.setAttribute("width", videowidth);
+						flvideoreplacer.setAttribute("height", videoheight);
+						flvideoreplacer.setAttribute("classid", "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B");
+						flvideoreplacer.setAttribute("codebase", "http://www.apple.com/qtactivex/qtplugin.cab");
+						flvideoreplacer.setAttribute("type", "video/mp4");
+						//append innerHTML code
+						flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"> <embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/mp4\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
+						if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+							childdivs = videoplayer.getElementsByTagName("div");
+							videodiv = childdivs[2];
+							//replace video
+							videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
+						}else{
+							//replace video
+							videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
 						}
+
+					}else{//fallback
+						newmimetype = "video/quicktime";
 					}
+				}
 
-					if(newmimetype === "video/mp4"){
+				if(newmimetype === "video/quicktime"){
 
-						//declare element to be replaced
-						videoplayer = doc.getElementById(videoelement);
+					//declare element to be replaced
+					videoplayer = doc.getElementById(videoelement);
 
-						if(pluginmp4 === true){
+					if(pluginqt === true){
+						//create the object element
+						flvideoreplacer = doc.createElement('object');
+						flvideoreplacer.setAttribute("width", videowidth);
+						flvideoreplacer.setAttribute("height", videoheight);
+						flvideoreplacer.setAttribute("classid", "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B");
+						flvideoreplacer.setAttribute("codebase", "http://www.apple.com/qtactivex/qtplugin.cab");
+						flvideoreplacer.setAttribute("type", "video/quicktime");
+						//append innerHTML code
+						flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/quicktime\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
+						if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+							childdivs = videoplayer.getElementsByTagName("div");
+							videodiv = childdivs[2];
+							//replace video
+							videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
 
-							//create the object element
-							flvideoreplacer = doc.createElement('object');
-							flvideoreplacer.setAttribute("width", videowidth);
-							flvideoreplacer.setAttribute("height", videoheight);
-							flvideoreplacer.setAttribute("classid", "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B");
-							flvideoreplacer.setAttribute("codebase", "http://www.apple.com/qtactivex/qtplugin.cab");
-							flvideoreplacer.setAttribute("type", "video/mp4");
-							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"> <embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/mp4\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
-							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
-								childdivs = videoplayer.getElementsByTagName("div");
-								videodiv = childdivs[2];
-								//replace video
-								videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
-							}else{
-								//replace video
-								videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
-							}
-
-						}else{//fallback
-							newmimetype = "video/quicktime";
+						}else{
+							//replace video
+							videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
 						}
+					}else{//fallback
+						newmimetype = "application/x-mplayer2";
 					}
+				}
+				if(newmimetype === "application/x-mplayer2"){
 
-					if(newmimetype === "video/quicktime"){
+					//declare element to be replaced
+					videoplayer = doc.getElementById(videoelement);
 
-						//declare element to be replaced
-						videoplayer = doc.getElementById(videoelement);
+					if(pluginwmp === true){
 
-						if(pluginqt === true){
-							//create the object element
-							flvideoreplacer = doc.createElement('object');
-							flvideoreplacer.setAttribute("width", videowidth);
-							flvideoreplacer.setAttribute("height", videoheight);
-							flvideoreplacer.setAttribute("classid", "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B");
-							flvideoreplacer.setAttribute("codebase", "http://www.apple.com/qtactivex/qtplugin.cab");
-							flvideoreplacer.setAttribute("type", "video/quicktime");
-							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"src\" value=\""+videourl+"\"></param><param name=\"autoplay\" value=\"true\"><param name=\"controller\" value=\"true\"><param name=\"loop\" value=\"false\"><param name=\"scale\" value=\"aspect\"><embed src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" scale=\"aspect\" type=\"video/quicktime\" autoplay=\"true\" controller=\"true\" loop=\"false\" </embed>";
-							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
-								childdivs = videoplayer.getElementsByTagName("div");
-								videodiv = childdivs[2];
-								//replace video
-								videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
+						//create the object element
+						flvideoreplacer = doc.createElement('object');
+						flvideoreplacer.setAttribute("width", videowidth);
+						flvideoreplacer.setAttribute("height", videoheight);
+						flvideoreplacer.setAttribute("classid", "clsid:6BF52A52-394A-11D3-B153-00C04F79FAA6");
+						flvideoreplacer.setAttribute("codebase", "http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112");
+						flvideoreplacer.setAttribute("standby", "Loading Microsoft Windows Media Player components...");
+						flvideoreplacer.setAttribute("type", "application/x-oleobject");
+						//append innerHTML code
+						flvideoreplacer.innerHTML = "<param name=\"fileName\" value=\""+videourl+"\"></param><param name=\"autoStart\" value=\"true\"><param name=\"showControls\" value=\"true\"><param name=\"loop\" value=\"false\"><embed type=\"application/x-mplayer2\" autostart=\"true\" showcontrols=\"true\" loop=\"false\" src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" </embed>";
+						if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+							childdivs = videoplayer.getElementsByTagName("div");
+							videodiv = childdivs[2];
+							//replace video
+							videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
 
-							}else{
-								//replace video
-								videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
-							}
-						}else{//fallback
-							newmimetype = "application/x-mplayer2";
+						}else{
+							//replace video
+							videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
 						}
-					}
-					if(newmimetype === "application/x-mplayer2"){
+					}else{//fallback
 
-						//declare element to be replaced
-						videoplayer = doc.getElementById(videoelement);
-
-						if(pluginwmp === true){
-
-							//create the object element
-							flvideoreplacer = doc.createElement('object');
-							flvideoreplacer.setAttribute("width", videowidth);
-							flvideoreplacer.setAttribute("height", videoheight);
-							flvideoreplacer.setAttribute("classid", "clsid:6BF52A52-394A-11D3-B153-00C04F79FAA6");
-							flvideoreplacer.setAttribute("codebase", "http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112");
-							flvideoreplacer.setAttribute("standby", "Loading Microsoft Windows Media Player components...");
-							flvideoreplacer.setAttribute("type", "application/x-oleobject");
-							//append innerHTML code
-							flvideoreplacer.innerHTML = "<param name=\"fileName\" value=\""+videourl+"\"></param><param name=\"autoStart\" value=\"true\"><param name=\"showControls\" value=\"true\"><param name=\"loop\" value=\"false\"><embed type=\"application/x-mplayer2\" autostart=\"true\" showcontrols=\"true\" loop=\"false\" src=\""+videourl+"\" width=\""+videowidth+"\" height=\""+videoheight+"\" </embed>";
-							if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
-								childdivs = videoplayer.getElementsByTagName("div");
-								videodiv = childdivs[2];
-								//replace video
-								videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
-
-							}else{
-								//replace video
-								videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
-							}
-						}else{//fallback
-
-							var fmt = "99";
-							/*
+						var fmt = "99";
+						/*
 							//create the object element
 							flvideoreplacer = doc.createElement('object');
 							flvideoreplacer.setAttribute("width", videowidth);
@@ -2322,215 +2301,214 @@ var nstemp = this.prefs.getCharPref("temp");
 								//replace video
 								videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
 							}
-							 */
-						}
+						 */
 					}
 				}
+			}
 
-				if(replacemethod === "newtab"){
+			if(replacemethod === "newtab"){
 
-					//autolaunch placeholder
-					if(autolaunchtab === true){
-						flvideoreplacerListener.placeHolder(aEvent,aBranch);
-					}
-
-					//open media in new tab
-					var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-					.getInterface(Components.interfaces.nsIWebNavigation)
-					.QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-					.rootTreeItem
-					.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-					.getInterface(Components.interfaces.nsIDOMWindow);
-
-					mainWindow.gBrowser.selectedTab = mainWindow.gBrowser.addTab(videourl);
-
-					//content.window.location.href = videourl;
+				//autolaunch placeholder
+				if(autolaunchtab === true){
+					flvideoreplacerListener.placeHolder(aEvent,aBranch);
 				}
 
-				if(replacemethod === "newwindow"){
+				//open media in new tab
+				var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+				.getInterface(Components.interfaces.nsIWebNavigation)
+				.QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+				.rootTreeItem
+				.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+				.getInterface(Components.interfaces.nsIDOMWindow);
 
-					//set videourl pref
-					this.prefs.setCharPref("videourl",videourl);
+				mainWindow.gBrowser.selectedTab = mainWindow.gBrowser.addTab(videourl);
 
-					//autolaunch placeholder
-					if(autolaunchwindow === true){
-						flvideoreplacerListener.placeHolder(aEvent,aBranch);
-					}
+				//content.window.location.href = videourl;
+			}
 
-					//launch player
-					if(osString.match(/Windows/)){
-						window.open(videourl, 'flvideoreplacer-player', 'content,centerscreen,alwaysRaised,resizable=yes,width=600em,height=400em').focus();
-					}else{
-						window.openDialog('chrome://flvideoreplacer/content/player.xul', 'flvideoreplacer-player', 'chrome,centerscreen,alwaysRaised,resizable=yes,width=600em,height=400em').focus();
-					}
+			if(replacemethod === "newwindow"){
+
+				//set videourl pref
+				this.prefs.setCharPref("videourl",videourl);
+
+				//autolaunch placeholder
+				if(autolaunchwindow === true){
+					flvideoreplacerListener.placeHolder(aEvent,aBranch);
 				}
 
-				if(replacemethod === "standalone"){
+				//launch player
+				if(osString.match(/Windows/)){
+					window.open(videourl, 'flvideoreplacer-player', 'content,centerscreen,alwaysRaised,resizable=yes,width=600em,height=400em').focus();
+				}else{
+					window.openDialog('chrome://flvideoreplacer/content/player.xul', 'flvideoreplacer-player', 'chrome,centerscreen,alwaysRaised,resizable=yes,width=600em,height=400em').focus();
+				}
+			}
 
-					//set videourl pref
-					this.prefs.setCharPref("videourl",videourl);
-					//declare variables
-					var player, process;
+			if(replacemethod === "standalone"){
 
-					//autolaunch placeholder
-					if(autolaunchplayer === true){
-						flvideoreplacerListener.placeHolder(aEvent,aBranch);
-					}
+				//set videourl pref
+				this.prefs.setCharPref("videourl",videourl);
+				//declare variables
+				var player, process;
 
-					if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+				//autolaunch placeholder
+				if(autolaunchplayer === true){
+					flvideoreplacerListener.placeHolder(aEvent,aBranch);
+				}
 
-						//load url bar change listener for getting url redirection 
-						flvideoreplacerURLBar.init();
+				if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 
-						var newTab = gBrowser.addTab(videourl);
-						newTab.label = "FlashVideoReplacer";
-						newTab.id = "FlashVideoReplacerVimeo"; 
-						gBrowser.selectedTab = newTab;
+					//load url bar change listener for getting url redirection 
+					flvideoreplacerURLBar.init();
 
-					}else{
+					var newTab = gBrowser.addTab(videourl);
+					newTab.label = "FlashVideoReplacer";
+					newTab.id = "FlashVideoReplacerVimeo"; 
+					gBrowser.selectedTab = newTab;
 
-						//access preferences interface
-						this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-						.getService(Components.interfaces.nsIPrefService)
-						.getBranch("extensions.flvideoreplacer.");
+				}else{
 
-						//get player path
-						var playerpath = this.prefs.getCharPref("playerpath");
+					//access preferences interface
+					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+					.getService(Components.interfaces.nsIPrefService)
+					.getBranch("extensions.flvideoreplacer.");
 
-						if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+					//get player path
+					var playerpath = this.prefs.getCharPref("playerpath");
 
-							try{
-								if(playerpath !== "" && !playerpath.match(/\*\*\*/)){
+					if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
 
-									//initiate player
-									player = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-									player.initWithPath(playerpath);
-									if (player.exists()) {//match if player exists and launch it
-										process = Components.classes['@mozilla.org/process/util;1'].createInstance(Components.interfaces.nsIProcess);
-										process.init(player);
-										var arguments = [""+videourl+""];
-										process.run(false, arguments, arguments.length);
-									}
-								}else{
-									fmt = "98";
+						try{
+							if(playerpath !== "" && !playerpath.match(/\*\*\*/)){
+
+								//initiate player
+								player = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+								player.initWithPath(playerpath);
+								if (player.exists()) {//match if player exists and launch it
+									process = Components.classes['@mozilla.org/process/util;1'].createInstance(Components.interfaces.nsIProcess);
+									process.init(player);
+									var arguments = [""+videourl+""];
+									process.run(false, arguments, arguments.length);
 								}
-							}catch (e){
+							}else{
 								fmt = "98";
 							}
+						}catch (e){
+							fmt = "98";
+						}
 
-						}else{
-							try{
-								if(playerpath !== "" && !playerpath.match(/\*\*\*/)){
+					}else{
+						try{
+							if(playerpath !== "" && !playerpath.match(/\*\*\*/)){
 
-									//initiate player
-									player = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-									player.initWithPath(playerpath);
-									if (player.exists()) {//match if player exists and launch it
-										process = Components.classes['@mozilla.org/process/util;1'].createInstance(Components.interfaces.nsIProcess);
-										process.init(player);
-										var arguments = [""+videourl+""];
-										process.run(false, arguments, arguments.length);
-									}
-								}else{
-									fmt = "98";
+								//initiate player
+								player = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+								player.initWithPath(playerpath);
+								if (player.exists()) {//match if player exists and launch it
+									process = Components.classes['@mozilla.org/process/util;1'].createInstance(Components.interfaces.nsIProcess);
+									process.init(player);
+									var arguments = [""+videourl+""];
+									process.run(false, arguments, arguments.length);
 								}
-							}catch (e){
+							}else{
 								fmt = "98";
 							}
+						}catch (e){
+							fmt = "98";
 						}
 					}
 				}
-				if(alertsinfo === true){
-					//video info alert
-					if (fmt === "5") {
-						message = strbundle.getFormattedString("videores", [ "240p flv ("+mimetype+")" ]);
-					}
-					if (fmt === "18") {
-						message = strbundle.getFormattedString("videores", [ "360p mp4 ("+mimetype+")" ]);
-					}
-					if (fmt === "34") {
-						message = strbundle.getFormattedString("videores", [ "360p flv ("+mimetype+")" ]);
-					}
-					if (fmt === "35") {
-						message = strbundle.getFormattedString("videores", [ "480p flv ("+mimetype+")" ]);
-					}
-					if (fmt === "22") {
-						message = strbundle.getFormattedString("videores", [ "720p mp4 ("+mimetype+")" ]);
-					}
-					if (fmt === "37") {
-						message = strbundle.getFormattedString("videores", [ "1080p mp4 ("+mimetype+")" ]);
-					}
-					if (fmt === "38") {
-						message = strbundle.getFormattedString("videores", [ original+" ("+mimetype+")" ]);
-					}
-					if (fmt === "97") {
+			}
+			if(alertsinfo === true){
+				//video info alert
+				if (fmt === "5") {
+					message = strbundle.getFormattedString("videores", [ "240p flv ("+mimetype+")" ]);
+				}
+				if (fmt === "18") {
+					message = strbundle.getFormattedString("videores", [ "360p mp4 ("+mimetype+")" ]);
+				}
+				if (fmt === "34") {
+					message = strbundle.getFormattedString("videores", [ "360p flv ("+mimetype+")" ]);
+				}
+				if (fmt === "35") {
+					message = strbundle.getFormattedString("videores", [ "480p flv ("+mimetype+")" ]);
+				}
+				if (fmt === "22") {
+					message = strbundle.getFormattedString("videores", [ "720p mp4 ("+mimetype+")" ]);
+				}
+				if (fmt === "37") {
+					message = strbundle.getFormattedString("videores", [ "1080p mp4 ("+mimetype+")" ]);
+				}
+				if (fmt === "38") {
+					message = strbundle.getFormattedString("videores", [ original+" ("+mimetype+")" ]);
+				}
+				if (fmt === "97") {
 
-						if(videourl.match(/\.mp4/)){
-							message = strbundle.getFormattedString("videores", [ standard+" mp4 ("+mimetype+")" ]);
-						}else if(videourl.match(/\.flv/)){
-							message = strbundle.getFormattedString("videores", [ standard+" flv ("+mimetype+")" ]);
-						}else if(videourl.match(/\.mov/)){
-							message = strbundle.getFormattedString("videores", [ standard+" mov ("+mimetype+")" ]);
-						}else if(videourl.match(/\.m4v/)){
-							message = strbundle.getFormattedString("videores", [ standard+" m4v ("+mimetype+")" ]);
-						}else if(videourl.match(/\.wmv/)){
-							message = strbundle.getFormattedString("videores", [ standard+" wmv ("+mimetype+")" ]);
-						}else{
-							message = strbundle.getFormattedString("videores", [ standard+" ("+mimetype+")" ]);
-						}
-					}
-					//trigger alerts
-					if (fmt !== "98" && fmt !== "99") {//standard resolution message
-
-						if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
-							messagetitle = strbundle.getString("flvideoreplacermessage");
-							//alert user
-							alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-							.getService(Components.interfaces.nsIAlertsService);
-							alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-									messagetitle, message,
-									false, "", null);
-						}
+					if(videourl.match(/\.mp4/)){
+						message = strbundle.getFormattedString("videores", [ standard+" mp4 ("+mimetype+")" ]);
+					}else if(videourl.match(/\.flv/)){
+						message = strbundle.getFormattedString("videores", [ standard+" flv ("+mimetype+")" ]);
+					}else if(videourl.match(/\.mov/)){
+						message = strbundle.getFormattedString("videores", [ standard+" mov ("+mimetype+")" ]);
+					}else if(videourl.match(/\.m4v/)){
+						message = strbundle.getFormattedString("videores", [ standard+" m4v ("+mimetype+")" ]);
+					}else if(videourl.match(/\.wmv/)){
+						message = strbundle.getFormattedString("videores", [ standard+" wmv ("+mimetype+")" ]);
+					}else{
+						message = strbundle.getFormattedString("videores", [ standard+" ("+mimetype+")" ]);
 					}
 				}
-				if(alertserror === true){
+				//trigger alerts
+				if (fmt !== "98" && fmt !== "99") {//standard resolution message
 
-					if (fmt === "98"){//no available player message
-						message = strbundle.getFormattedString("nostandalone", [ mimetype ]);
+					if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
 						messagetitle = strbundle.getString("flvideoreplacermessage");
-
-						if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
-							//alert user
-							prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-							.getService(Components.interfaces.nsIPromptService);
-							prompts.alert(window, messagetitle, message);
-						}else{
-							//alert user
-							alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-							.getService(Components.interfaces.nsIAlertsService);
-							alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-									messagetitle, message,
-									false, "", null);
-						}
+						//alert user
+						alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+						.getService(Components.interfaces.nsIAlertsService);
+						alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+								messagetitle, message,
+								false, "", null);
 					}
-					if (fmt === "99"){//no available plugin message
+				}
+			}
+			if(alertserror === true){
 
-						message = strbundle.getFormattedString("noreplace", [ mimetype ]);
-						messagetitle = strbundle.getString("flvideoreplacermessage");
+				if (fmt === "98"){//no available player message
+					message = strbundle.getFormattedString("nostandalone", [ mimetype ]);
+					messagetitle = strbundle.getString("flvideoreplacermessage");
 
-						if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
-							//alert user
-							prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-							.getService(Components.interfaces.nsIPromptService);
-							prompts.alert(window, messagetitle, message);
-						}else{
-							//alert user
-							alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-							.getService(Components.interfaces.nsIAlertsService);
-							alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-									messagetitle, message,
-									false, "", null);
-						}
+					if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+						//alert user
+						prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+						.getService(Components.interfaces.nsIPromptService);
+						prompts.alert(window, messagetitle, message);
+					}else{
+						//alert user
+						alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+						.getService(Components.interfaces.nsIAlertsService);
+						alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+								messagetitle, message,
+								false, "", null);
+					}
+				}
+				if (fmt === "99"){//no available plugin message
+
+					message = strbundle.getFormattedString("noreplace", [ mimetype ]);
+					messagetitle = strbundle.getString("flvideoreplacermessage");
+
+					if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+						//alert user
+						prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+						.getService(Components.interfaces.nsIPromptService);
+						prompts.alert(window, messagetitle, message);
+					}else{
+						//alert user
+						alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+						.getService(Components.interfaces.nsIAlertsService);
+						alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+								messagetitle, message,
+								false, "", null);
 					}
 				}
 			}
