@@ -9,6 +9,7 @@
 <!ENTITY Custom "Personalizado">
 <!ENTITY Delay "Atraso">
 <!ENTITY Download "Download">
+<!ENTITY Downloads "Downloads">
 <!ENTITY DownloadDir "Destino do Download">
 <!ENTITY Embedded "Inserido">
 <!ENTITY EmbeddedVideoDetection "Detecção de vídeos inseridos">
@@ -30,11 +31,13 @@
 <!ENTITY PreferWebM "Preferir WebM quando disponível (não requer plugin)">
 <!ENTITY PreferMP4 "Preferir mp4 sobre flv">
 <!ENTITY Quality "Qualidade">
+<!ENTITY Replacement "Substituição">
 <!ENTITY Reset "Limpar">
 <!ENTITY Search "Buscar">
 <!ENTITY SelectFile "Selecionar Arquivo">
 <!ENTITY SelectDir "Selecionar Diretório">
 <!ENTITY SilentDownload "Download silencioso">
+<!ENTITY Sites "Sites">
 <!ENTITY Standalone "Externo">
 <!ENTITY StandalonePlayer "Player Externo">
 <!ENTITY SUPER "SUPER">
