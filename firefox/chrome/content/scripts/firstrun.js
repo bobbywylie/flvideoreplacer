@@ -81,8 +81,8 @@ var flvideoreplacerFirstrun = {
 				if (ver != current && !firstrun) {// actions specific for
 					// extension updates
 
-					if (ver !== "2.0.3" && ver !== "2.0.2" && ver !== "2.0.1" && ver !== "2.0.0") {
-
+					if (!ver.match(/2\..*/)) {
+						
 						// add toolbar button
 						var navbar = document.getElementById("nav-bar");
 						var newset = navbar.currentSet + ",flvideoreplacer-toolbar-button";

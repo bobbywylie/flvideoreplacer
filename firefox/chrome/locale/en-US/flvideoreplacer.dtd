@@ -12,7 +12,6 @@
 <!ENTITY Downloads "Downloads">
 <!ENTITY DownloadDir "Download Destination">
 <!ENTITY Embedded "Embedded">
-<!ENTITY EmbeddedVideoDetection "Embedded video detection">
 <!ENTITY EnableErrorAlerts "Enable error alerts">
 <!ENTITY EnableInfoAlerts "Enable info alerts">
 <!ENTITY Fallback "Fallback Player">
@@ -26,7 +25,6 @@
 <!ENTITY NewTab "New Tab">
 <!ENTITY NewWin "Window">
 <!ENTITY NoThirdPartyPlugin "Do not use">
-<!ENTITY OpenEmbedded "Open video embedded on this page">
 <!ENTITY Other "Other streaming websites">
 <!ENTITY PluginForce "Force plugin compatibility">
 <!ENTITY Preferences "Preferences">
