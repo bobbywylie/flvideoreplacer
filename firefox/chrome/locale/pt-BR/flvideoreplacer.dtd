@@ -12,6 +12,7 @@
 <!ENTITY Downloads "Downloads">
 <!ENTITY DownloadDir "Destino do Download">
 <!ENTITY Embedded "Inserido">
+<!ENTITY EmbeddedVideoDetection "Detecção de vídeos inseridos">
 <!ENTITY EnableErrorAlerts "Habilitar alertas de erros">
 <!ENTITY EnableInfoAlerts "Habilitar alertas informativos">
 <!ENTITY Fallback "Player Reserva">
@@ -21,10 +22,11 @@
 <!ENTITY HIGH "ALTA">
 <!ENTITY LOW "BAIXA">
 <!ENTITY MEDIUM "MÉDIA">
-<!ENTITY Method "Método de Substituição">
+<!ENTITY Method "Método Preferido">
 <!ENTITY NewTab "Nova Aba">
 <!ENTITY NewWin "Janela">
 <!ENTITY NoThirdPartyPlugin "Não usar">
+<!ENTITY OpenEmbedded "Abrir video inserido nesta página">
 <!ENTITY Other "Outros sites de streaming">
 <!ENTITY PluginForce "Forçar compatibilidade de plugin">
 <!ENTITY Preferences "Preferências">
