@@ -131,6 +131,7 @@ var flvideoreplacerFirstrun = {
 			.getBranch("extensions.flvideoreplacer.");
 
 			// reset plugin check
+			this.prefs.setBoolPref("pluginflash", false);
 			this.prefs.setBoolPref("pluginmp4", false);
 			this.prefs.setBoolPref("pluginflv", false);
 			this.prefs.setBoolPref("pluginqt", false);
@@ -162,7 +163,12 @@ var flvideoreplacerFirstrun = {
 				do {
 					hasmore = istream.readLine(line);
 					lines.push(line.value);
-
+					
+					// check plugins by mime-type
+					var pluginflash = /Shockwave Flash/.test(line.value);
+					if (pluginflash === true) {
+						this.prefs.setBoolPref("pluginflash", true);
+					}
 					// check plugins by mime-type
 					var pluginflv = /video.*x.*flv/.test(line.value);
 					if (pluginflv === true) {

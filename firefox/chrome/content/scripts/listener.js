@@ -119,11 +119,15 @@ var flvideoreplacerListener = {
 
 						//declare element to be replaced
 						if(sourceurl.match(/youtube.*watch.*v\=/)){
-
+							try{
+								doc.getElementById("flash-upgrade").hidden = true;
+							}catch(e){
+								//do nothing
+							}
 							testelement = doc.getElementById(videoelement);
 							if(testelement === null){
 								testelement = doc.getElementById("watch-player");
-							}
+							}							
 						}else{
 							testelement = doc.getElementById(videoelement);
 						}
@@ -286,11 +290,14 @@ var flvideoreplacerListener = {
 				//fetch video ID from url
 				videoid = sourceurl.replace(/.*v\=/, "").replace(/\&.*/,"");
 				//declare element to be replaced
+				try{
+					doc.getElementById("flash-upgrade").hidden = true;
+				}catch(e){
+					//do nothing
+				}
 				videoelement = "movie_player";
 				testelement = doc.getElementById(videoelement);
-
 				if(testelement === null){
-					//declare element to be replaced
 					videoelement = "watch-player";
 					testelement = doc.getElementById(videoelement);
 				}
@@ -1789,6 +1796,7 @@ var flvideoreplacerListener = {
 			//get prefs
 			var replacemethod = this.prefs.getCharPref("promptmethod");
 			var alertsinfo = this.prefs.getBoolPref("alertsinfo");
+			var pluginflash = this.prefs.getBoolPref("pluginflash");			
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -1820,7 +1828,20 @@ var flvideoreplacerListener = {
 			var params, videoplayer, flvideoreplacer, childdivs, videodiv;
 
 			//declare element to be replaced
-			videoplayer = doc.getElementById(videoelement);
+			if(sourceurl.match(/youtube.*watch.*v\=/)){
+				//declare element to be replaced
+				try{
+					doc.getElementById("flash-upgrade").hidden = true;
+				}catch(e){
+					//do nothing
+				}
+				videoplayer = doc.getElementById('movie_player');
+				if(videoplayer == null){
+					videoplayer = doc.getElementById('watch-player');
+				}				
+			}else{
+				videoplayer = doc.getElementById(videoelement);
+			}
 			//create injected script
 			var script = doc.createElement('script');
 			script.setAttribute("id", "flvideoreplacer");
@@ -1878,27 +1899,48 @@ var flvideoreplacerListener = {
 			}catch(e){
 				enableditems = this.prefs.getCharPref("enabledItems");
 			}finally{
+				
+				if(pluginflash === true){
 
-				if (enableditems.match(/\{3d7eb24f-2740-49df-8937-200b1cc08f8a\}/)) {//flashblock
+					if (enableditems.match(/\{3d7eb24f-2740-49df-8937-200b1cc08f8a\}/)) {//flashblock
+						
 
-					//access preferences interface
-					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					.getService(Components.interfaces.nsIPrefService)
-					.getBranch("flashblock.");
+						//access preferences interface
+						this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+						.getService(Components.interfaces.nsIPrefService)
+						.getBranch("flashblock.");
 
-					try{
-						whitelist = this.prefs.getCharPref("whitelist");
-					}catch(e){
-						whitelist = "";
-					}
+						try{
+							whitelist = this.prefs.getCharPref("whitelist");
+						}catch(e){
+							whitelist = "";
+						}
 
-					if(whitelist.match(sitestring)){
+						if(whitelist.match(sitestring)){
+
+							if(alertsinfo === true){
+
+								//get text from strbundle
+								message = strbundle.getString("flashblockbl");
+								messagetitle = strbundle.getString("flvideoreplaceralert");
+
+								if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+									//alert user
+									alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+									.getService(Components.interfaces.nsIAlertsService);
+									alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+											messagetitle, message,
+											false, "", null);
+								}
+							}
+						}
+					}else{
 
 						if(alertsinfo === true){
 
 							//get text from strbundle
-							message = strbundle.getString("flashblockbl");
-							messagetitle = strbundle.getString("flvideoreplaceralert");
+							message = strbundle.getString("flashblockno");
+							messagetitle = strbundle.getString("flvideoreplacermessage");
 
 							if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
 								//alert user
@@ -1908,23 +1950,6 @@ var flvideoreplacerListener = {
 										messagetitle, message,
 										false, "", null);
 							}
-						}
-					}
-				}else{
-
-					if(alertsinfo === true){
-
-						//get text from strbundle
-						message = strbundle.getString("flashblockno");
-						messagetitle = strbundle.getString("flvideoreplacermessage");
-
-						if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
-							//alert user
-							alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-							.getService(Components.interfaces.nsIAlertsService);
-							alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-									messagetitle, message,
-									false, "", null);
 						}
 					}
 				}
@@ -2078,12 +2103,25 @@ var flvideoreplacerListener = {
 				var pluginmov = this.prefs.getBoolPref("pluginmov");
 				var pluginm4v = this.prefs.getBoolPref("pluginm4v");
 
+				//declare element to be replaced
+				if(sourceurl.match(/youtube.*watch.*v\=/)){
+					//declare element to be replaced
+					try{
+						doc.getElementById("flash-upgrade").hidden = true;
+					}catch(e){
+						//do nothing
+					}
+					videoplayer = doc.getElementById('movie_player');
+					if(videoplayer == null){
+						videoplayer = doc.getElementById('watch-player');
+					}					
+				}else{
+					videoplayer = doc.getElementById(videoelement);
+				}
+
 				if(newmimetype === "video/x-quicktime"){
 
 					if(pluginmov === true){
-
-						//declare element to be replaced
-						videoplayer = doc.getElementById(videoelement);
 
 						//create the object element
 						flvideoreplacer = doc.createElement('object');
@@ -2112,9 +2150,6 @@ var flvideoreplacerListener = {
 
 					if(pluginwmv === true){
 
-						//declare element to be replaced
-						videoplayer = doc.getElementById(videoelement);
-
 						//create the object element
 						flvideoreplacer = doc.createElement('object');
 						flvideoreplacer.setAttribute("width", videowidth);
@@ -2140,9 +2175,6 @@ var flvideoreplacerListener = {
 
 					if(pluginm4v === true){
 
-						//declare element to be replaced
-						videoplayer = doc.getElementById(videoelement);
-
 						//create the object element
 						flvideoreplacer = doc.createElement('object');
 						flvideoreplacer.setAttribute("width", videowidth);
@@ -2165,9 +2197,6 @@ var flvideoreplacerListener = {
 					}
 				}
 				if(newmimetype === "application/x-flv"){
-
-					//declare element to be replaced
-					videoplayer = doc.getElementById(videoelement);
 
 					if(pluginflv === true){
 
@@ -2194,9 +2223,6 @@ var flvideoreplacerListener = {
 				}
 
 				if(newmimetype === "video/mp4"){
-
-					//declare element to be replaced
-					videoplayer = doc.getElementById(videoelement);
 
 					if(pluginmp4 === true){
 
@@ -2226,9 +2252,6 @@ var flvideoreplacerListener = {
 
 				if(newmimetype === "video/quicktime"){
 
-					//declare element to be replaced
-					videoplayer = doc.getElementById(videoelement);
-
 					if(pluginqt === true){
 						//create the object element
 						flvideoreplacer = doc.createElement('object');
@@ -2254,9 +2277,6 @@ var flvideoreplacerListener = {
 					}
 				}
 				if(newmimetype === "application/x-mplayer2"){
-
-					//declare element to be replaced
-					videoplayer = doc.getElementById(videoelement);
 
 					if(pluginwmp === true){
 
