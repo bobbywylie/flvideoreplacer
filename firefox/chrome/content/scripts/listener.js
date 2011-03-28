@@ -127,9 +127,15 @@ var flvideoreplacerListener = {
 							testelement = doc.getElementById(videoelement);
 							if(testelement === null){
 								testelement = doc.getElementById("watch-player");
-							}							
+							}
 						}else{
-							testelement = doc.getElementById(videoelement);
+							if(sourceurl.match(/redtube\.com\/\d{1,8}/)){
+								videoelement = "redtube_flvideoreplacer";
+								doc.getElementById("redtube_flv_player").setAttribute('id',videoelement);
+								testelement = doc.getElementById(videoelement);
+							}else{
+								testelement = doc.getElementById(videoelement);
+							}
 						}
 
 						if (testelement !== null) {
@@ -1683,7 +1689,7 @@ var flvideoreplacerListener = {
 				//fetch video ID from url
 				videoid = sourceurl.replace(/.*redtube\.com\//g, "");
 				//declare element to be replaced
-				videoelement = "redtube_flv_player";
+				videoelement = "redtube_flvideoreplacer";
 				testelement = doc.getElementById(videoelement);
 
 				if (testelement !== null) {
@@ -1731,7 +1737,7 @@ var flvideoreplacerListener = {
 						videojson.sitestring = "redtube";
 						videojson.videowidth = "584";
 						videojson.videoheight = "468";
-						videojson.videoelement = "redtube_flv_player";
+						videojson.videoelement = "redtube_flvideoreplacer";
 						videojson.videofmt = "97";
 						videojson.videomime = newmimetype;
 						videojson.videourl = videourl;
@@ -1844,11 +1850,11 @@ var flvideoreplacerListener = {
 			}
 			//create injected script
 			var script = doc.createElement('script');
-			script.setAttribute("id", "flvideoreplacer");
+			script.setAttribute("id", "fvrplaceholder");
 			script.setAttribute("branch", aBranch);
 			script.textContent = "function sendToFLV(){ " +
 			"var method = document.getElementById(\"methodselector\").value; " +
-			"var branch = document.getElementById(\"flvideoreplacer\").getAttribute(\"branch\"); " +
+			"var branch = document.getElementById(\"fvrplaceholder\").getAttribute(\"branch\"); " +
 			"var element = document.createElement(\"FLVDataElement\"); " +
 			"element.setAttribute(\"branch\", branch); " +
 			"element.setAttribute(\"method\", method);  " +
@@ -1899,11 +1905,11 @@ var flvideoreplacerListener = {
 			}catch(e){
 				enableditems = this.prefs.getCharPref("enabledItems");
 			}finally{
-				
+
 				if(pluginflash === true){
 
 					if (enableditems.match(/\{3d7eb24f-2740-49df-8937-200b1cc08f8a\}/)) {//flashblock
-						
+
 
 						//access preferences interface
 						this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
