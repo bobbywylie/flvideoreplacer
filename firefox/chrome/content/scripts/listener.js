@@ -130,9 +130,15 @@ var flvideoreplacerListener = {
 							}
 						}else{
 							if(sourceurl.match(/redtube\.com\/\d{1,8}/)){
-								videoelement = "redtube_flvideoreplacer";
-								doc.getElementById("redtube_flv_player").setAttribute('id',videoelement);
-								testelement = doc.getElementById(videoelement);
+								testelement = doc.getElementById("redtube_flv_player");
+								if(testelement !== null){
+									testelement.setAttribute('id',"redtube_flvideoreplacer");
+									videoelement = "redtube_flvideoreplacer";
+									testelement = doc.getElementById(videoelement);
+								}else{
+									videoelement = "redtube_flvideoreplacer";
+									testelement = doc.getElementById(videoelement);
+								}
 							}else{
 								testelement = doc.getElementById(videoelement);
 							}
@@ -1688,9 +1694,16 @@ var flvideoreplacerListener = {
 
 				//fetch video ID from url
 				videoid = sourceurl.replace(/.*redtube\.com\//g, "");
-				//declare element to be replaced
-				videoelement = "redtube_flvideoreplacer";
-				testelement = doc.getElementById(videoelement);
+				//declare element to be replaced	
+				testelement = doc.getElementById("redtube_flv_player");
+				if(testelement !== null){
+					testelement.setAttribute('id',"redtube_flvideoreplacer");
+					videoelement = "redtube_flvideoreplacer";
+					testelement = doc.getElementById(videoelement);
+				}else{
+					videoelement = "redtube_flvideoreplacer";
+					testelement = doc.getElementById(videoelement);
+				}
 
 				if (testelement !== null) {
 
@@ -1845,6 +1858,14 @@ var flvideoreplacerListener = {
 				if(videoplayer == null){
 					videoplayer = doc.getElementById('watch-player');
 				}				
+			}else if(sourceurl.match(/redtube\.com\/\d{1,8}/)){
+				videoplayer = doc.getElementById("redtube_flv_player");
+				if(videoplayer !== null){
+					videoplayer.setAttribute('id',"redtube_flvideoreplacer");
+					videoplayer = doc.getElementById(videoelement);
+				}else{
+					videoplayer = doc.getElementById(videoelement);
+				}
 			}else{
 				videoplayer = doc.getElementById(videoelement);
 			}
@@ -2121,6 +2142,14 @@ var flvideoreplacerListener = {
 					if(videoplayer == null){
 						videoplayer = doc.getElementById('watch-player');
 					}					
+				}else if(sourceurl.match(/redtube\.com\/\d{1,8}/)){
+					videoplayer = doc.getElementById("redtube_flv_player");
+					if(videoplayer !== null){
+						videoplayer.setAttribute('id',"redtube_flvideoreplacer");
+						videoplayer = doc.getElementById(videoelement);
+					}else{
+						videoplayer = doc.getElementById(videoelement);
+					}
 				}else{
 					videoplayer = doc.getElementById(videoelement);
 				}
