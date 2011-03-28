@@ -2650,8 +2650,8 @@ var flvideoreplacerListener = {
 			var strbundle = document.getElementById("flvideoreplacerstrings");
 			var original = strbundle.getString("original");
 			var standard = strbundle.getString("standard");
-			var detectionadd = strbundle.getString("detectionadd");
-			var detectionremove = strbundle.getString("detectionremove");
+			var detectionadd = strbundle.getFormattedString("detectionadd", [ hostdomain ]);
+			var detectionremove = strbundle.getFormattedString("detectionremove", [ hostdomain ]);
 
 			//hide menus
 			document.getElementById("flvideoreplacer-embedded").hidden = true;
