@@ -82,7 +82,7 @@ var flvideoreplacerFirstrun = {
 					// extension updates
 
 					if (!ver.match(/2\..*/)) {
-						
+
 						// add toolbar button
 						var navbar = document.getElementById("nav-bar");
 						var newset = navbar.currentSet + ",flvideoreplacer-toolbar-button";
@@ -163,7 +163,7 @@ var flvideoreplacerFirstrun = {
 				do {
 					hasmore = istream.readLine(line);
 					lines.push(line.value);
-					
+
 					// check plugins by mime-type
 					var pluginflash = /Shockwave Flash/.test(line.value);
 					if (pluginflash === true) {
@@ -432,9 +432,51 @@ var flvideoreplacerFirstrun = {
 			} else {
 				this.prefs.setBoolPref("playercustom", true);
 			}
+		},
+
+		checkTPE: function() {
+
+			//access preferences interface
+			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch("extensions.");
+
+			var enableditems;
+
+			//check enabled extensions
+			try{
+				enableditems = this.prefs.getCharPref("enabledAddons");
+			}catch(e){
+				enableditems = this.prefs.getCharPref("enabledItems");
+			}finally{
+
+				//access preferences interface
+				this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+				.getService(Components.interfaces.nsIPrefService)
+				.getBranch("extensions.flvideoreplacer.");
+
+				if (enableditems.match(/\{DDC359D1-844A-42a7-9AA1-88A850A938A8\}/)) {//dta
+					this.prefs.setBoolPref("dta",true);
+				}else{
+					this.prefs.setBoolPref("dta",false);
+				}
+
+				if (enableditems.match(/\{84b24861-62f6-364b-eba5-2e5e2061d7e6\}/)) {//mediaplayerconnectivity
+					this.prefs.setBoolPref("mpc",true);
+				}else{
+					this.prefs.setBoolPref("mpc",false);
+				}
+
+				if (enableditems.match(/\{3d7eb24f-2740-49df-8937-200b1cc08f8a\}/)) {//flashblock
+					this.prefs.setBoolPref("flashblock",true);
+				}else{
+					this.prefs.setBoolPref("flashblock",false);
+				}
+			}
 		}
 };
 //event listeners to call the functions when Firefox starts and closes
 window.addEventListener("load",function(){ flvideoreplacerFirstrun.init(); },true);
+window.addEventListener("load", function(e) { setTimeout(function () { flvideoreplacerFirstrun.checkTPE(); }, 100); }, false);
 window.addEventListener("load", function(e) { setTimeout(function () { flvideoreplacerFirstrun.pluginCheck(); }, 150); }, false);
 window.addEventListener("load", function(e) { setTimeout(function () { flvideoreplacerFirstrun.playerCheck(); }, 300); }, false);

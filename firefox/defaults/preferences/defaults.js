@@ -46,3 +46,7 @@ pref("extensions.flvideoreplacer.playerqt", false);
 pref("extensions.flvideoreplacer.playerbsp", false);
 pref("extensions.flvideoreplacer.playerwmp", false);
 pref("extensions.flvideoreplacer.playervlc", false);
+
+pref("extensions.flvideoreplacer.dta", false);
+pref("extensions.flvideoreplacer.mpc", false);
+pref("extensions.flvideoreplacer.flashblock", false);

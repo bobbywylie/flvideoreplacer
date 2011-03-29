@@ -1814,8 +1814,6 @@ var flvideoreplacerListener = {
 
 			//get prefs
 			var replacemethod = this.prefs.getCharPref("promptmethod");
-			var alertsinfo = this.prefs.getBoolPref("alertsinfo");
-			var pluginflash = this.prefs.getBoolPref("pluginflash");			
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -1910,129 +1908,6 @@ var flvideoreplacerListener = {
 			}else{
 				videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
 			}
-
-			//**********************check third-party extensions************************************
-
-			//access preferences interface
-			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("extensions.");
-
-			var enableditems, whitelist;
-
-			//check enabled extensions
-			try{
-				enableditems = this.prefs.getCharPref("enabledAddons");
-			}catch(e){
-				enableditems = this.prefs.getCharPref("enabledItems");
-			}finally{
-
-				if(pluginflash === true){
-
-					if (enableditems.match(/\{3d7eb24f-2740-49df-8937-200b1cc08f8a\}/)) {//flashblock
-
-
-						//access preferences interface
-						this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-						.getService(Components.interfaces.nsIPrefService)
-						.getBranch("flashblock.");
-
-						try{
-							whitelist = this.prefs.getCharPref("whitelist");
-						}catch(e){
-							whitelist = "";
-						}
-
-						if(whitelist.match(sitestring)){
-
-							if(alertsinfo === true){
-
-								//get text from strbundle
-								message = strbundle.getString("flashblockbl");
-								messagetitle = strbundle.getString("flvideoreplaceralert");
-
-								if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
-									//alert user
-									alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-									.getService(Components.interfaces.nsIAlertsService);
-									alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-											messagetitle, message,
-											false, "", null);
-								}
-							}
-						}
-					}else{
-
-						if(alertsinfo === true){
-
-							//get text from strbundle
-							message = strbundle.getString("flashblockno");
-							messagetitle = strbundle.getString("flvideoreplacermessage");
-
-							if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
-								//alert user
-								alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-								.getService(Components.interfaces.nsIAlertsService);
-								alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-										messagetitle, message,
-										false, "", null);
-							}
-						}
-					}
-				}
-
-				if (enableditems.match(/\{84b24861-62f6-364b-eba5-2e5e2061d7e6\}/)) {//mediaplayerconnectivity
-
-					//access preferences interface
-					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					.getService(Components.interfaces.nsIPrefService)
-					.getBranch("extensions.mediaplayerconnectivity.");
-
-					try{
-						whitelist = this.prefs.getCharPref("whiteList");
-					}catch(e){
-						whitelist = "";
-					}
-
-					if(!whitelist.match(sitestring)){
-
-						if(alertserror === true){
-
-							//get text from strbundle
-							message = strbundle.getFormattedString("mpc", [ sitename ]);
-							messagetitle = strbundle.getString("flvideoreplaceralert");
-
-							if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
-								//alert user
-								prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-								.getService(Components.interfaces.nsIPromptService);
-								prompts.alert(window, messagetitle, message);
-							}else{
-								//alert user
-								alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-								.getService(Components.interfaces.nsIAlertsService);
-								alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-										messagetitle, message,
-										false, "", null);
-							}
-						}
-					}
-				}
-
-				/*
-				if (enableditems.match(/\{73a6fe31-595d-460b-a920-fcc0f8843232\}/)) {//NoScript
-
-					//access preferences interface
-					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					.getService(Components.interfaces.nsIPrefService)
-					.getBranch("noscript.");
-
-					var forbidflash = this.prefs.getBoolPref("forbidFlash");
-					var forbidplugins = this.prefs.getBoolPref("forbidPlugins");
-					var nstemp = this.prefs.getCharPref("temp");
-				}
-				 */
-			}
 		},
 
 		placeHolderReplace: function(evt) {
@@ -2104,6 +1979,10 @@ var flvideoreplacerListener = {
 			var autolaunchtab = this.prefs.getBoolPref("autolaunchtab");
 			var autolaunchwindow = this.prefs.getBoolPref("autolaunchwindow");
 			var fallback = this.prefs.getCharPref("fallback");
+			var pluginflash = this.prefs.getBoolPref("pluginflash");
+			var dta = this.prefs.getBoolPref("dta");
+			var mpc = this.prefs.getBoolPref("mpc");
+			var flashblock = this.prefs.getBoolPref("flashblock");
 
 			//get localization
 			var strbundle = document.getElementById("flvideoreplacerstrings");
@@ -2112,7 +1991,100 @@ var flvideoreplacerListener = {
 			var message, messagetitle, prompts, alertsService;
 
 			//declare variables
-			var params, videoplayer, flvideoreplacer, childdivs, videodiv;
+			var params, videoplayer, flvideoreplacer, childdivs, videodiv, whitelist;
+
+			//**********************check third-party extensions************************************
+
+			if(pluginflash === true){
+
+				if (flashblock === true) {//flashblock
+
+					//access preferences interface
+					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+					.getService(Components.interfaces.nsIPrefService)
+					.getBranch("flashblock.");
+
+					try{
+						whitelist = this.prefs.getCharPref("whitelist");
+					}catch(e){
+						whitelist = "";
+					}
+
+					if(whitelist.match(sitestring)){
+
+						if(alertsinfo === true){
+
+							//get text from strbundle
+							message = strbundle.getString("flashblockbl");
+							messagetitle = strbundle.getString("flvideoreplaceralert");
+
+							if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+								//alert user
+								alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+								.getService(Components.interfaces.nsIAlertsService);
+								alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+										messagetitle, message,
+										false, "", null);
+							}
+						}
+					}
+				}else{
+
+					if(alertsinfo === true){
+
+						//get text from strbundle
+						message = strbundle.getString("flashblockno");
+						messagetitle = strbundle.getString("flvideoreplacermessage");
+
+						if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+							//alert user
+							alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+							.getService(Components.interfaces.nsIAlertsService);
+							alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+									messagetitle, message,
+									false, "", null);
+						}
+					}
+				}
+			}
+
+			if (mpc === true) {//mediaplayerconnectivity
+
+				//access preferences interface
+				this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+				.getService(Components.interfaces.nsIPrefService)
+				.getBranch("extensions.mediaplayerconnectivity.");
+
+				try{
+					whitelist = this.prefs.getCharPref("whiteList");
+				}catch(e){
+					whitelist = "";
+				}
+
+				if(!whitelist.match(sitestring)){
+
+					if(alertserror === true){
+
+						//get text from strbundle
+						message = strbundle.getFormattedString("mpc", [ sitename ]);
+						messagetitle = strbundle.getString("flvideoreplaceralert");
+
+						if(osString.match(/OSX/) || osString.match(/Macintosh/) || osString.match(/OS X/)){
+							//alert user
+							prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+							.getService(Components.interfaces.nsIPromptService);
+							prompts.alert(window, messagetitle, message);
+						}else{
+							//alert user
+							alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+							.getService(Components.interfaces.nsIAlertsService);
+							alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+									messagetitle, message,
+									false, "", null);
+						}
+					}
+				}
+			}	
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
