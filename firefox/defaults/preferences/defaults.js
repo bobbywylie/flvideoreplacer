@@ -22,6 +22,7 @@ pref("extensions.flvideoreplacer.videoquality", "HIGH");
 pref("extensions.flvideoreplacer.preferwebm", false);
 pref("extensions.flvideoreplacer.prefermp4", true);
 pref("extensions.flvideoreplacer.downdir", "");
+pref("extensions.flvideoreplacer.downdta", false);
 pref("extensions.flvideoreplacer.silentdownload", false);
 pref("extensions.flvideoreplacer.videourl", "");
 pref("extensions.flvideoreplacer.fallback", "noplugin");

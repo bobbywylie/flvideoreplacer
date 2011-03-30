@@ -3178,6 +3178,9 @@ var flvideoreplacerListener = {
 
 		vidDownloader: function (aSite,aFile,aID,aFMT) {
 
+			//get localization
+			var strbundle = document.getElementById("flvideoreplacerstrings");
+
 			var filepath,file,sourceurl;
 
 			//access preferences interface
@@ -3200,61 +3203,78 @@ var flvideoreplacerListener = {
 			//get prefs
 			var dir = this.prefs.getCharPref("downdir");
 			var silentdownload = this.prefs.getBoolPref("silentdownload");
+			var downdta = this.prefs.getBoolPref("downdta");
 
-			//get localization
-			var strbundle = document.getElementById("flvideoreplacerstrings");
+			if(downdta === true){
 
-			if(dir !== null){
+				link = {
+						"url" : sourceurl,
+						"postData" : null,
+						"referrer" : window.content.location.href,
+						"dirSave" : dir,
+						"mask" : aFile,
+						"fileName" : aFile,
+						"description" : aFile }
 
-				file = Components.classes["@mozilla.org/file/local;1"]
-				.createInstance(Components.interfaces.nsILocalFile);
-				file.initWithPath(dir);
-				file.append(aFile);
+				if (window.DTA) {
+					DTA.sendLinksToManager(window, true, [link]);
+				} else {
+					window.opener.DTA_AddingFunctions.sendToDown(true, [link]);
+				}
+			}else{
 
-				//download manager
-				var dm = Components.classes["@mozilla.org/download-manager;1"].createInstance(Components.interfaces.nsIDownloadManager);
+				if(dir !== null){
 
-				//Create URI from which we want to download file
-				var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-				var uri1 = ios.newURI(sourceurl, null, null);
-				var uri2 = ios.newFileURI(file);
+					file = Components.classes["@mozilla.org/file/local;1"]
+					.createInstance(Components.interfaces.nsILocalFile);
+					file.initWithPath(dir);
+					file.append(aFile);
 
-				//Download observer
-				var nsIWBP = Components.interfaces.nsIWebBrowserPersist;
-				var pers = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].createInstance(nsIWBP);
-				pers.persistFlags = nsIWBP.PERSIST_FLAGS_REPLACE_EXISTING_FILES |
-				nsIWBP.PERSIST_FLAGS_BYPASS_CACHE |
-				nsIWBP.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
+					//download manager
+					var dm = Components.classes["@mozilla.org/download-manager;1"].createInstance(Components.interfaces.nsIDownloadManager);
 
-				//Start download
-				var dl = dm.addDownload(dm.DOWNLOAD_TYPE_DOWNLOAD, uri1, uri2,
-						"", null, Math.round(Date.now() * 1000),
-						null, pers);
-				pers.progressListener = dl.QueryInterface(Components.interfaces.nsIWebProgressListener);
-				pers.saveURI(dl.source, null, null, null, null, dl.targetFile);
+					//Create URI from which we want to download file
+					var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+					var uri1 = ios.newURI(sourceurl, null, null);
+					var uri2 = ios.newFileURI(file);
 
-				if(silentdownload === false){
-					//Show download manager
-					var dm_ui = Components.classes["@mozilla.org/download-manager-ui;1"].createInstance(Components.interfaces.nsIDownloadManagerUI);
-					dm_ui.show(window, dl.id, Components.interfaces.nsIDownloadManagerUI.REASON_NEW_DOWNLOAD);
-				}else{
-					//get osString
-					var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
-					.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
+					//Download observer
+					var nsIWBP = Components.interfaces.nsIWebBrowserPersist;
+					var pers = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].createInstance(nsIWBP);
+					pers.persistFlags = nsIWBP.PERSIST_FLAGS_REPLACE_EXISTING_FILES |
+					nsIWBP.PERSIST_FLAGS_BYPASS_CACHE |
+					nsIWBP.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
 
-					if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+					//Start download
+					var dl = dm.addDownload(dm.DOWNLOAD_TYPE_DOWNLOAD, uri1, uri2,
+							"", null, Math.round(Date.now() * 1000),
+							null, pers);
+					pers.progressListener = dl.QueryInterface(Components.interfaces.nsIWebProgressListener);
+					pers.saveURI(dl.source, null, null, null, null, dl.targetFile);
 
-						//get localization strings
-						var message = strbundle.getFormattedString("videodownload", [ aFile ]);
-						var messagetitle = strbundle.getString("flvideoreplacermessage");
+					if(silentdownload === false){
+						//Show download manager
+						var dm_ui = Components.classes["@mozilla.org/download-manager-ui;1"].createInstance(Components.interfaces.nsIDownloadManagerUI);
+						dm_ui.show(window, dl.id, Components.interfaces.nsIDownloadManagerUI.REASON_NEW_DOWNLOAD);
+					}else{
+						//get osString
+						var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+						.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
 
-						//alert user
-						var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-						.getService(Components.interfaces.nsIAlertsService);
-						alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-								messagetitle, message,
-								false, "", null);
-					}					
+						if(!osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
+
+							//get localization strings
+							var message = strbundle.getFormattedString("videodownload", [ aFile ]);
+							var messagetitle = strbundle.getString("flvideoreplacermessage");
+
+							//alert user
+							var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+							.getService(Components.interfaces.nsIAlertsService);
+							alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
+									messagetitle, message,
+									false, "", null);
+						}					
+					}
 				}
 			}
 		},

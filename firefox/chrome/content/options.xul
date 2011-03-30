@@ -63,6 +63,8 @@
 				type="bool" />
 			<preference id="pref_fallback" name="extensions.flvideoreplacer.fallback"
 				type="string" />
+			<preference id="pref_downdta" name="extensions.flvideoreplacer.downdta"
+				type="bool" />
 
 		</preferences>
 		<vbox style="width:390px;height:300px;overflow:auto;" flex="1">
@@ -304,6 +306,8 @@
 								</hbox>
 								<hbox>
 									<checkbox label="&SilentDownload;" preference="pref_silentdownload" id="silentdownload" size="30" />
+									<spacer width="10" flex="0" />
+									<checkbox label="&DownWithDTA;" preference="pref_downdta" id="downdta" size="30" />
 									<spacer width="10" flex="0" />
 								</hbox>
 								<spacer height="15" flex="0" />

@@ -11,6 +11,7 @@
 <!ENTITY Download "Herunterladen">
 <!ENTITY Downloads "Downloads">
 <!ENTITY DownloadDir "Speicherort">
+<!ENTITY DownWithDTA "Download with DownThemAll">
 <!ENTITY Embedded "Eingebettet">
 <!ENTITY EmbeddedVideoDetection "Eingebettete Video Erkennung">
 <!ENTITY EnableErrorAlerts "Fehlermeldungen aktivieren">
