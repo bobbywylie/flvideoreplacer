@@ -222,33 +222,6 @@ var flvideoreplacerListener = {
 								){
 									flvideoreplacerListener.videoFetch(aEvent);
 								}
-							}else{
-								if(sourceurl.match(/youporn\.com\/watch\//)
-										|| sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
-										|| sourceurl.match(/redtube\.com\/\d{1,8}/)
-								){
-
-									//get osString
-									var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
-									.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
-
-									//get alert pref
-									var alertsinfo = this.prefs.getBoolPref("alertsinfo");
-
-									if(alertsinfo === true && !osString.match(/OSX/) && !osString.match(/Macintosh/) && !osString.match(/OS X/)){
-
-										//get localization
-										var strbundle = document.getElementById("flvideoreplacerstrings");
-										var message = strbundle.getString("supported");
-										var messagetitle = strbundle.getString("flvideoreplacermessage");
-										//alert user
-										alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-										.getService(Components.interfaces.nsIAlertsService);
-										alertsService.showAlertNotification("chrome://flvideoreplacer/skin/icon48.png",
-												messagetitle, message,
-												false, "", null);
-									}
-								}
 							}
 						}
 					}
@@ -2433,7 +2406,7 @@ var flvideoreplacerListener = {
 				if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 
 					//load url bar change listener for getting url redirection 
-					flvideoreplacerURLBar.init();
+					//flvideoreplacerURLBar.init();
 
 					var newTab = gBrowser.addTab(videourl);
 					newTab.label = "FlashVideoReplacer";
@@ -2651,12 +2624,35 @@ var flvideoreplacerListener = {
 				//get prefs
 				var enabled = this.prefs.getBoolPref("enabled");
 
+				//get localization
+				var strbundle = document.getElementById("flvideoreplacerstrings");
+				var enabledstring = strbundle.getString("enabled");
+				var notsupportedstring = strbundle.getString("notsupported");
+				var disabledstring = strbundle.getString("disabled");
+
 				if(enabled === true){
 					this.prefs.setBoolPref("enabled", false);
 					document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbarinactive");
+					document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',disabledstring);
 				}else{
 					this.prefs.setBoolPref("enabled", true);
-					document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbaractive");
+					var url = gBrowser.currentURI.spec;
+					if(url.match(/youtube\.com/)
+							|| url.match(/vimeo\.com/)
+							|| url.match(/metacafe\.com/)
+							|| url.match(/blip\.tv/)
+							|| url.match(/ustream\.tv/)
+							|| url.match(/youporn\.com/)
+							|| url.match(/pornhub\.com/)
+							|| url.match(/redtube\.com/)
+					){
+						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbaractive");
+						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',enabledstring);
+
+					}else{
+						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbarnosupport");
+						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',notsupportedstring);
+					}
 				}
 				break;
 			case 2:

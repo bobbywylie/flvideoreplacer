@@ -43,6 +43,12 @@ var flvideoreplacerFirstrun = {
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.flvideoreplacer.");
 
+			//get localization
+			var strbundle = document.getElementById("flvideoreplacerstrings");
+			var enabledstring = strbundle.getString("enabled");
+			var notsupportedstring = strbundle.getString("notsupported");
+			var disabledstring = strbundle.getString("disabled");
+
 			// firstrun, update and current declarations
 			var ver = -1, firstrun = true, current = aVersion, dir;
 
@@ -112,9 +118,25 @@ var flvideoreplacerFirstrun = {
 				var enabled = this.prefs.getBoolPref("enabled");
 				// toggle toolbar button style
 				if (enabled === true) {
-					document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',	"toolbarbutton-1 chromeclass-toolbar-additional toolbaractive");
+					var url = gBrowser.currentURI.spec;
+					if(url.match(/youtube\.com/)
+							|| url.match(/vimeo\.com/)
+							|| url.match(/metacafe\.com/)
+							|| url.match(/blip\.tv/)
+							|| url.match(/ustream\.tv/)
+							|| url.match(/youporn\.com/)
+							|| url.match(/pornhub\.com/)
+							|| url.match(/redtube\.com/)
+					){
+						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbaractive");
+						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',enabledstring);
+					}else{
+						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbarnosupport");
+						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',notsupportedstring);
+					}
 				} else {
 					document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class', "toolbarbutton-1 chromeclass-toolbar-additional toolbarinactive");
+					document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',disabledstring);
 				}
 			}
 		},
