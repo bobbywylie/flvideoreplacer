@@ -16,7 +16,7 @@
 <!ENTITY EmbeddedVideoDetection "Eingebettete Video Erkennung">
 <!ENTITY EnableErrorAlerts "Fehlermeldungen aktivieren">
 <!ENTITY EnableInfoAlerts "Infomeldungen aktivieren">
-<!ENTITY Fallback "Reserve Player">
+<!ENTITY Fallback "Ersatz Player">
 <!ENTITY FlashVideoReplacerPreferences "FlashVideoReplacer Einstellungen">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">
 <!ENTITY ForcePluginMimeType "Plugin/MimeType">
@@ -40,7 +40,7 @@
 <!ENTITY SelectFile "Datei auswählen">
 <!ENTITY SelectDir "Verzeichnis auswählen">
 <!ENTITY SilentDownload "Im Hintergrund runterladen">
-<!ENTITY Sites "Sites">
+<!ENTITY Sites "Webseiten">
 <!ENTITY Standalone "Extern">
 <!ENTITY StandalonePlayer "Externer Player">
 <!ENTITY SUPER "SUPER">
