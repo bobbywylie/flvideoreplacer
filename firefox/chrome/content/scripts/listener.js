@@ -259,7 +259,7 @@ var flvideoreplacerListener = {
 			var newmimetype = mimetype;
 
 			//declare video variables
-			var videowidth, videoheight, fmt, videourl, downloader;
+			var videowidth, videoheight, fmt, videourl, downloader, background, thumbnail;
 
 			//declare XMLHttpRequest variables
 			var req, xmlsource, pagecontent, newline, matchpattern, matchpattern2, key;
@@ -937,7 +937,7 @@ var flvideoreplacerListener = {
 							//read lines
 							pagecontent = this.responseXML;
 
-							var request_signature, request_signature_expires, background;
+							var request_signature, request_signature_expires;
 
 							try{
 								request_signature = pagecontent.getElementsByTagName('request_signature');
@@ -1263,7 +1263,9 @@ var flvideoreplacerListener = {
 						matchpattern2 = /ustream\.vars\.videoPictureUrl/.test(newline[i]);
 
 						if (matchpattern == true) {//fetch line with liveHttpUrl
+
 							videourl = newline[i].replace(/.*ustream\.vars\.liveHttpUrl=\"/, "").replace(/".*/g, "").replace(/\\/g, "");
+							background = newline[i].replace(/.*ustream\.vars\.videoPictureUrl=\"/, "").replace(/".*/g, "").replace(/\\/g, "");
 							//declare and store file mime
 							if(mimetype === "autodetect"){
 								if(videourl.match(/\.mp4/)){
@@ -1304,6 +1306,8 @@ var flvideoreplacerListener = {
 							videojson.videowidth = "608";
 							videojson.videoheight = "368";
 							videojson.videoelement = "channelFlashContent";
+							videojson.background = background;
+							videojson.thumbnail = background.replace(/_320x240_/,"_90x68_");
 							videojson.videofmt = "97";
 							videojson.videomime = newmimetype;
 							videojson.videourl = videourl;
@@ -1342,9 +1346,8 @@ var flvideoreplacerListener = {
 						}else{
 							if (matchpattern2 == true){
 								var pd;
-								for (pd=1; pd<=10; pd++){
+								for (pd=1; pd<=15; pd++){
 									var testurl = newline[i].replace(/.*videopic/,"http://ustream.vo.llnwd.net/pd"+pd).replace(/_\d{1,3}x.*/,".flv").replace(/\\/g, "");
-
 									//get xml document content
 									req = new XMLHttpRequest();   
 									req.open('GET', testurl, true);
@@ -1353,6 +1356,7 @@ var flvideoreplacerListener = {
 
 											//declare video url
 											videourl = newline[i].replace(/.*videopic/,"http://ustream.vo.llnwd.net/pd"+pd).replace(/_\d{1,3}x.*/,".flv").replace(/\\/g, "");
+											background = newline[i].replace(/.*ustream\.vars\.videoPictureUrl=\"/, "").replace(/".*/g, "").replace(/\\/g, "");
 
 											//access preferences interface
 											this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -1399,6 +1403,8 @@ var flvideoreplacerListener = {
 											videojson.videowidth = "608";
 											videojson.videoheight = "368";
 											videojson.videoelement = "channelFlashContent";
+											videojson.background = background;
+											videojson.thumbnail = background.replace(/_320x240_/,"_90x68_");
 											videojson.videofmt = "97";
 											videojson.videomime = newmimetype;
 											videojson.videourl = videourl;
@@ -1813,7 +1819,7 @@ var flvideoreplacerListener = {
 			var videourl = jsonObjectLocal.videourl;
 			var newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
 			var fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
-			if(sourceurl.match(/youtube.*watch.*v\=/) || sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+			if(sourceurl.match(/youtube.*watch.*v\=/) || sourceurl.match(/vimeo\.com\/\d{1,8}/) || sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)){
 				var background = flvideoreplacerListener.sanitizeString(jsonObjectLocal.background);
 				var thumbnail =  flvideoreplacerListener.sanitizeString(jsonObjectLocal.thumbnail);
 			}
@@ -1862,9 +1868,7 @@ var flvideoreplacerListener = {
 			//create the injected placeholder
 			flvideoreplacer = doc.createElement('div');
 			flvideoreplacer.setAttribute("id", videoelement);
-			if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
-				flvideoreplacer.setAttribute("style","background-image: url("+background+"); background-repeat:no-repeat; background-position: center; background-size: 100%; width:"+videowidth+"; height:"+videoheight+"; text-align:center; vertical-align:middle;");
-			}else if(sourceurl.match(/youtube.*watch.*v\=/)){
+			if(sourceurl.match(/vimeo\.com\/\d{1,8}/) || sourceurl.match(/youtube.*watch.*v\=/) || sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)){
 				flvideoreplacer.setAttribute("style","background-image: url("+background+"); background-repeat:no-repeat; background-position: center; background-size: 100%; width:"+videowidth+"; height:"+videoheight+"; text-align:center; vertical-align:middle;");
 			}else{
 				flvideoreplacer.setAttribute("style"," width:"+videowidth+"; height:"+videoheight+"; text-align:center; vertical-align:middle;");
@@ -1872,19 +1876,19 @@ var flvideoreplacerListener = {
 			//append innerHTML code
 			if(replacemethod === "embedded"){
 				flvideoreplacer.innerHTML = "<table><tr><td width=\""+videowidth+"\" height=\""+videoheight+"\" align=\"center\" valign=\"middle\">" +
-				"<img id=\"flvplaceholder\" style=\"opacity:0.5;\" src=\""+placeholderimg+"\" onmouseover=\"javascript:this.style.opacity='1';this.style.cursor='pointer'\" onmouseout=\"javascript:this.style.opacity='0.5';\" onclick=\"javascript:sendToFLV();\"/><div style=\"position:relative; top:0;\"><select id=\"methodselector\" style=\"opacity:0.5;\" onmouseover=\"javascript:this.style.opacity='1';\" onmouseout=\"javascript:this.style.opacity='0.5';\"><option id=\"embedded\" value=\"embedded\" selected=\"true\">"+embeddedstring+"</option><option id=\"newtab\" value=\"newtab\">"+newtabstring+"</option><option id=\"newwindow\" value=\"newwindow\">"+newwindowstring+"</option><option id=\"standalone\" value=\"standalone\">"+standalonestring+"</option></select></div></td></tr></table>";
+				"<br><img id=\"flvplaceholder\" style=\"opacity:0.5;\" src=\""+placeholderimg+"\" onmouseover=\"javascript:this.style.opacity='1';this.style.cursor='pointer'\" onmouseout=\"javascript:this.style.opacity='0.5';\" onclick=\"javascript:sendToFLV();\"/><div style=\"position:relative; top:0;\"><select id=\"methodselector\" style=\"opacity:0.5;\" onmouseover=\"javascript:this.style.opacity='1';\" onmouseout=\"javascript:this.style.opacity='0.5';\"><option id=\"embedded\" value=\"embedded\" selected=\"true\">"+embeddedstring+"</option><option id=\"newtab\" value=\"newtab\">"+newtabstring+"</option><option id=\"newwindow\" value=\"newwindow\">"+newwindowstring+"</option><option id=\"standalone\" value=\"standalone\">"+standalonestring+"</option></select></div></td></tr></table>";
 			}
 			if(replacemethod === "newtab"){
 				flvideoreplacer.innerHTML = "<table><tr><td width=\""+videowidth+"\" height=\""+videoheight+"\" align=\"center\" valign=\"middle\">" +
-				"<img id=\"flvplaceholder\" style=\"opacity:0.5;\" src=\""+placeholderimg+"\" onmouseover=\"javascript:this.style.opacity='1';this.style.cursor='pointer'\" onmouseout=\"javascript:this.style.opacity='0.5';\" onclick=\"javascript:sendToFLV();\"/><div style=\"position:relative; top:0;\"><select id=\"methodselector\" style=\"opacity:0.5;\" onmouseover=\"javascript:this.style.opacity='1';\" onmouseout=\"javascript:this.style.opacity='0.5';\"><option id=\"embedded\" value=\"embedded\">"+embeddedstring+"</option><option id=\"newtab\" value=\"newtab\" selected=\"true\">"+newtabstring+"</option><option id=\"newwindow\" value=\"newwindow\">"+newwindowstring+"</option><option id=\"standalone\" value=\"standalone\">"+standalonestring+"</option></select></div></td></tr></table>";
+				"<br><img id=\"flvplaceholder\" style=\"opacity:0.5;\" src=\""+placeholderimg+"\" onmouseover=\"javascript:this.style.opacity='1';this.style.cursor='pointer'\" onmouseout=\"javascript:this.style.opacity='0.5';\" onclick=\"javascript:sendToFLV();\"/><div style=\"position:relative; top:0;\"><select id=\"methodselector\" style=\"opacity:0.5;\" onmouseover=\"javascript:this.style.opacity='1';\" onmouseout=\"javascript:this.style.opacity='0.5';\"><option id=\"embedded\" value=\"embedded\">"+embeddedstring+"</option><option id=\"newtab\" value=\"newtab\" selected=\"true\">"+newtabstring+"</option><option id=\"newwindow\" value=\"newwindow\">"+newwindowstring+"</option><option id=\"standalone\" value=\"standalone\">"+standalonestring+"</option></select></div></td></tr></table>";
 			}
 			if(replacemethod === "newwindow"){
 				flvideoreplacer.innerHTML = "<table><tr><td width=\""+videowidth+"\" height=\""+videoheight+"\" align=\"center\" valign=\"middle\">" +
-				"<img id=\"flvplaceholder\" style=\"opacity:0.5;\" src=\""+placeholderimg+"\" onmouseover=\"javascript:this.style.opacity='1';this.style.cursor='pointer'\" onmouseout=\"javascript:this.style.opacity='0.5';\" onclick=\"javascript:sendToFLV();\"/><div style=\"position:relative; top:0;\"><select id=\"methodselector\" style=\"opacity:0.5;\" onmouseover=\"javascript:this.style.opacity='1';\" onmouseout=\"javascript:this.style.opacity='0.5';\"><option id=\"embedded\" value=\"embedded\">"+embeddedstring+"</option><option id=\"newtab\" value=\"newtab\">"+newtabstring+"</option><option id=\"newwindow\" value=\"newwindow\" selected=\"true\">"+newwindowstring+"</option><option id=\"standalone\" value=\"standalone\">"+standalonestring+"</option></select></div></td></tr></table>";
+				"<br><img id=\"flvplaceholder\" style=\"opacity:0.5;\" src=\""+placeholderimg+"\" onmouseover=\"javascript:this.style.opacity='1';this.style.cursor='pointer'\" onmouseout=\"javascript:this.style.opacity='0.5';\" onclick=\"javascript:sendToFLV();\"/><div style=\"position:relative; top:0;\"><select id=\"methodselector\" style=\"opacity:0.5;\" onmouseover=\"javascript:this.style.opacity='1';\" onmouseout=\"javascript:this.style.opacity='0.5';\"><option id=\"embedded\" value=\"embedded\">"+embeddedstring+"</option><option id=\"newtab\" value=\"newtab\">"+newtabstring+"</option><option id=\"newwindow\" value=\"newwindow\" selected=\"true\">"+newwindowstring+"</option><option id=\"standalone\" value=\"standalone\">"+standalonestring+"</option></select></div></td></tr></table>";
 			}
 			if(replacemethod === "standalone"){
 				flvideoreplacer.innerHTML = "<table><tr><td width=\""+videowidth+"\" height=\""+videoheight+"\" align=\"center\" valign=\"middle\">" +
-				"<img id=\"flvplaceholder\" style=\"opacity:0.5;\" src=\""+placeholderimg+"\" onmouseover=\"javascript:this.style.opacity='1';this.style.cursor='pointer'\" onmouseout=\"javascript:this.style.opacity='0.5';\" onclick=\"javascript:sendToFLV();\"/><div style=\"position:relative; top:0;\"><select id=\"methodselector\" style=\"opacity:0.5;\" onmouseover=\"javascript:this.style.opacity='1';\" onmouseout=\"javascript:this.style.opacity='0.5';\"><option id=\"embedded\" value=\"embedded\">"+embeddedstring+"</option><option id=\"newtab\" value=\"newtab\">"+newtabstring+"</option><option id=\"newwindow\" value=\"newwindow\">"+newwindowstring+"</option><option id=\"standalone\" value=\"standalone\" selected=\"true\">"+standalonestring+"</option></select></div></td></tr></table>";
+				"<br><img id=\"flvplaceholder\" style=\"opacity:0.5;\" src=\""+placeholderimg+"\" onmouseover=\"javascript:this.style.opacity='1';this.style.cursor='pointer'\" onmouseout=\"javascript:this.style.opacity='0.5';\" onclick=\"javascript:sendToFLV();\"/><div style=\"position:relative; top:0;\"><select id=\"methodselector\" style=\"opacity:0.5;\" onmouseover=\"javascript:this.style.opacity='1';\" onmouseout=\"javascript:this.style.opacity='0.5';\"><option id=\"embedded\" value=\"embedded\">"+embeddedstring+"</option><option id=\"newtab\" value=\"newtab\">"+newtabstring+"</option><option id=\"newwindow\" value=\"newwindow\">"+newwindowstring+"</option><option id=\"standalone\" value=\"standalone\" selected=\"true\">"+standalonestring+"</option></select></div></td></tr></table>";
 			}
 			//replace video object
 			if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
