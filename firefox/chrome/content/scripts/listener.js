@@ -1965,6 +1965,7 @@ var flvideoreplacerListener = {
 			var replacemethod = this.prefs.getCharPref("promptmethod");
 			var alertsinfo = this.prefs.getBoolPref("alertsinfo");
 			var alertserror = this.prefs.getBoolPref("alertserror");
+			var alertstips = this.prefs.getBoolPref("alertstips");
 			var mimetype = this.prefs.getCharPref("mimetype");
 			var autolaunchplayer = this.prefs.getBoolPref("autolaunchplayer");
 			var autolaunchtab = this.prefs.getBoolPref("autolaunchtab");
@@ -2003,7 +2004,7 @@ var flvideoreplacerListener = {
 
 					if(whitelist.match(sitestring)){
 
-						if(alertsinfo === true){
+						if(alertstips === true){
 
 							//get text from strbundle
 							message = strbundle.getString("flashblockbl");
@@ -2021,7 +2022,7 @@ var flvideoreplacerListener = {
 					}
 				}else{
 
-					if(alertsinfo === true){
+					if(alertstips === true){
 
 						//get text from strbundle
 						message = strbundle.getString("flashblockno");

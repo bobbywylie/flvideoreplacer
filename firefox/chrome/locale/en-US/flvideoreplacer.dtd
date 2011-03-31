@@ -14,8 +14,10 @@
 <!ENTITY DownWithDTA "Download with DownThemAll">
 <!ENTITY Embedded "Embedded">
 <!ENTITY EmbeddedVideoDetection "Embedded video detection">
-<!ENTITY EnableErrorAlerts "Enable error alerts">
-<!ENTITY EnableInfoAlerts "Enable info alerts">
+<!ENTITY EnableAlerts "Enable Alerts">
+<!ENTITY EnableErrorAlerts "Errors">
+<!ENTITY EnableInfoAlerts "Video Info">
+<!ENTITY EnableTipAlerts "Tips">
 <!ENTITY Fallback "Fallback Player">
 <!ENTITY FlashVideoReplacerPreferences "FlashVideoReplacer Preferences">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">

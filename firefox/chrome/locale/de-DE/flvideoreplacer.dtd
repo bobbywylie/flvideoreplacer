@@ -14,8 +14,10 @@
 <!ENTITY DownWithDTA "Download with DownThemAll">
 <!ENTITY Embedded "Eingebettet">
 <!ENTITY EmbeddedVideoDetection "Eingebettete Video Erkennung">
-<!ENTITY EnableErrorAlerts "Fehlermeldungen aktivieren">
-<!ENTITY EnableInfoAlerts "Infomeldungen aktivieren">
+<!ENTITY EnableAlerts "Warnungen Aktivieren">
+<!ENTITY EnableErrorAlerts "Fehlermeldungen">
+<!ENTITY EnableInfoAlerts "Video Infomeldungenn">
+<!ENTITY EnableTipAlerts "Tipps">
 <!ENTITY Fallback "Ersatz Player">
 <!ENTITY FlashVideoReplacerPreferences "FlashVideoReplacer Einstellungen">
 <!ENTITY FlashVideoReplacerTitle "FlashVideoReplacer">

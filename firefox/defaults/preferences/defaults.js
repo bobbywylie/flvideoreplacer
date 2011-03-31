@@ -8,6 +8,7 @@ pref("extensions.flvideoreplacer.ustream", true);
 pref("extensions.flvideoreplacer.other", true);
 pref("extensions.flvideoreplacer.alertsinfo", true);
 pref("extensions.flvideoreplacer.alertserror", true);
+pref("extensions.flvideoreplacer.alertstips", true);
 
 pref("extensions.flvideoreplacer.method", "embedded");
 pref("extensions.flvideoreplacer.promptmethod", "embedded");
