@@ -289,22 +289,20 @@ var flvideoreplacerListener = {
 
 				if (testelement !== null) {
 
+					xmlsource = "http://www.youtube-nocookie.com/watch?v="+videoid;
+
 					//get xml document content
 					req = new XMLHttpRequest();   
-					req.open('GET', "http://www.youtube-nocookie.com/watch?v="+videoid, true);
+					req.open('GET', xmlsource, true);
 					req.onreadystatechange = function () {
-						if (this.readyState == 4 && this.status == 200) {
-							if(replacemethod === "standalone"){
-								//fetch page html content
-								pagecontent = req.responseText;
-							}else{
-								//fetch page html content
-								//pagecontent = doc.getElementsByTagName("body").item(0).innerHTML;
+						if (this.readyState == 4) {
+							if(this.status == 404){
 								pagecontent = doc.getElementById("postpage").innerHTML;
 							}
-							pagecontent = req.responseText;
+							if(this.status == 200){
+								pagecontent = req.responseText;
+							}
 							newline = pagecontent.split("\n");
-
 							for(var i=0; i< newline.length; i++){
 
 								//match patterns
