@@ -50,6 +50,7 @@ var flvideoreplacerURLBar = {
 				var disabledstring = strbundle.getString("disabled");
 
 				var enabled = this.prefs.getBoolPref("enabled");
+				var promptmethod = this.prefs.getCharPref("promptmethod");
 
 				if(enabled === true){
 					if(aURI.spec.match(/youtube\.com/)
@@ -73,15 +74,10 @@ var flvideoreplacerURLBar = {
 					document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',disabledstring);
 				}
 
-				if(aURI.spec.match(/av.*vimeo.*com.*token/)){
+				if(aURI.spec.match(/av.*vimeo.*com.*token/) && promptmethod === "standalone"){
 
 					//get osString
 					var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"].getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
-
-					//access preferences interface
-					this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-					.getService(Components.interfaces.nsIPrefService)
-					.getBranch("extensions.flvideoreplacer.");
 
 					//get prefs
 					var playerpath = this.prefs.getCharPref("playerpath");
