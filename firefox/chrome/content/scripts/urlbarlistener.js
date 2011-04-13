@@ -62,16 +62,28 @@ var flvideoreplacerURLBar = {
 							|| aURI.spec.match(/pornhub\.com/)
 							|| aURI.spec.match(/redtube\.com/)
 					){
-						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbaractive");
-						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',enabledstring);
+						try{
+							document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbaractive");
+							document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',enabledstring);
+						}catch(e){
+							//do nothing
+						}
 
 					}else{
-						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbarnosupport");
-						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',notsupportedstring);
+						try{
+							document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbarnosupport");
+							document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',notsupportedstring);
+						}catch(e){
+							//do nothing
+						}
 					}
 				}else{
-					document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbarinactive");
-					document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',disabledstring);
+					try{
+						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('class',"toolbarbutton-1 chromeclass-toolbar-additional toolbarinactive");
+						document.getElementById("flvideoreplacer-toolbar-button").setAttribute('tooltiptext',disabledstring);
+					}catch(e){
+						//do nothing
+					}
 				}
 
 				if(aURI.spec.match(/av.*vimeo.*com.*token/) && promptmethod === "standalone"){
