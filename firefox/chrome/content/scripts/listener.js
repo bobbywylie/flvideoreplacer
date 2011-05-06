@@ -2996,6 +2996,7 @@ var flvideoreplacerListener = {
 			var replaceyt = this.prefs.getBoolPref("youtube");
 			var replacevimeo = this.prefs.getBoolPref("vimeo");
 			var enabled = this.prefs.getBoolPref("enabled");
+			var videoquality = this.prefs.getCharPref("videoquality");
 
 			//get localization
 			var strbundle = document.getElementById("flvideoreplacerstrings");
@@ -3004,13 +3005,52 @@ var flvideoreplacerListener = {
 			var detectionadd = strbundle.getFormattedString("detectionadd", [ hostdomain ]);
 			var detectionremove = strbundle.getFormattedString("detectionremove", [ hostdomain ]);
 
+			//toggle quality menu
+			if(enabled == true){
+				if(sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match("html5=True")){
+					
+					//unhide menu
+					document.getElementById("flvideoreplacer-quality").hidden = false;
+					
+					//swap quality menu images
+					if(videoquality === "LOW"){
+						document.getElementById("flvideoreplacer-quality-selected-low").setAttribute("image","chrome://flvideoreplacer/skin/selected16.png");
+						document.getElementById("flvideoreplacer-quality-selected-medium").setAttribute("image","chrome://flvideoreplacer/skin/blank16.png");
+						document.getElementById("flvideoreplacer-quality-selected-high").setAttribute("image","chrome://flvideoreplacer/skin/blank16.png");
+						document.getElementById("flvideoreplacer-quality-selected-super").setAttribute("image","chrome://flvideoreplacer/skin/blank16.png");
+					}
+					if(videoquality === "MEDIUM"){
+						document.getElementById("flvideoreplacer-quality-selected-low").setAttribute("image","chrome://flvideoreplacer/skin/blank16.png");
+						document.getElementById("flvideoreplacer-quality-selected-medium").setAttribute("image","chrome://flvideoreplacer/skin/selected16.png");
+						document.getElementById("flvideoreplacer-quality-selected-high").setAttribute("image","chrome://flvideoreplacer/skin/blank16.png");
+						document.getElementById("flvideoreplacer-quality-selected-super").setAttribute("image","chrome://flvideoreplacer/skin/blank16.png");
+					}
+
+					if(videoquality === "HIGH"){
+						document.getElementById("flvideoreplacer-quality-selected-low").setAttribute("image","chrome://flvideoreplacer/skin/blank16.png");
+						document.getElementById("flvideoreplacer-quality-selected-medium").setAttribute("image","chrome://flvideoreplacer/skin/blank16.png");
+						document.getElementById("flvideoreplacer-quality-selected-high").setAttribute("image","chrome://flvideoreplacer/skin/selected16.png");
+						document.getElementById("flvideoreplacer-quality-selected-super").setAttribute("image","chrome://flvideoreplacer/skin/blank16.png");
+					}
+					if(videoquality === "SUPER"){
+						document.getElementById("flvideoreplacer-quality-selected-low").setAttribute("image","chrome://flvideoreplacer/skin/blank16.png");
+						document.getElementById("flvideoreplacer-quality-selected-medium").setAttribute("image","chrome://flvideoreplacer/skin/blank16.png");
+						document.getElementById("flvideoreplacer-quality-selected-high").setAttribute("image","chrome://flvideoreplacer/skin/blank16.png");
+						document.getElementById("flvideoreplacer-quality-selected-super").setAttribute("image","chrome://flvideoreplacer/skin/selected16.png");
+					}
+				}else{
+					document.getElementById("flvideoreplacer-quality").hidden = true;
+				}
+			}else{
+				document.getElementById("flvideoreplacer-quality").hidden = true;
+			}
+			
 			//hide menus
 			document.getElementById("flvideoreplacer-embedded").hidden = true;
 			document.getElementById("flvideoreplacer-embedded-detection").hidden = true;
 			document.getElementById("flvideoreplacer-embedded-separator").hidden = true;
 			document.getElementById("flvideoreplacer-copy").hidden = true;
 			document.getElementById("flvideoreplacer-download").hidden = true;
-
 
 			if(enabled === true){
 				//declare variables
@@ -3497,6 +3537,7 @@ var flvideoreplacerListener = {
 				document.getElementById("flvideoreplacer-copy").hidden = true;
 				document.getElementById("flvideoreplacer-download").hidden = true;
 				document.getElementById("flvideoreplacer-prefs-separator").hidden = true;
+				document.getElementById("flvideoreplacer-quality").hidden = true;
 			}
 		},
 
