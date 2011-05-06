@@ -4,7 +4,7 @@ const FlashVideoReplacerObserver =
 		observe: function(subject, topic, prefName)
 		{
 			//check if preferences changed
-			if (topic == "nsPref:changed" && (prefName == "extensions.flvideoreplacer.videoquality"))
+			if (topic == "nsPref:changed" && (prefName == "extensions.flvideoreplacer.videoquality" || prefName == "extensions.flvideoreplacer.enabled" ))
 			{
 
 				//declare page url ****doesn't work if tab is loaded in the backround***
@@ -35,10 +35,12 @@ var flvideoreplacerObserver = {//observer registering functions
 
 			if (aEvent == "register"){//register observers
 				FlashVideoReplacerPrefService.addObserver("extensions.flvideoreplacer.videoquality", FlashVideoReplacerObserver, false);
+				FlashVideoReplacerPrefService.addObserver("extensions.flvideoreplacer.enabled", FlashVideoReplacerObserver, false);
 			}
 
 			if (aEvent == "unregister"){//unregister observers
 				FlashVideoReplacerPrefService.removeObserver("extensions.flvideoreplacer.videoquality", FlashVideoReplacerObserver);
+				FlashVideoReplacerPrefService.removeObserver("extensions.flvideoreplacer.enabled", FlashVideoReplacerObserver);
 			}
 		}
 };
