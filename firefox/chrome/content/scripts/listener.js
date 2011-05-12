@@ -1901,42 +1901,7 @@ var flvideoreplacerListener = {
 				var doc = aEvent.originalTarget;
 				var sourceurl = doc.location.href;
 			}
-
-			//access preferences interface
-			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("extensions.flvideoreplacer.");
-
-			//get prefs
-			var performance = this.prefs.getIntPref("performance");
-
-			//get video json from prefs
-			var videodata = this.prefs.getCharPref("video."+aBranch);
-
-			//parse json
-			jsonObjectLocal = JSON.parse(videodata);
-			//declare video variables
-			var sitename = flvideoreplacerListener.sanitizeString(jsonObjectLocal.sitename);
-			var sitestring = flvideoreplacerListener.sanitizeString(jsonObjectLocal.sitestring);
-			var videowidth = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videowidth);
-			var videoheight = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videoheight);
-			var videoelement = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videoelement);
-			if(sourceurl.match(/youtube.*watch.*v\=/)){
-				if(performance == 4){
-				    var videourl = doc.getElementById('qualityselector').value.replace(/.*url:/,"");
-				    var newmimetype = doc.getElementById('qualityselector').value.replace(/.*mime:/,"").replace(/\|url:.*/,"");
-				    var fmt = doc.getElementById('qualityselector').value.replace(/fmt:/,"").replace(/\|mime:.*/,"");
-				}else{
-				    var videourl = jsonObjectLocal.videourl;
-				    var newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
-				    var fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
-				}
-			}else{
-				var videourl = jsonObjectLocal.videourl;
-				var newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
-				var fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
-			}
-
+			
 			//get osString
 			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
 			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
@@ -1947,11 +1912,13 @@ var flvideoreplacerListener = {
 			.getBranch("extensions.flvideoreplacer.");
 
 			//get prefs
+			var performance = this.prefs.getIntPref("performance");
 			var replacemethod = this.prefs.getCharPref("promptmethod");
 			var alertsinfo = this.prefs.getBoolPref("alertsinfo");
 			var alertserror = this.prefs.getBoolPref("alertserror");
 			var alertstips = this.prefs.getBoolPref("alertstips");
 			var mimetype = this.prefs.getCharPref("mimetype");
+			var autolaunchembed = this.prefs.getBoolPref("autolaunchembed");
 			var autolaunchplayer = this.prefs.getBoolPref("autolaunchplayer");
 			var autolaunchtab = this.prefs.getBoolPref("autolaunchtab");
 			var autolaunchwindow = this.prefs.getBoolPref("autolaunchwindow");
@@ -1966,6 +1933,33 @@ var flvideoreplacerListener = {
 			var original = strbundle.getString("original");
 			var standard = strbundle.getString("standard");
 			var message, messagetitle, prompts, alertsService;
+
+			//get video json from prefs
+			var videodata = this.prefs.getCharPref("video."+aBranch);
+
+			//parse json
+			jsonObjectLocal = JSON.parse(videodata);
+			//declare video variables
+			var sitename = flvideoreplacerListener.sanitizeString(jsonObjectLocal.sitename);
+			var sitestring = flvideoreplacerListener.sanitizeString(jsonObjectLocal.sitestring);
+			var videowidth = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videowidth);
+			var videoheight = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videoheight);
+			var videoelement = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videoelement);
+			if(sourceurl.match(/youtube.*watch.*v\=/)){
+				if(performance == 4 && (replacemethod !== "embedded" || (replacemethod == "embedded" && autolaunchembed !== true))){
+				    var videourl = doc.getElementById('qualityselector').value.replace(/.*url:/,"");
+				    var newmimetype = doc.getElementById('qualityselector').value.replace(/.*mime:/,"").replace(/\|url:.*/,"");
+				    var fmt = doc.getElementById('qualityselector').value.replace(/fmt:/,"").replace(/\|mime:.*/,"");
+				}else{
+				    var videourl = jsonObjectLocal.videourl;
+				    var newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
+				    var fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
+				}
+			}else{
+				var videourl = jsonObjectLocal.videourl;
+				var newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
+				var fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
+			}
 
 			//declare variables
 			var params, videoplayer, flvideoreplacer, childdivs, videodiv, whitelist;
