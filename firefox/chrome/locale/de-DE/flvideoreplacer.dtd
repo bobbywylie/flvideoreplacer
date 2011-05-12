@@ -8,6 +8,7 @@
 <!ENTITY Clipboard "URL in die Zwischenablage kopieren">
 <!ENTITY Custom "Benutzerdefiniert">
 <!ENTITY Delay "Verzögerung">
+<!ENTITY DefaultQuality "Default Videoqualität">
 <!ENTITY Download "Herunterladen">
 <!ENTITY Downloads "Downloads">
 <!ENTITY DownloadDir "Speicherort">

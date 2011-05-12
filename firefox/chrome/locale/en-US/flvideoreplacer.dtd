@@ -8,6 +8,7 @@
 <!ENTITY Clipboard "Copy url to clipboard">
 <!ENTITY Custom "Custom">
 <!ENTITY Delay "Delay">
+<!ENTITY DefaultQuality "Default Quality">
 <!ENTITY Download "Download">
 <!ENTITY Downloads "Downloads">
 <!ENTITY DownloadDir "Download Destination">

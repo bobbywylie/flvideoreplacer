@@ -264,7 +264,7 @@
 							<vbox>
 								<spacer height="15" flex="0" />
 								<hbox>
-									<caption label="&Quality;" tooltiptext="&OptionsTooltipQuality;" />
+									<caption label="&DefaultQuality;" tooltiptext="&OptionsTooltipQuality;" />
 									<spacer width="5" flex="0" />
 									<menulist preference="pref_videoquality" id="videoquality"
 										width="110">

@@ -1795,7 +1795,7 @@ var flvideoreplacerListener = {
 						if(downloadurl34 === videourl){
 							qoption34.setAttribute("selected","true");
 						}
-						qoption1 = qselect.appendChild(qoption1);
+						qoption34 = qselect.appendChild(qoption34);
 					}
 				}catch(e){
 					//do nothing
