@@ -1946,10 +1946,16 @@ var flvideoreplacerListener = {
 			var videoheight = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videoheight);
 			var videoelement = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videoelement);
 			if(sourceurl.match(/youtube.*watch.*v\=/)){
-				if(performance == 4 && (replacemethod !== "embedded" || (replacemethod == "embedded" && autolaunchembed !== true))){
-				    var videourl = doc.getElementById('qualityselector').value.replace(/.*url:/,"");
-				    var newmimetype = doc.getElementById('qualityselector').value.replace(/.*mime:/,"").replace(/\|url:.*/,"");
-				    var fmt = doc.getElementById('qualityselector').value.replace(/fmt:/,"").replace(/\|mime:.*/,"");
+				if(performance == 4){
+					try{
+					    var videourl = doc.getElementById('qualityselector').value.replace(/.*url:/,"");
+					    var newmimetype = doc.getElementById('qualityselector').value.replace(/.*mime:/,"").replace(/\|url:.*/,"");
+					    var fmt = doc.getElementById('qualityselector').value.replace(/fmt:/,"").replace(/\|mime:.*/,"");
+					}catch(e){
+					    var videourl = jsonObjectLocal.videourl;
+					    var newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
+					    var fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
+					}
 				}else{
 				    var videourl = jsonObjectLocal.videourl;
 				    var newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
