@@ -176,15 +176,24 @@
 											<menupopup>
 												<menuitem label="&Autodetect;" value="autodetect"
 													selected="true" />
-												<menuitem id="pluginmp4" label="MP4 (video/mp4)" value="video/mp4" />
+												<menuitem id="pluginmkv" label="Matroska (video/x-matroska)"
+													value="video/x-matroska" />
+												<menuitem id="pluginxth" label="Theora (video/x-theora)"
+													value="video/x-theora" />
+												<menuitem id="pluginxtp" label="Totem (application/x-totem-plugin)"
+													value="application/x-totem-plugin" />
+												<menuitem id="pluginxin" label="Xine (application/x-xine-plugin)"
+													value="application/x-xine-plugin" />
+												<menuitem id="pluginvlc" label="VLC (application/x-vlc-plugin)"
+													value="application/x-vlc-plugin" />
+												<menuitem id="pluginmp4" label="MP4 (video/mp4)" 
+													value="video/mp4" />
 												<menuitem id="pluginqt" label="QT (video/quicktime)"
 													value="video/quicktime" />
 												<menuitem id="pluginwmp" label="WMP (application/x-mplayer2)"
 													value="application/x-mplayer2" />
 												<menuitem id="pluginflv" label="FLV (application/x-flv)"
 													value="application/x-flv" />
-												<menuitem id="pluginmkv" label="Matroska (video/x-matroska)"
-													value="video/x-matroska" />
 											</menupopup>
 										</menulist>
 									</hbox>

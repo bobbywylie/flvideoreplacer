@@ -2071,14 +2071,18 @@ var flvideoreplacerListener = {
 			if(replacemethod === "embedded"){
 
 				//get plugin compatibility
-				var pluginmp4 = this.prefs.getBoolPref("pluginmp4");
-				var pluginflv = this.prefs.getBoolPref("pluginflv");
-				var pluginqt = this.prefs.getBoolPref("pluginqt");
 				var pluginmkv = this.prefs.getBoolPref("pluginmkv");
+				var pluginxth = this.prefs.getBoolPref("pluginxth");
+				var pluginxtp = this.prefs.getBoolPref("pluginxtp");
+				var pluginxin = this.prefs.getBoolPref("pluginxin");
+				var pluginvlc = this.prefs.getBoolPref("pluginvlc");
+				var pluginmp4 = this.prefs.getBoolPref("pluginmp4");
+				var pluginm4v = this.prefs.getBoolPref("pluginm4v");
+				var pluginqt = this.prefs.getBoolPref("pluginqt");
+				var pluginmov = this.prefs.getBoolPref("pluginmov");
 				var pluginwmp = this.prefs.getBoolPref("pluginwmp");
 				var pluginwmv = this.prefs.getBoolPref("pluginwmv");
-				var pluginmov = this.prefs.getBoolPref("pluginmov");
-				var pluginm4v = this.prefs.getBoolPref("pluginm4v");
+				var pluginflv = this.prefs.getBoolPref("pluginflv");
 
 				//declare element to be replaced
 				if(sourceurl.match(/youtube.*watch.*v\=/)){
@@ -2109,14 +2113,19 @@ var flvideoreplacerListener = {
 
 				var plugin = false;
 				//switch plugin
-				if((newmimetype === "video/x-matroska" && pluginmkv === true) 
-						|| (newmimetype === "video/x-quicktime" && pluginmov === true)
-						|| (newmimetype === "application/x-ms-wmv" && pluginwmv === true)
-						|| (newmimetype === "video/x-m4v" && pluginm4v === true)
-						|| (newmimetype === "application/x-flv" && pluginflv === true)
+				if((newmimetype === "application/x-totem-plugin" && pluginxtp === true)
+						|| (newmimetype === "application/x-xine-plugin" && pluginxin === true)
+						|| (newmimetype === "application/x-vlc-plugin" && pluginvlc === true)
+						|| (newmimetype === "video/x-theora" && pluginxth === true)
+						|| (newmimetype === "video/x-matroska" && pluginmkv === true) 
 						|| (newmimetype === "video/mp4" && pluginmp4 === true)
-						|| (newmimetype === "video/quicktime" && pluginqt === true)
+						|| (newmimetype === "video/x-m4v" && pluginm4v === true)
+						|| (newmimetype === "video/quicktime" && pluginqt === true)						
+						|| (newmimetype === "video/x-quicktime" && pluginmov === true)
 						|| (newmimetype === "application/x-mplayer2" && pluginwmp === true)
+						|| (newmimetype === "application/x-ms-wmv" && pluginwmv === true)
+						|| (newmimetype === "application/x-flv" && pluginflv === true)
+
 				){
 					plugin = true;
 				}else{
@@ -2129,6 +2138,222 @@ var flvideoreplacerListener = {
 				if(plugin === true){
 
 					if(newmimetype === "video/x-matroska"){
+
+						//create the object element
+						flvideoreplacer = doc.createElement('object');
+						flvideoreplacer.setAttribute("id", "fvrvideo");
+						flvideoreplacer.setAttribute("width", videowidth);
+						flvideoreplacer.setAttribute("height", videoheight);
+						flvideoreplacer.setAttribute("classid", "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B");
+						flvideoreplacer.setAttribute("type", newmimetype);
+						if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+							childdivs = videoplayer.getElementsByTagName("div");
+							videodiv = childdivs[2];
+							//replace video
+							videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
+
+						}else{
+							//replace video
+							videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
+						}
+						//append params
+						flvideoreplacer = doc.getElementById('fvrvideo');
+						params = doc.createElement('param');
+						params.setAttribute("name", "src");
+						params.setAttribute("value", videourl);
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "autoplay");
+						params.setAttribute("value", "true");
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "controller");
+						params.setAttribute("value", "true");
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "loop");
+						params.setAttribute("value", "false");
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "scale");
+						params.setAttribute("value", "aspect");
+						flvideoreplacer.appendChild(params);
+						//append embed
+						params = doc.createElement('embed');
+						params.setAttribute("src", videourl);
+						params.setAttribute("width", videowidth);
+						params.setAttribute("height", videoheight);
+						params.setAttribute("scale", "aspect");
+						params.setAttribute("type", newmimetype);
+						params.setAttribute("autoplay", "true");
+						params.setAttribute("controller", "true");
+						params.setAttribute("loop", "false");
+						flvideoreplacer.appendChild(params);
+					}
+			
+					if(newmimetype === "application/x-vlc-plugin"){
+
+						//create the object element
+						flvideoreplacer = doc.createElement('object');
+						flvideoreplacer.setAttribute("id", "fvrvideo");
+						flvideoreplacer.setAttribute("width", videowidth);
+						flvideoreplacer.setAttribute("height", videoheight);
+						flvideoreplacer.setAttribute("classid", "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B");
+						flvideoreplacer.setAttribute("type", newmimetype);
+						if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+							childdivs = videoplayer.getElementsByTagName("div");
+							videodiv = childdivs[2];
+							//replace video
+							videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
+
+						}else{
+							//replace video
+							videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
+						}
+						//append params
+						flvideoreplacer = doc.getElementById('fvrvideo');
+						params = doc.createElement('param');
+						params.setAttribute("name", "src");
+						params.setAttribute("value", videourl);
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "autoplay");
+						params.setAttribute("value", "true");
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "controller");
+						params.setAttribute("value", "true");
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "loop");
+						params.setAttribute("value", "false");
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "scale");
+						params.setAttribute("value", "aspect");
+						flvideoreplacer.appendChild(params);
+						//append embed
+						params = doc.createElement('embed');
+						params.setAttribute("src", videourl);
+						params.setAttribute("width", videowidth);
+						params.setAttribute("height", videoheight);
+						params.setAttribute("scale", "aspect");
+						params.setAttribute("type", newmimetype);
+						params.setAttribute("autoplay", "true");
+						params.setAttribute("controller", "true");
+						params.setAttribute("loop", "false");
+						flvideoreplacer.appendChild(params);
+					}
+					
+					if(newmimetype === "application/x-xine-plugin"){
+
+						//create the object element
+						flvideoreplacer = doc.createElement('object');
+						flvideoreplacer.setAttribute("id", "fvrvideo");
+						flvideoreplacer.setAttribute("width", videowidth);
+						flvideoreplacer.setAttribute("height", videoheight);
+						flvideoreplacer.setAttribute("classid", "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B");
+						flvideoreplacer.setAttribute("type", newmimetype);
+						if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+							childdivs = videoplayer.getElementsByTagName("div");
+							videodiv = childdivs[2];
+							//replace video
+							videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
+
+						}else{
+							//replace video
+							videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
+						}
+						//append params
+						flvideoreplacer = doc.getElementById('fvrvideo');
+						params = doc.createElement('param');
+						params.setAttribute("name", "src");
+						params.setAttribute("value", videourl);
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "autoplay");
+						params.setAttribute("value", "true");
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "controller");
+						params.setAttribute("value", "true");
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "loop");
+						params.setAttribute("value", "false");
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "scale");
+						params.setAttribute("value", "aspect");
+						flvideoreplacer.appendChild(params);
+						//append embed
+						params = doc.createElement('embed');
+						params.setAttribute("src", videourl);
+						params.setAttribute("width", videowidth);
+						params.setAttribute("height", videoheight);
+						params.setAttribute("scale", "aspect");
+						params.setAttribute("type", newmimetype);
+						params.setAttribute("autoplay", "true");
+						params.setAttribute("controller", "true");
+						params.setAttribute("loop", "false");
+						flvideoreplacer.appendChild(params);
+					}
+					
+					if(newmimetype === "video/x-theora"){
+
+						//create the object element
+						flvideoreplacer = doc.createElement('object');
+						flvideoreplacer.setAttribute("id", "fvrvideo");
+						flvideoreplacer.setAttribute("width", videowidth);
+						flvideoreplacer.setAttribute("height", videoheight);
+						flvideoreplacer.setAttribute("classid", "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B");
+						flvideoreplacer.setAttribute("type", newmimetype);
+						if(sourceurl.match(/vimeo\.com\/\d{1,8}/)){
+							childdivs = videoplayer.getElementsByTagName("div");
+							videodiv = childdivs[2];
+							//replace video
+							videodiv.parentNode.replaceChild(flvideoreplacer, videodiv);
+
+						}else{
+							//replace video
+							videoplayer.parentNode.replaceChild(flvideoreplacer, videoplayer);
+						}
+						//append params
+						flvideoreplacer = doc.getElementById('fvrvideo');
+						params = doc.createElement('param');
+						params.setAttribute("name", "src");
+						params.setAttribute("value", videourl);
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "autoplay");
+						params.setAttribute("value", "true");
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "controller");
+						params.setAttribute("value", "true");
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "loop");
+						params.setAttribute("value", "false");
+						flvideoreplacer.appendChild(params);
+						params = doc.createElement('param');
+						params.setAttribute("name", "scale");
+						params.setAttribute("value", "aspect");
+						flvideoreplacer.appendChild(params);
+						//append embed
+						params = doc.createElement('embed');
+						params.setAttribute("src", videourl);
+						params.setAttribute("width", videowidth);
+						params.setAttribute("height", videoheight);
+						params.setAttribute("scale", "aspect");
+						params.setAttribute("type", newmimetype);
+						params.setAttribute("autoplay", "true");
+						params.setAttribute("controller", "true");
+						params.setAttribute("loop", "false");
+						flvideoreplacer.appendChild(params);
+					}
+					
+					if(newmimetype === "application/x-totem-plugin"){
 
 						//create the object element
 						flvideoreplacer = doc.createElement('object');

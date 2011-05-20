@@ -34,6 +34,10 @@ var flvideoreplacerOptions = {
 			var pluginflv = this.prefs.getBoolPref("pluginflv");
 			var pluginqt = this.prefs.getBoolPref("pluginqt");
 			var pluginmkv = this.prefs.getBoolPref("pluginmkv");
+			var pluginxth = this.prefs.getBoolPref("pluginxth");
+			var pluginxtp = this.prefs.getBoolPref("pluginxtp");
+			var pluginxin = this.prefs.getBoolPref("pluginxin");
+			var pluginvlc = this.prefs.getBoolPref("pluginvlc");
 			var pluginwmp = this.prefs.getBoolPref("pluginwmp");
 			var pluginwmv = this.prefs.getBoolPref("pluginwmv");
 			var pluginmov = this.prefs.getBoolPref("pluginmov");
@@ -71,6 +75,7 @@ var flvideoreplacerOptions = {
 					this.prefs.setBoolPref("prefermp4",false);
 				}
 			}
+			
 			if(pluginmp4 === true){
 				document.getElementById("pluginmp4").hidden=false;
 			}else{
@@ -90,6 +95,26 @@ var flvideoreplacerOptions = {
 				document.getElementById("pluginmkv").hidden=false;
 			}else{
 				document.getElementById("pluginmkv").hidden=true;
+			}
+			if(pluginxth === true){
+				document.getElementById("pluginxth").hidden=false;
+			}else{
+				document.getElementById("pluginxth").hidden=true;
+			}
+			if(pluginxtp === true){
+				document.getElementById("pluginxtp").hidden=false;
+			}else{
+				document.getElementById("pluginxtp").hidden=true;
+			}
+			if(pluginxin === true){
+				document.getElementById("pluginxin").hidden=false;
+			}else{
+				document.getElementById("pluginxin").hidden=true;
+			}
+			if(pluginvlc === true){
+				document.getElementById("pluginvlc").hidden=false;
+			}else{
+				document.getElementById("pluginvlc").hidden=true;
 			}
 			if(pluginwmp === true){
 				document.getElementById("pluginwmp").hidden=false;
