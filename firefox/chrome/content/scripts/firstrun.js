@@ -157,6 +157,7 @@ var flvideoreplacerFirstrun = {
 			this.prefs.setBoolPref("pluginmp4", false);
 			this.prefs.setBoolPref("pluginflv", false);
 			this.prefs.setBoolPref("pluginqt", false);
+			this.prefs.setBoolPref("pluginmkv", false);
 			this.prefs.setBoolPref("pluginwmp", false);
 			this.prefs.setBoolPref("pluginwmv", false);
 			this.prefs.setBoolPref("pluginmov", false);
@@ -204,6 +205,10 @@ var flvideoreplacerFirstrun = {
 					if (pluginm4v === true) {
 						this.prefs.setBoolPref("pluginm4v", true);
 					}
+					var pluginmkv = /video.*x-matroska/.test(line.value);
+					if (pluginmkv === true) {
+						this.prefs.setBoolPref("pluginmkv", true);
+					}
 					var pluginqt = /video.*quicktime/.test(line.value);
 					if (pluginqt === true) {
 						this.prefs.setBoolPref("pluginqt", true);
@@ -228,6 +233,7 @@ var flvideoreplacerFirstrun = {
 					this.prefs.setBoolPref("pluginmp4", true);
 					this.prefs.setBoolPref("pluginflv", true);
 					this.prefs.setBoolPref("pluginqt", true);
+					this.prefs.setBoolPref("pluginmkv", true);
 					this.prefs.setBoolPref("pluginwmp", true);
 					this.prefs.setBoolPref("pluginwmv", true);
 					this.prefs.setBoolPref("pluginmov", true);

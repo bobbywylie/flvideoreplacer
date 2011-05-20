@@ -33,6 +33,7 @@ var flvideoreplacerOptions = {
 			var pluginmp4 = this.prefs.getBoolPref("pluginmp4");
 			var pluginflv = this.prefs.getBoolPref("pluginflv");
 			var pluginqt = this.prefs.getBoolPref("pluginqt");
+			var pluginmkv = this.prefs.getBoolPref("pluginmkv");
 			var pluginwmp = this.prefs.getBoolPref("pluginwmp");
 			var pluginwmv = this.prefs.getBoolPref("pluginwmv");
 			var pluginmov = this.prefs.getBoolPref("pluginmov");
@@ -84,6 +85,11 @@ var flvideoreplacerOptions = {
 				document.getElementById("pluginqt").hidden=false;
 			}else{
 				document.getElementById("pluginqt").hidden=true;
+			}
+			if(pluginmkv === true){
+				document.getElementById("pluginmkv").hidden=false;
+			}else{
+				document.getElementById("pluginmkv").hidden=true;
 			}
 			if(pluginwmp === true){
 				document.getElementById("pluginwmp").hidden=false;

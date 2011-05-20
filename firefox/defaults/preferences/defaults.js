@@ -33,6 +33,7 @@ pref("extensions.flvideoreplacer.pluginforce", true);
 pref("extensions.flvideoreplacer.pluginmp4", false);
 pref("extensions.flvideoreplacer.pluginflv", false);
 pref("extensions.flvideoreplacer.pluginqt", false);
+pref("extensions.flvideoreplacer.pluginmkv", false);
 pref("extensions.flvideoreplacer.pluginwmp", false);
 pref("extensions.flvideoreplacer.pluginwmv", false);
 pref("extensions.flvideoreplacer.pluginmov", false);

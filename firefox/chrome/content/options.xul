@@ -84,7 +84,7 @@
 						<vbox flex="1">
 							<stack flex="1">
 								<vbox flex="1">
-									<image src="chrome://flvideoreplacer/skin/stack2.png" flex="1"/>
+
 								</vbox>
 								<vbox>
 									<spacer height="15" flex="0" />
@@ -165,7 +165,7 @@
 							</stack>
 							<stack flex="1">
 								<vbox flex="1">
-									<image src="chrome://flvideoreplacer/skin/stack2.png" flex="1"/>
+
 								</vbox>
 								<vbox id="selectplugin">
 									<caption label="&ForcePluginMimeType;" tooltiptext="&OptionsTooltipForceMime;" />
@@ -183,6 +183,8 @@
 													value="application/x-mplayer2" />
 												<menuitem id="pluginflv" label="FLV (application/x-flv)"
 													value="application/x-flv" />
+												<menuitem id="pluginmkv" label="Matroska (video/x-matroska)"
+													value="video/x-matroska" />
 											</menupopup>
 										</menulist>
 									</hbox>
@@ -210,7 +212,7 @@
 							</stack>
 							<stack flex="1">
 								<vbox flex="1">
-									<image src="chrome://flvideoreplacer/skin/stack2.png" flex="1"/>
+
 								</vbox>
 								<vbox id="standaloneplayer">
 									<caption label="&StandalonePlayer;" tooltiptext="&OptionsTooltipStandalone;" />
@@ -259,7 +261,7 @@
 					<tabpanel flex="1">
 						<stack flex="1">
 							<vbox flex="1">
-								<image src="chrome://flvideoreplacer/skin/stack2.png" flex="1"/>
+
 							</vbox>
 							<vbox>
 								<spacer height="15" flex="0" />
@@ -287,7 +289,7 @@
 					<tabpanel flex="1">
 						<stack flex="1">
 							<vbox flex="1">
-								<image src="chrome://flvideoreplacer/skin/stack2.png" flex="1"/>
+
 							</vbox>
 							<vbox id="downloader">
 								<spacer height="15" flex="0" />
@@ -320,7 +322,7 @@
 						<vbox flex="1">
 							<stack flex="1">
 								<vbox flex="1">
-									<image src="chrome://flvideoreplacer/skin/stack2.png" flex="1"/>
+
 								</vbox>
 								<vbox>
 									<spacer height="15" flex="0" />
@@ -359,7 +361,7 @@
 					<tabpanel flex="1">
 						<stack flex="1">
 							<vbox flex="1">
-								<image src="chrome://flvideoreplacer/skin/stack2.png" flex="1"/>
+
 							</vbox>
 							<vbox>
 								<spacer height="15" flex="0" />
