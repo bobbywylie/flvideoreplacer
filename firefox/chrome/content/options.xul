@@ -254,9 +254,11 @@
 										<vbox>
 											<hbox>
 												<image src="chrome://flvideoreplacer/skin/search24.png"
-													tooltiptext="&Search;" onclick="flvideoreplacerOptions.openFile('&SelectFile;');" />
+												       onmouseover="this.style.cursor='pointer';"
+												       tooltiptext="&Search;" onclick="flvideoreplacerOptions.openFile('&SelectFile;');" />
 												<image src="chrome://flvideoreplacer/skin/delete24.png"
-													tooltiptext="&Reset;" onclick="flvideoreplacerOptions.resetFile('standalone');" />
+												       onmouseover="this.style.cursor='pointer';"
+												       tooltiptext="&Reset;" onclick="flvideoreplacerOptions.resetFile('standalone');" />
 											</hbox>
 										</vbox>
 										<spacer width="10" flex="0" />
@@ -310,9 +312,11 @@
 									<vbox>
 										<hbox>
 											<image src="chrome://flvideoreplacer/skin/search24.png"
-												tooltiptext="&Search;" onclick="flvideoreplacerOptions.openDir('&SelectDir;');" />
+											       onmouseover="this.style.cursor='pointer';"
+											       tooltiptext="&Search;" onclick="flvideoreplacerOptions.openDir('&SelectDir;');" />
 											<image src="chrome://flvideoreplacer/skin/delete24.png"
-												tooltiptext="&Reset;" onclick="flvideoreplacerOptions.resetFile('downdir');" />
+											       onmouseover="this.style.cursor='pointer';"
+											       tooltiptext="&Reset;" onclick="flvideoreplacerOptions.resetFile('downdir');" />
 										</hbox>
 									</vbox>
 									<spacer width="10" flex="0" />
