@@ -352,7 +352,7 @@
 											size="30" />
 										<spacer width="10" flex="0" />
 										<checkbox label="Blip.tv" preference="pref_bliptv" id="bliptv"
-											size="30" />
+											size="30" hidden="true"/>
 										<spacer width="10" flex="1" />
 									</hbox>
 									<spacer height="10" flex="0" />

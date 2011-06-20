@@ -122,7 +122,6 @@ var flvideoreplacerFirstrun = {
 					if(url.match(/youtube\.com/)
 							|| url.match(/vimeo\.com/)
 							|| url.match(/metacafe\.com/)
-							|| url.match(/blip\.tv/)
 							|| url.match(/ustream\.tv/)
 							|| url.match(/youporn\.com/)
 							|| url.match(/pornhub\.com/)
