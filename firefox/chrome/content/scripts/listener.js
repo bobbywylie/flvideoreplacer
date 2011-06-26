@@ -1548,7 +1548,7 @@ var flvideoreplacerListener = {
 			var standalonestring = flvideoreplacerListener.sanitizeString(strbundle.getString("standalone"));
 
 			//parse json
-			jsonObjectLocal = JSON.parse(videodata);
+			var jsonObjectLocal = JSON.parse(videodata);
 			//declare video variables
 			var sitename = flvideoreplacerListener.sanitizeString(jsonObjectLocal.sitename);
 			var sitestring = flvideoreplacerListener.sanitizeString(jsonObjectLocal.sitestring);
@@ -1865,7 +1865,7 @@ var flvideoreplacerListener = {
 			var videodata = this.prefs.getCharPref("video."+aBranch);
 
 			//parse json
-			jsonObjectLocal = JSON.parse(videodata);
+			var jsonObjectLocal = JSON.parse(videodata);
 			//declare video variables
 			var sitename = flvideoreplacerListener.sanitizeString(jsonObjectLocal.sitename);
 			var sitestring = flvideoreplacerListener.sanitizeString(jsonObjectLocal.sitestring);
@@ -3848,7 +3848,7 @@ var flvideoreplacerListener = {
 			this.prefs.deleteBranch("video");
 			this.prefs.deleteBranch("downloadersource");
 			this.prefs.deleteBranch("detectprivate");
-			this.prefs.setCharlPref("videourl","");
+			this.prefs.setCharPref("videourl","");
 		}
 };
 window.addEventListener("load", function() { flvideoreplacerListener.init(); }, false);
