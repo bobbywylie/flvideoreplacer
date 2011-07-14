@@ -69,7 +69,7 @@
 				type="bool" />
 
 		</preferences>
-		<vbox style="width:390px;height:300px;overflow:auto;" flex="1">
+		<vbox style="width:420px;height:320px;overflow:auto;" flex="1">
 			
 			<tabbox flex="1">
 				<tabs>
@@ -254,10 +254,10 @@
 										<vbox>
 											<hbox>
 												<image src="chrome://flvideoreplacer/skin/search24.png"
-												       onmouseover="this.style.cursor='pointer';"
+												       style="cursor:pointer;"
 												       tooltiptext="&Search;" onclick="flvideoreplacerOptions.openFile('&SelectFile;');" />
 												<image src="chrome://flvideoreplacer/skin/delete24.png"
-												       onmouseover="this.style.cursor='pointer';"
+												       style="cursor:pointer;"
 												       tooltiptext="&Reset;" onclick="flvideoreplacerOptions.resetFile('standalone');" />
 											</hbox>
 										</vbox>
@@ -312,10 +312,10 @@
 									<vbox>
 										<hbox>
 											<image src="chrome://flvideoreplacer/skin/search24.png"
-											       onmouseover="this.style.cursor='pointer';"
+											       style="cursor:pointer;"
 											       tooltiptext="&Search;" onclick="flvideoreplacerOptions.openDir('&SelectDir;');" />
 											<image src="chrome://flvideoreplacer/skin/delete24.png"
-											       onmouseover="this.style.cursor='pointer';"
+											       style="cursor:pointer;"
 											       tooltiptext="&Reset;" onclick="flvideoreplacerOptions.resetFile('downdir');" />
 										</hbox>
 									</vbox>

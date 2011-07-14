@@ -24,8 +24,7 @@ var flvideoreplacerURLBar = {
 
 		init: function() {
 			//listen for webpage loads
-			gBrowser.addProgressListener(flvideoreplacerUrlBarListener,
-					Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
+			gBrowser.addProgressListener(flvideoreplacerUrlBarListener);
 		},
 
 		uninit: function() {
@@ -181,7 +180,7 @@ var flvideoreplacerURLBar = {
 						}
 					}
 					try{
-						aTab = document.getElementById("FlashVideoReplacerVimeo");
+						var aTab = document.getElementById("FlashVideoReplacerVimeo");
 						gBrowser.removeTab(aTab);
 					}catch(e){
 						//do nothing

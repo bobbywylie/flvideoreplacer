@@ -1613,8 +1613,8 @@ var flvideoreplacerListener = {
 			image.setAttribute("id","flvplaceholder");
 			image.setAttribute("branch", aBranch);
 			image.setAttribute("src", placeholderimg);
-			image.setAttribute("style","opacity:0.5;");
-			image.addEventListener('mouseover',function (){this.style.opacity='1';this.style.cursor='pointer';},false);
+			image.setAttribute("style","opacity:0.5; cursor:pointer;");
+			image.addEventListener('mouseover',function (){this.style.opacity='1';},false);
 			image.addEventListener('mouseout',function (){this.style.opacity='0.5';},false);
 			image.addEventListener('click',function (){ 
 				var method = content.document.getElementById("methodselector").value; 
