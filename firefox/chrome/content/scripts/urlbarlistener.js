@@ -180,12 +180,11 @@ var flvideoreplacerURLBar = {
 						}
 					}
 					try{
-						var aTab = document.getElementById("FlashVideoReplacerVimeo");
-						gBrowser.removeTab(aTab);
+						gBrowser.tabContainer.advanceSelectedTab(-1, true);
+						setTimeout(function () { var fvrTab = document.getElementById("FlashVideoReplacerVimeo"); gBrowser.removeTab(fvrTab); }, 1500);
 					}catch(e){
 						//do nothing
 					}
-					//flvideoreplacerURLBar.uninit();
 				}
 			}
 			this.oldURL = aURI.spec;
