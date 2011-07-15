@@ -94,6 +94,7 @@ var flvideoreplacerURLBar = {
 					var mimetype = this.prefs.getCharPref("filemime");
 					var baseurl = this.prefs.getCharPref("videourl");
 					var alertserror = this.prefs.getBoolPref("alertserror");
+					var vimeoTab = this.prefs.getIntPref("tabindex");
 
 					var videoid = baseurl.replace(/.*clip:/,"").replace(/\/.*/,"");
 					//get localization
@@ -180,7 +181,7 @@ var flvideoreplacerURLBar = {
 						}
 					}
 					try{
-						gBrowser.tabContainer.advanceSelectedTab(-1, true);
+						gBrowser.selectTabAtIndex(vimeoTab);
 						setTimeout(function () { var fvrTab = document.getElementById("FlashVideoReplacerVimeo"); gBrowser.removeTab(fvrTab); }, 1500);
 					}catch(e){
 						//do nothing

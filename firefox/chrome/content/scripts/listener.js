@@ -2857,7 +2857,10 @@ var flvideoreplacerListener = {
 
 					//load url bar change listener for getting url redirection 
 					//flvideoreplacerURLBar.init();
-
+					
+					var vimeoTab = gBrowser.tabContainer.selectedIndex;
+					this.prefs.setIntPref("tabindex",vimeoTab);
+					
 					var newTab = gBrowser.addTab(videourl);
 					newTab.label = "FlashVideoReplacer";
 					newTab.id = "FlashVideoReplacerVimeo"; 
