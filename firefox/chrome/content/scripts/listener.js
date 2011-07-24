@@ -172,7 +172,7 @@ var flvideoreplacerListener = {
 									try{
 										//redirect to webm page
 										var webmurl = "http://www.youtube.com/watch?v="+videoid+"&html5=True";
-										var webmRequest = new XMLHttpRequest();
+										var webmRequest = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
 										webmRequest.open('GET', webmurl, true);
 										webmRequest.onreadystatechange=function(){
 											if (this.readyState === 4 && this.status === 200) {
@@ -320,7 +320,7 @@ var flvideoreplacerListener = {
 					cookieManager.remove(".youtube.com", "VISITOR_INFO1_LIVE", "/", false);
 
 					//get xml document content
-					req = new XMLHttpRequest();   
+					req = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
 					req.open('GET', xmlsource, true);
 					req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
 					req.onreadystatechange = function () {
@@ -831,7 +831,7 @@ var flvideoreplacerListener = {
 					xmlsource = "http://vimeo.com/moogaloop/load/clip:"+videoid;
 
 					//get xml document content
-					req = new XMLHttpRequest();   
+					req = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
 					req.open('GET', xmlsource, true);
 					req.onreadystatechange = function () {
 
@@ -1124,7 +1124,7 @@ var flvideoreplacerListener = {
 								for (pd=1; pd<=15; pd++){
 									var testurl = newline[i].replace(/.*videopic/,"http://ustream.vo.llnwd.net/pd"+pd).replace(/_\d{1,3}x.*/,".flv").replace(/\\/g, "");
 									//get xml document content
-									req = new XMLHttpRequest();   
+									req = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
 									req.open('GET', testurl, true);
 									req.onreadystatechange = function () {
 										if (this.readyState == 4 && this.status == 200) {
@@ -1247,7 +1247,7 @@ var flvideoreplacerListener = {
 						replacevideo = false;
 
 						//get xml document content
-						req = new XMLHttpRequest();   
+						req = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
 						req.open('GET', xmlsource, true);
 						req.onreadystatechange = function () {
 							if (this.readyState == 4 && this.status == 200) {
