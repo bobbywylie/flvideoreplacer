@@ -69,7 +69,6 @@ var flvideoreplacerURLBar = {
 					if(aURI.spec.match(/youtube\.com/)
 							|| aURI.spec.match(/vimeo\.com/)
 							|| aURI.spec.match(/metacafe\.com/)
-							|| aURI.spec.match(/ustream\.tv/)
 							|| aURI.spec.match(/youporn\.com/)
 							|| aURI.spec.match(/pornhub\.com/)
 							|| aURI.spec.match(/redtube\.com/)

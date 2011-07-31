@@ -50,7 +50,6 @@ var flvideoreplacerListener = {
 				if((sourceurl.match(/youtube.*watch.*v\=/)  && !sourceurl.match("html5=True")) 
 						|| sourceurl.match(/vimeo\.com\/\d{1,8}/)
 						|| (sourceurl.match(/metacafe\.com\/watch\//) && !sourceurl.match(/http.*http:\/\/www.metacafe\.com/))
-						|| sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)
 						|| sourceurl.match(/youporn\.com\/watch\//)
 						|| sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
 						|| sourceurl.match(/redtube\.com\/\d{1,8}/)
@@ -80,13 +79,7 @@ var flvideoreplacerListener = {
 						videoelement = "FlashWrap";
 						videowidth = "615";
 						videoheight = "400";
-					}
-					if(sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)){
-						replacevideo = this.prefs.getBoolPref("ustream");
-						videoelement = "channelFlashContent";
-						videowidth = "608";
-						videoheight = "368";
-					}	    
+					}  
 					if(sourceurl.match(/youporn\.com\/watch\//)){
 						replacevideo = this.prefs.getBoolPref("other");
 						videoelement = "player";
@@ -144,7 +137,6 @@ var flvideoreplacerListener = {
 
 								if(sourceurl.match(/youtube.*watch.*v\=/) 
 										|| sourceurl.match(/vimeo\.com\/\d{1,8}/)
-										|| sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)
 								){
 									//replace with empty div
 									var divreplacer = doc.createElement('div');
@@ -221,7 +213,6 @@ var flvideoreplacerListener = {
 							}
 							if(sourceurl.match(/vimeo\.com\/\d{1,8}/) 
 									|| sourceurl.match(/metacafe\.com\/watch\//) 
-									|| sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)
 									|| sourceurl.match(/youporn\.com\/watch\//)
 									|| sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
 									|| sourceurl.match(/redtube\.com\/\d{1,8}/)
@@ -1014,197 +1005,6 @@ var flvideoreplacerListener = {
 					}
 				}
 			}
-			if(sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)){
-
-				//fetch video ID from url
-				videoid = sourceurl.replace(/.*recorded\//, "").replace(/\/.*/g, "");
-				//declare element to be replaced
-				videoelement = "channelFlashContent";
-				testelement = doc.getElementById(videoelement);
-
-				if (testelement !== null) {
-
-					//fetch page html content
-					pagecontent = doc.getElementsByTagName("head").item(0).innerHTML;
-					newline = pagecontent.split("\n");
-
-					for(var i=0; i< newline.length; i++){
-
-						//match patterns
-						matchpattern = /ustream\.vars\.liveHttpUrl/.test(newline[i]);
-						matchpattern2 = /ustream\.vars\.videoPictureUrl/.test(newline[i]);
-
-						if (matchpattern == true) {//fetch line with liveHttpUrl
-
-							videourl = newline[i].replace(/.*ustream\.vars\.liveHttpUrl=\"/, "").replace(/".*/g, "").replace(/\\/g, "");
-							background = newline[i].replace(/.*ustream\.vars\.videoPictureUrl=\"/, "").replace(/".*/g, "").replace(/\\/g, "");
-							//declare and store file mime
-							if(mimetype === "autodetect"){
-								if(videourl.match(/\.mp4/)){
-									newmimetype = "video/mp4";
-								}
-								if(videourl.match(/\.mov/)){
-									newmimetype = "video/x-quicktime";
-								}
-								if(videourl.match(/\.m4v/)){
-									newmimetype = "video/x-m4v";
-								}
-								if(videourl.match(/\.wmv/)){
-									newmimetype = "application/x-ms-wmv";
-								}
-								if(videourl.match(/\.flv/)){
-									newmimetype = "application/x-flv";
-								}
-								this.prefs.setCharPref("filemime",newmimetype);
-							}else{
-								this.prefs.setCharPref("filemime",mimetype);
-							}
-
-							//store download path
-							this.prefs.setCharPref("downloadersource.ustream."+videoid,videourl);
-
-							//store video branch
-							videojson = {};
-							videojson.sitename = "Ustream";
-							videojson.sitestring = "ustream";
-							videojson.videowidth = "608";
-							videojson.videoheight = "368";
-							videojson.videoelement = "channelFlashContent";
-							videojson.background = background;
-							videojson.thumbnail = background.replace(/_320x240_/,"_90x68_");
-							videojson.videofmt = "97";
-							videojson.videomime = newmimetype;
-							videojson.videourl = videourl;
-							JSONStrings = JSON.stringify(videojson);
-							this.prefs.setCharPref("video.ustream."+videoid,JSONStrings);
-
-							//replace
-							if(replacemethod === "embedded"){
-								if(autolaunchembed === false){
-									flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
-								}else{
-									flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
-								}
-							}
-							if(replacemethod === "standalone"){
-								if(autolaunchplayer === false){
-									flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
-								}else{
-									flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
-								}
-							}
-							if(replacemethod === "newtab"){
-								if(autolaunchtab === false){
-									flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
-								}else{
-									flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
-								}
-							}
-							if(replacemethod === "newwindow"){
-								if(autolaunchwindow === false){
-									flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
-								}else{
-									flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
-								}
-							}
-						}else{
-							if (matchpattern2 == true){
-								var pd;
-								for (pd=1; pd<=15; pd++){
-									var testurl = newline[i].replace(/.*videopic/,"http://ustream.vo.llnwd.net/pd"+pd).replace(/_\d{1,3}x.*/,".flv").replace(/\\/g, "");
-									//get xml document content
-									req = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
-									req.open('GET', testurl, true);
-									req.onreadystatechange = function () {
-										if (this.readyState == 4 && this.status == 200) {
-
-											//declare video url
-											videourl = newline[i].replace(/.*videopic/,"http://ustream.vo.llnwd.net/pd"+pd).replace(/_\d{1,3}x.*/,".flv").replace(/\\/g, "");
-											background = newline[i].replace(/.*ustream\.vars\.videoPictureUrl=\"/, "").replace(/".*/g, "").replace(/\\/g, "");
-
-											//access preferences interface
-											this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-											.getService(Components.interfaces.nsIPrefService)
-											.getBranch("extensions.flvideoreplacer.");
-
-											//declare and store file mime
-											if(mimetype === "autodetect"){
-												if(videourl.match(/\.mp4/)){
-													newmimetype = "video/mp4";
-												}
-												if(videourl.match(/\.mov/)){
-													newmimetype = "video/x-quicktime";
-												}
-												if(videourl.match(/\.m4v/)){
-													newmimetype = "video/x-m4v";
-												}
-												if(videourl.match(/\.wmv/)){
-													newmimetype = "application/x-ms-wmv";
-												}
-												if(videourl.match(/\.flv/)){
-													newmimetype = "application/x-flv";
-												}
-												this.prefs.setCharPref("filemime",newmimetype);
-											}else{
-												this.prefs.setCharPref("filemime",mimetype);
-											}
-
-											//store download path
-											this.prefs.setCharPref("downloadersource.ustream."+videoid,videourl);
-
-											//store video branch
-											videojson = {};
-											videojson.sitename = "Ustream";
-											videojson.sitestring = "ustream";
-											videojson.videowidth = "608";
-											videojson.videoheight = "368";
-											videojson.videoelement = "channelFlashContent";
-											videojson.background = background;
-											videojson.thumbnail = background.replace(/_320x240_/,"_90x68_");
-											videojson.videofmt = "97";
-											videojson.videomime = newmimetype;
-											videojson.videourl = videourl;
-											JSONStrings = JSON.stringify(videojson);
-											this.prefs.setCharPref("video.ustream."+videoid,JSONStrings);
-
-											//replace
-											if(replacemethod === "embedded"){
-												if(autolaunchembed === false){
-													flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
-												}else{
-													flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
-												}
-											}
-											if(replacemethod === "standalone"){
-												if(autolaunchplayer === false){
-													flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
-												}else{
-													flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
-												}
-											}
-											if(replacemethod === "newtab"){
-												if(autolaunchtab === false){
-													flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
-												}else{
-													flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
-												}
-											}
-											if(replacemethod === "newwindow"){
-												if(autolaunchwindow === false){
-													flvideoreplacerListener.placeHolder(aEvent,"ustream."+videoid);
-												}else{
-													flvideoreplacerListener.videoReplace(aEvent,"ustream."+videoid);
-												}
-											}
-										}
-									};
-									req.send(null);
-								}
-							}
-						}
-					}
-				}
-			}
 			if(sourceurl.match(/youporn\.com\/watch\//)){
 
 				//fetch video ID from url
@@ -1549,7 +1349,7 @@ var flvideoreplacerListener = {
 			var videourl = jsonObjectLocal.videourl;
 			var newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
 			var fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
-			if(sourceurl.match(/youtube.*watch.*v\=/) || sourceurl.match(/vimeo\.com\/\d{1,8}/) || sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)){
+			if(sourceurl.match(/youtube.*watch.*v\=/) || sourceurl.match(/vimeo\.com\/\d{1,8}/)){
 				var background = flvideoreplacerListener.sanitizeString(jsonObjectLocal.background);
 				var thumbnail =  flvideoreplacerListener.sanitizeString(jsonObjectLocal.thumbnail);
 			}
@@ -1586,7 +1386,7 @@ var flvideoreplacerListener = {
 			//create the injected placeholder
 			flvideoreplacer = doc.createElement('div');
 			flvideoreplacer.setAttribute("id", videoelement);
-			if(sourceurl.match(/vimeo\.com\/\d{1,8}/) || sourceurl.match(/youtube.*watch.*v\=/) || sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)){
+			if(sourceurl.match(/vimeo\.com\/\d{1,8}/) || sourceurl.match(/youtube.*watch.*v\=/)){
 				flvideoreplacer.setAttribute("style","background-image: url("+background+"); background-repeat:no-repeat; background-position: center; background-size: 100%; width:"+videowidth+"; height:"+videoheight+"; text-align:center; vertical-align:middle;");
 			}else{
 				flvideoreplacer.setAttribute("style"," width:"+videowidth+"; height:"+videoheight+"; text-align:center; vertical-align:middle;");
@@ -2706,7 +2506,7 @@ var flvideoreplacerListener = {
 
 					if(fallback === "flowplayer"){
 
-						if(!sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/) && !sourceurl.match(/redtube\.com\/\d{1,8}/)){
+						if(!sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match(/redtube\.com\/\d{1,8}/)){
 							//create the object element
 							flvideoreplacer = doc.createElement('object');
 							flvideoreplacer.setAttribute("id", "fvrvideo");
@@ -2751,7 +2551,7 @@ var flvideoreplacerListener = {
 						}
 					}else if(fallback === "neolao"){
 
-						if(!sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/) && !sourceurl.match(/redtube\.com\/\d{1,8}/)){
+						if(!sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match(/redtube\.com\/\d{1,8}/)){
 
 							//create the object element
 							flvideoreplacer = doc.createElement('object');
@@ -3092,7 +2892,6 @@ var flvideoreplacerListener = {
 					if(url.match(/youtube\.com/)
 							|| url.match(/vimeo\.com/)
 							|| url.match(/metacafe\.com/)
-							|| url.match(/ustream\.tv/)
 							|| url.match(/youporn\.com/)
 							|| url.match(/pornhub\.com/)
 							|| url.match(/redtube\.com/)
@@ -3200,7 +2999,6 @@ var flvideoreplacerListener = {
 						&& (!sourceurl.match(/youtube/)
 								&& !sourceurl.match(/vimeo/)
 								&& !sourceurl.match(/metacafe/)
-								&& !sourceurl.match(/ustream/)
 								&& !sourceurl.match(/youporn/)
 								&& !sourceurl.match(/pornhub/)
 								&& !sourceurl.match(/redtube/)
@@ -3368,7 +3166,6 @@ var flvideoreplacerListener = {
 				if((sourceurl.match(/youtube.*watch.*v\=/) && !sourceurl.match("html5=True")) 
 						|| sourceurl.match(/vimeo\.com\/\d{1,8}/)
 						|| sourceurl.match(/metacafe\.com\/watch\//)
-						|| sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)
 						|| sourceurl.match(/youporn\.com\/watch\//)
 						|| sourceurl.match(/pornhub\.com\/view_video.php\?viewkey=/)
 						|| sourceurl.match(/redtube\.com\/\d{1,8}/)
@@ -3430,12 +3227,6 @@ var flvideoreplacerListener = {
 							aSite = "metacafe";
 							//fetch video ID from url
 							videoid = sourceurl.replace(/.*watch\//, "").replace(/\/.*/,"");
-							downloadurl = this.prefs.getCharPref(aSite+"."+videoid);
-						}
-						if(sourceurl.match(/ustream\.tv\/recorded\/\d{1,8}/)){
-							aSite = "ustream";
-							//fetch video ID from url
-							videoid = sourceurl.replace(/.*recorded\//, "").replace(/\/.*/g, "");
 							downloadurl = this.prefs.getCharPref(aSite+"."+videoid);
 						}
 						if(sourceurl.match(/youporn\.com\/watch\//)){
