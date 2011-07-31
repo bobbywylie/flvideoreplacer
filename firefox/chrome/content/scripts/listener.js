@@ -1654,7 +1654,7 @@ var flvideoreplacerListener = {
 			var strbundle = document.getElementById("flvideoreplacerstrings");
 			var original = strbundle.getString("original");
 			var standard = strbundle.getString("standard");
-			var message, messagetitle, prompts, alertsService;
+			var message, messagetitle, prompts, alertsService, newmimetype, videourl, fmt;
 
 			//get video json from prefs
 			var videodata = this.prefs.getCharPref("video."+aBranch);
@@ -1670,23 +1670,23 @@ var flvideoreplacerListener = {
 			if(sourceurl.match(/youtube.*watch.*v\=/)){
 				if(performance == 4){
 					try{
-						var videourl = doc.getElementById('qualityselector').value.replace(/.*url:/,"");
-						var newmimetype = doc.getElementById('qualityselector').value.replace(/.*mime:/,"").replace(/\|url:.*/,"");
-						var fmt = doc.getElementById('qualityselector').value.replace(/fmt:/,"").replace(/\|mime:.*/,"");
+						videourl = doc.getElementById('qualityselector').value.replace(/.*url:/,"");
+						newmimetype = doc.getElementById('qualityselector').value.replace(/.*mime:/,"").replace(/\|url:.*/,"");
+						fmt = doc.getElementById('qualityselector').value.replace(/fmt:/,"").replace(/\|mime:.*/,"");
 					}catch(e){
-						var videourl = jsonObjectLocal.videourl;
-						var newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
-						var fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
+						videourl = jsonObjectLocal.videourl;
+						newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
+						fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
 					}
 				}else{
-					var videourl = jsonObjectLocal.videourl;
-					var newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
-					var fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
+					videourl = jsonObjectLocal.videourl;
+					newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
+					fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
 				}
 			}else{
-				var videourl = jsonObjectLocal.videourl;
-				var newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
-				var fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
+				videourl = jsonObjectLocal.videourl;
+				newmimetype = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videomime);
+				fmt = flvideoreplacerListener.sanitizeString(jsonObjectLocal.videofmt);
 			}
 
 			//declare variables
@@ -3087,7 +3087,7 @@ var flvideoreplacerListener = {
 						try{
 							var pagecontent = content.window.document.getElementsByTagName("body").item(0).innerHTML;
 							var newline = pagecontent.split("\n");
-							var newembedid;
+							var newembedid, newlink;
 
 							for(var i=0; i< newline.length; i++){
 
