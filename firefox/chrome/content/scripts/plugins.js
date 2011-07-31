@@ -1,6 +1,8 @@
 var flvideoreplacerPlugins = {
 
 		pluginSwitch: function() {
+			
+			"use strict";
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
