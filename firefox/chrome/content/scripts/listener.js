@@ -40,7 +40,7 @@ var flvideoreplacerListener = {
 					preferwebm = this.prefs.getBoolPref("preferwebm");
 					replacevideo = this.prefs.getBoolPref("youtube");
 					//redirect webm
-					if(preferwebm === false && replacevideo == true){
+					if(preferwebm === false && replacevideo === true){
 						var newlocation = sourceurl.replace(/\&html5=True/,"");
 						doc.location.href = newlocation;
 					}
@@ -221,7 +221,7 @@ var flvideoreplacerListener = {
 									flvideoreplacerListener.videoFetch(aEvent);
 								}else{
 									setTimeout(function () {flvideoreplacerListener.videoFetch(aEvent);}, delay);
-								}    						
+								}				
 							}
 						}
 					}
@@ -291,7 +291,7 @@ var flvideoreplacerListener = {
 
 				if (testelement !== null) {
 					
-					var xmlsource = "http://www.youtube.com/watch?v="+videoid;
+					xmlsource = "http://www.youtube.com/watch?v="+videoid;
 					
 					/*
 					//get cookie value
