@@ -26,7 +26,6 @@ pref("extensions.flvideoreplacer.downdir", "");
 pref("extensions.flvideoreplacer.downdta", false);
 pref("extensions.flvideoreplacer.silentdownload", false);
 pref("extensions.flvideoreplacer.videourl", "");
-pref("extensions.flvideoreplacer.fmt", "18");
 pref("extensions.flvideoreplacer.fallback", "noplugin");
 
 pref("extensions.flvideoreplacer.pluginforce", true);

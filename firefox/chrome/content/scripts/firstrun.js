@@ -1,6 +1,8 @@
 var flvideoreplacerFirstrun = {
 
 		init : function() {// get current version from extension manager
+			
+			"use strict";
 
 			// access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -33,6 +35,8 @@ var flvideoreplacerFirstrun = {
 		},
 
 		updateInstall : function(aVersion) {// check version and perform updates
+			
+			"use strict";
 
 			// get osString
 			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
@@ -141,6 +145,8 @@ var flvideoreplacerFirstrun = {
 		},
 
 		pluginCheck : function() {
+			
+			"use strict";
 
 			// get osString
 			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
@@ -267,6 +273,8 @@ var flvideoreplacerFirstrun = {
 		},
 
 		playerCheck : function() {
+			
+			"use strict";
 
 			// get osString
 			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
@@ -487,6 +495,8 @@ var flvideoreplacerFirstrun = {
 		},
 
 		checkTPE: function() {
+			
+			"use strict";
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
